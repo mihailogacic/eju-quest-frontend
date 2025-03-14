@@ -9,6 +9,7 @@ import Register from './pages/Register';
 import ResetPassword from './pages/ResetPassword';
 import ChangePassword from './pages/ChangePassword';
 import PasswordChanged from './pages/PasswordChanged';
+import AdminParent from './pages/AdminParent';
 
 const App = () => {
   return (
@@ -21,6 +22,7 @@ const App = () => {
           <Route path='/reset-password' element={<ResetPassword />} />
           <Route path='/reset-password/uid' element={<ChangePassword />} />
           <Route path='/reset-password/success' element={<PasswordChanged />} />
+          <Route path='/admin' element={<AdminParent />} />
 
           <Route
             path='/'
