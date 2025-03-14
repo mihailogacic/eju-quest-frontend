@@ -4,17 +4,27 @@ import CssBaseline from '@mui/material/CssBaseline';
 import theme from './theme';
 import Layout from './components/layouts/Layout';
 import LandingPage from './pages/LandingPage';
+import Login from './pages/Login';
+import Register from './pages/Register';
 
 const App = () => {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <Router>
-        <Layout>
-          <Routes>
-            <Route path='/' element={<LandingPage />} />
-          </Routes>
-        </Layout>
+        <Routes>
+          <Route path='/sign-in' element={<Login />} />
+          <Route path='/sign-up' element={<Register />} />
+
+          <Route
+            path='/'
+            element={
+              <Layout>
+                <LandingPage />
+              </Layout>
+            }
+          />
+        </Routes>
       </Router>
     </ThemeProvider>
   );
