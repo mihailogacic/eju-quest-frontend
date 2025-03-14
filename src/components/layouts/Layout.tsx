@@ -5,9 +5,10 @@ import Navbar from '../navigation/Navbar';
 
 type LayoutProps = {
   children: ReactNode;
+  footerEnabled?: boolean;
 };
 
-const Layout = ({ children }: LayoutProps) => {
+const Layout = ({ children, footerEnabled = true }: LayoutProps) => {
   return (
     <>
       <Navbar />
@@ -24,7 +25,7 @@ const Layout = ({ children }: LayoutProps) => {
       >
         {children}
       </Box>
-      <Footer />
+      {footerEnabled && <Footer />}
     </>
   );
 };

@@ -3,6 +3,8 @@ import { ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import theme from './theme';
 import Layout from './components/layouts/Layout';
+import ProtectedRoute from './components/layouts/ProtectedRoute';
+import PublicRoute from './components/layouts/PublicRoute';
 import LandingPage from './pages/LandingPage';
 import Login from './pages/Login';
 import Register from './pages/Register';
@@ -10,6 +12,7 @@ import ResetPassword from './pages/ResetPassword';
 import ChangePassword from './pages/ChangePassword';
 import PasswordChanged from './pages/PasswordChanged';
 import AdminParent from './pages/AdminParent';
+import UserProfile from './pages/UserProfile';
 
 const App = () => {
   return (
@@ -17,8 +20,22 @@ const App = () => {
       <CssBaseline />
       <Router>
         <Routes>
-          <Route path='/sign-in' element={<Login />} />
-          <Route path='/sign-up' element={<Register />} />
+          <Route
+            path='/sign-in'
+            element={
+              <PublicRoute>
+                <Login />
+              </PublicRoute>
+            }
+          />
+          <Route
+            path='/sign-up'
+            element={
+              <PublicRoute>
+                <Register />
+              </PublicRoute>
+            }
+          />
           <Route path='/reset-password' element={<ResetPassword />} />
           <Route path='/reset-password/uid' element={<ChangePassword />} />
           <Route path='/reset-password/success' element={<PasswordChanged />} />
@@ -27,9 +44,21 @@ const App = () => {
           <Route
             path='/'
             element={
-              <Layout>
-                <LandingPage />
-              </Layout>
+              <PublicRoute>
+                <Layout>
+                  <LandingPage />
+                </Layout>
+              </PublicRoute>
+            }
+          />
+          <Route
+            path='/user-profile'
+            element={
+              <ProtectedRoute>
+                <Layout footerEnabled={false}>
+                  <UserProfile />
+                </Layout>
+              </ProtectedRoute>
             }
           />
         </Routes>

@@ -1,8 +1,16 @@
+import { useNavigate } from 'react-router-dom';
 import { Box } from '@mui/material';
 import CustomButton from '../common/CustomButton';
 import logo from '../../assets/images/logo.png';
+import useAuthStore from '../../store/auth-store';
+
+const authLinks = { fontSize: '14px', fontWeight: 400, mx: '6px' };
 
 const Navbar = () => {
+  const navigate = useNavigate();
+
+  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
+
   return (
     <Box
       sx={(theme) => ({
@@ -47,15 +55,94 @@ const Navbar = () => {
           '@media (max-width: 340px)': { transform: 'scale(0.8)' },
         }}
       />
-      <Box
-        sx={{
-          '@media (max-width: 440px)': { transform: 'scale(0.9)' },
-          '@media (max-width: 340px)': { transform: 'scale(0.8)' },
-        }}
-      >
-        <CustomButton buttonType='text'>Log in</CustomButton>
-        <CustomButton>Sign up</CustomButton>
-      </Box>
+      {!isAuthenticated ? (
+        <Box
+          sx={{
+            '@media (max-width: 440px)': { transform: 'scale(0.9)' },
+            '@media (max-width: 340px)': { transform: 'scale(0.8)' },
+          }}
+        >
+          <CustomButton
+            buttonType='text'
+            onClick={() => {
+              navigate('/sign-in');
+              window.scrollTo({
+                top: 0,
+                behavior: 'smooth',
+              });
+            }}
+          >
+            Log in
+          </CustomButton>
+          <CustomButton
+            onClick={() => {
+              navigate('/sign-up');
+              window.scrollTo({
+                top: 0,
+                behavior: 'smooth',
+              });
+            }}
+          >
+            Sign up
+          </CustomButton>
+        </Box>
+      ) : (
+        <Box
+          sx={{
+            '@media (max-width: 440px)': { transform: 'scale(0.9)' },
+            '@media (max-width: 340px)': { transform: 'scale(0.8)' },
+          }}
+        >
+          <CustomButton
+            buttonType='text'
+            onClick={() => {
+              window.scrollTo({
+                top: 0,
+                behavior: 'smooth',
+              });
+            }}
+            sx={authLinks}
+          >
+            User Management
+          </CustomButton>
+          <CustomButton
+            buttonType='text'
+            onClick={() => {
+              window.scrollTo({
+                top: 0,
+                behavior: 'smooth',
+              });
+            }}
+            sx={authLinks}
+          >
+            Content Generation
+          </CustomButton>
+          <CustomButton
+            buttonType='text'
+            onClick={() => {
+              window.scrollTo({
+                top: 0,
+                behavior: 'smooth',
+              });
+            }}
+            sx={authLinks}
+          >
+            Session Reviews
+          </CustomButton>
+          <CustomButton
+            buttonType='text'
+            onClick={() => {
+              window.scrollTo({
+                top: 0,
+                behavior: 'smooth',
+              });
+            }}
+            sx={authLinks}
+          >
+            Rewards Management
+          </CustomButton>
+        </Box>
+      )}
     </Box>
   );
 };
