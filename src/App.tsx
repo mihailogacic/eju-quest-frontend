@@ -6,6 +6,9 @@ import Layout from './components/layouts/Layout';
 import LandingPage from './pages/LandingPage';
 import Login from './pages/Login';
 import Register from './pages/Register';
+import ResetPassword from './pages/ResetPassword';
+import ChangePassword from './pages/ChangePassword';
+import PasswordChanged from './pages/PasswordChanged';
 
 const App = () => {
   return (
@@ -15,6 +18,9 @@ const App = () => {
         <Routes>
           <Route path='/sign-in' element={<Login />} />
           <Route path='/sign-up' element={<Register />} />
+          <Route path='/reset-password' element={<ResetPassword />} />
+          <Route path='/reset-password/uid' element={<ChangePassword />} />
+          <Route path='/reset-password/success' element={<PasswordChanged />} />
 
           <Route
             path='/'

@@ -34,17 +34,26 @@ const Register = () => {
         justifyContent: 'center',
         alignItems: 'center',
         zIndex: 100,
-        p: 6,
+        py: 6,
       }}
     >
       <Box
         sx={{
-          minHeight: '640px',
           backgroundColor: 'rgba(89, 89, 89, 0.2)',
           border: '2px solid rgba(141, 141, 141, 0.2)',
           borderRadius: '24px',
           px: 12,
           py: 6,
+          mx: 2,
+
+          '@media (max-width: 640px)': {
+            px: 6,
+            width: '100%',
+          },
+          '@media (max-width: 480px)': {
+            px: 2,
+            mx: 1,
+          },
         }}
       >
         <Typography
@@ -52,7 +61,7 @@ const Register = () => {
             textAlign: 'center',
             fontSize: '40px',
             fontFamily: 'Times New Roman, Times, serif',
-            fontWeight: '400px',
+            fontWeight: 400,
             mb: 4,
           }}
         >
@@ -61,7 +70,14 @@ const Register = () => {
 
         <Box
           component='form'
-          sx={{ width: '440px', mx: 'auto' }}
+          sx={{
+            width: '440px',
+            mx: 'auto',
+
+            '@media (max-width: 640px)': {
+              width: '100%',
+            },
+          }}
           onSubmit={handleSubmit(onSubmit)}
         >
           <Typography sx={{ fontSize: '30px', fontWeight: 600, mb: 3 }}>
