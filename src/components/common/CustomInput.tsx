@@ -15,7 +15,7 @@ const StyledTextField = styled(TextField)(({ theme }) => ({
   borderRadius: '8px',
 
   '& .MuiOutlinedInput-root': {
-    backgroundColor: '#1C1C1C',
+    backgroundColor: theme.palette.text.secondary,
     padding: '24px 14px 10px',
     '& fieldset': {
       border: 'none',
@@ -32,12 +32,46 @@ const StyledTextField = styled(TextField)(({ theme }) => ({
   },
 }));
 
+const OutlinedTextField = styled(TextField)(({ theme }) => ({
+  '& .MuiOutlinedInput-root': {
+    backgroundColor: 'white',
+    borderRadius: '8px',
+
+    '& fieldset': {
+      borderColor: theme.palette.border.cyanGray,
+    },
+    '&:hover fieldset': {
+      borderColor: theme.palette.text.midGray,
+    },
+    '&.Mui-focused fieldset': {
+      borderColor: theme.palette.text.midGray,
+    },
+  },
+  '& .MuiInputBase-input': {
+    color: theme.palette.text.secondary,
+    fontSize: '16px',
+  },
+  '& .MuiInputBase-input::placeholder': {
+    color: theme.palette.text.charcoalBlack,
+    opacity: 0.4,
+  },
+}));
+
 type CustomInputProps = TextFieldProps & {
-  label: string;
+  label?: string;
+  variantType?: 'default' | 'outlined';
 };
 
-const CustomInput = ({ label, type, ...props }: CustomInputProps) => {
+const CustomInput = ({
+  label,
+  type,
+  variantType = 'default',
+  ...props
+}: CustomInputProps) => {
   const [showPassword, setShowPassword] = useState(false);
+
+  const InputComponent =
+    variantType === 'outlined' ? OutlinedTextField : StyledTextField;
 
   return (
     <Box sx={{ position: 'relative', width: '100%' }}>
@@ -55,7 +89,7 @@ const CustomInput = ({ label, type, ...props }: CustomInputProps) => {
       >
         {label}
       </Typography>
-      <StyledTextField
+      <InputComponent
         {...props}
         type={type === 'password' ? (showPassword ? 'text' : 'password') : type}
         variant='outlined'

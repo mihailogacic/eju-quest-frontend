@@ -12,6 +12,10 @@ declare module '@mui/material/styles' {
     softGray: string;
     darkGray: string;
     steelGray: string;
+    silver: string;
+    cyanGray: string;
+    midnightBlue: string;
+    charcoalBlack: string;
   }
 
   interface Palette {
@@ -47,9 +51,13 @@ const theme = createTheme({
       softGray: '#F5F5F5',
       darkGray: '#616161',
       steelGray: '#757575',
+      silver: '#A0A0A0',
+      midnightBlue: '#191F33',
+      charcoalBlack: '#212121',
     },
     border: {
       midGray: '#8D8D8D',
+      cyanGray: '#CCD5D6',
     },
   },
   typography: {

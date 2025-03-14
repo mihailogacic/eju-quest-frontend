@@ -13,6 +13,7 @@ import ChangePassword from './pages/ChangePassword';
 import PasswordChanged from './pages/PasswordChanged';
 import AdminParent from './pages/AdminParent';
 import UserProfile from './pages/UserProfile';
+import NewTopic from './pages/NewTopic';
 
 const App = () => {
   return (
@@ -57,6 +58,16 @@ const App = () => {
               <ProtectedRoute>
                 <Layout footerEnabled={false}>
                   <UserProfile />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path='/new-topic'
+            element={
+              <ProtectedRoute>
+                <Layout>
+                  <NewTopic />
                 </Layout>
               </ProtectedRoute>
             }
