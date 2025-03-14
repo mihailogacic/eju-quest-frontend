@@ -1,13 +1,27 @@
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Box } from '@mui/material';
+import { Box, Drawer, List, ListItem, ListItemText } from '@mui/material';
+import MenuIcon from '@mui/icons-material/Menu';
+import CloseIcon from '@mui/icons-material/Close';
 import CustomButton from '../common/CustomButton';
 import logo from '../../assets/images/logo.png';
 import useAuthStore from '../../store/auth-store';
 
-const authLinks = { fontSize: '14px', fontWeight: 400, mx: '6px' };
+const authLinks = {
+  fontSize: '14px',
+  fontWeight: 400,
+  mx: '6px',
+  '@media (max-width: 1280px)': { mx: 0 },
+};
 
 const Navbar = () => {
   const navigate = useNavigate();
+
+  const [open, setOpen] = useState(false);
+
+  const handleDrawerToggle = () => {
+    setOpen(!open);
+  };
 
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
 
@@ -95,54 +109,114 @@ const Navbar = () => {
         >
           <CustomButton
             buttonType='text'
-            onClick={() => {
-              window.scrollTo({
-                top: 0,
-                behavior: 'smooth',
-              });
+            onClick={handleDrawerToggle}
+            sx={{
+              display: 'none',
+
+              '@media (max-width: 960px)': {
+                display: 'flex',
+                alignItems: 'center',
+              },
             }}
-            sx={authLinks}
           >
-            User Management
+            {!open ? (
+              <MenuIcon sx={{ fontSize: '30px', transform: 'scaleY(1.2)' }} />
+            ) : (
+              <CloseIcon sx={{ fontSize: '30px' }} />
+            )}
           </CustomButton>
-          <CustomButton
-            buttonType='text'
-            onClick={() => {
-              window.scrollTo({
-                top: 0,
-                behavior: 'smooth',
-              });
+
+          <Box
+            sx={{
+              display: 'block',
+
+              '@media (max-width: 960px)': {
+                display: 'none',
+              },
             }}
-            sx={authLinks}
           >
-            Content Generation
-          </CustomButton>
-          <CustomButton
-            buttonType='text'
-            onClick={() => {
-              window.scrollTo({
-                top: 0,
-                behavior: 'smooth',
-              });
-            }}
-            sx={authLinks}
-          >
-            Session Reviews
-          </CustomButton>
-          <CustomButton
-            buttonType='text'
-            onClick={() => {
-              window.scrollTo({
-                top: 0,
-                behavior: 'smooth',
-              });
-            }}
-            sx={authLinks}
-          >
-            Rewards Management
-          </CustomButton>
+            <CustomButton
+              buttonType='text'
+              onClick={() => {
+                window.scrollTo({
+                  top: 0,
+                  behavior: 'smooth',
+                });
+              }}
+              sx={authLinks}
+            >
+              User Management
+            </CustomButton>
+            <CustomButton
+              buttonType='text'
+              onClick={() => {
+                window.scrollTo({
+                  top: 0,
+                  behavior: 'smooth',
+                });
+              }}
+              sx={authLinks}
+            >
+              Content Generation
+            </CustomButton>
+            <CustomButton
+              buttonType='text'
+              onClick={() => {
+                window.scrollTo({
+                  top: 0,
+                  behavior: 'smooth',
+                });
+              }}
+              sx={authLinks}
+            >
+              Session Reviews
+            </CustomButton>
+            <CustomButton
+              buttonType='text'
+              onClick={() => {
+                window.scrollTo({
+                  top: 0,
+                  behavior: 'smooth',
+                });
+              }}
+              sx={authLinks}
+            >
+              Rewards Management
+            </CustomButton>
+          </Box>
         </Box>
       )}
+
+      <Drawer anchor='right' open={open} onClose={handleDrawerToggle}>
+        <Box
+          sx={{
+            pt: '104px',
+            width: 300,
+            '@media (max-width: 768px)': {
+              width: 280,
+            },
+            '@media (max-width: 640px)': {
+              width: '100vw',
+              pt: '90px',
+            },
+          }}
+        >
+          <List>
+            <ListItem component='div'>
+              <ListItemText primary='User Management' />
+            </ListItem>
+            <ListItem component='div'>
+              <ListItemText primary='Content Generation' />
+            </ListItem>
+            <ListItem component='div'>
+              <ListItemText primary='Session Reviews' />
+            </ListItem>
+            <ListItem component='div'>
+              <ListItemText primary='Rewards Management' />
+            </ListItem>
+          </List>
+        </Box>
+      </Drawer>
     </Box>
   );
 };
