@@ -1,0 +1,22 @@
+import { z } from 'zod';
+
+export const loginSchema = z.object({
+  email: z.string().email('Invalid email format').min(1, 'Email is required'),
+  password: z.string().min(6, 'Password must be at least 6 characters'),
+});
+
+export const registerSchema = z
+  .object({
+    first_name: z.string().min(2, 'First name must be at least 2 characters'),
+    last_name: z.string().min(2, 'Last name must be at least 2 characters'),
+    email: z.string().email('Invalid email format').min(1, 'Email is required'),
+    password: z.string().min(6, 'Password must be at least 6 characters'),
+    confirm_password: z.string().min(6, 'Confirm password must match'),
+  })
+  .refine((data) => data.password === data.confirm_password, {
+    message: 'Passwords do not match',
+    path: ['confirm_password'],
+  });
+
+export type LoginFormInputs = z.infer<typeof loginSchema>;
+export type RegisterFormInputs = z.infer<typeof registerSchema>;
