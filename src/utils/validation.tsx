@@ -38,8 +38,22 @@ export const adminParentSchema = z.object({
   password: z.string().min(6, 'Password must be at least 6 characters'),
 });
 
+export const newTopicSchema = z.object({
+  title: z.string().min(3, 'Title must be at least 3 characters'),
+  description: z.string().min(10, 'Description must be at least 10 characters'),
+  file: z
+    .instanceof(File, { message: 'Image is required' })
+    .refine(
+      (file) => ['image/jpeg', 'image/png', 'image/gif'].includes(file.type),
+      {
+        message: 'Only .jpg, .jpeg, .png, or .gif formats are allowed',
+      }
+    ),
+});
+
 export type LoginFormInputs = z.infer<typeof loginSchema>;
 export type RegisterFormInputs = z.infer<typeof registerSchema>;
 export type ResetPasswordFormInputs = z.infer<typeof resetPasswordSchema>;
 export type ChangePasswordFormInputs = z.infer<typeof changePasswordSchema>;
 export type AdminParentFormInputs = z.infer<typeof adminParentSchema>;
+export type NewTopicFormInputs = z.infer<typeof newTopicSchema>;

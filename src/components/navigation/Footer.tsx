@@ -1,6 +1,9 @@
 import { Box, Typography } from '@mui/material';
+import useAuthStore from '../../store/auth-store';
 
 const Footer = () => {
+  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
+
   return (
     <Box
       sx={(theme) => ({
@@ -23,7 +26,9 @@ const Footer = () => {
           },
         }}
       >
-        &copy; EjuQuest - 2025
+        {!isAuthenticated
+          ? '© EjuQuest - 2025'
+          : '© 2025 User Management App. All rights reserved.'}
       </Typography>
     </Box>
   );
