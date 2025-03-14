@@ -1,25 +1,26 @@
-import { useNavigate } from 'react-router-dom';
+// import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
-import { Box, Typography, Link } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import CustomInput from '../components/common/CustomInput';
 import BottomMaskImg from '../assets/images/bottom-mask.png';
 import CustomButton from '../components/common/CustomButton';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { loginSchema, LoginFormInputs } from '../utils/validation';
+import { adminParentSchema, AdminParentFormInputs } from '../utils/validation';
+import BackCircle from '../components/common/BackCircle';
 import chevronRightIcon from '../assets/icons/chevron-right.png';
 
-const Login = () => {
-  const navigate = useNavigate();
+const AdminParent = () => {
+  //   const navigate = useNavigate();
 
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<LoginFormInputs>({
-    resolver: zodResolver(loginSchema),
+  } = useForm<AdminParentFormInputs>({
+    resolver: zodResolver(adminParentSchema),
   });
 
-  const onSubmit = (data: LoginFormInputs) => {
+  const onSubmit = (data: AdminParentFormInputs) => {
     console.log('Form submitted:', data);
   };
 
@@ -45,6 +46,7 @@ const Login = () => {
           px: 12,
           py: 6,
           mx: 2,
+          position: 'relative',
 
           '@media (max-width: 640px)': {
             px: 6,
@@ -56,18 +58,6 @@ const Login = () => {
           },
         }}
       >
-        <Typography
-          sx={{
-            textAlign: 'center',
-            fontSize: '40px',
-            fontFamily: 'Times New Roman, Times, serif',
-            fontWeight: 400,
-            mb: 4,
-          }}
-        >
-          EjuQuest
-        </Typography>
-
         <Box
           component='form'
           sx={{
@@ -80,8 +70,15 @@ const Login = () => {
           }}
           onSubmit={handleSubmit(onSubmit)}
         >
-          <Typography sx={{ fontSize: '30px', fontWeight: 600, mb: 3 }}>
-            Sign In
+          <Typography
+            sx={{
+              fontSize: '40px',
+              fontWeight: 400,
+              mb: 3,
+              textAlign: 'center',
+            }}
+          >
+            Add Children
           </Typography>
 
           <Box
@@ -89,9 +86,22 @@ const Login = () => {
               display: 'flex',
               flexDirection: 'column',
               gap: '20px',
-              mb: 3,
+              mb: 6,
             }}
           >
+            <Box>
+              <CustomInput
+                placeholder='john'
+                label='first name'
+                {...register('first_name')}
+              />
+              {errors.first_name && (
+                <Typography sx={{ color: 'red', fontSize: '12px', mt: 1 }}>
+                  {errors.first_name.message}
+                </Typography>
+              )}
+            </Box>
+
             <Box>
               <CustomInput
                 placeholder='johndoe@email.com'
@@ -113,29 +123,11 @@ const Login = () => {
                 label='password'
                 {...register('password')}
               />
-              <Box
-                sx={{
-                  display: 'flex',
-                  justifyContent: errors.password ? 'space-between' : 'end',
-                  mt: 1,
-                }}
-              >
-                {errors.password && (
-                  <Typography sx={{ color: 'red', fontSize: '12px' }}>
-                    {errors.password.message}
-                  </Typography>
-                )}
-                <Link
-                  onClick={() => navigate('/reset-password')}
-                  sx={(theme) => ({
-                    fontSize: '12px',
-                    color: theme.palette.text.steelGray,
-                    cursor: 'pointer',
-                  })}
-                >
-                  Forgot your password?
-                </Link>
-              </Box>
+              {errors.password && (
+                <Typography sx={{ color: 'red', fontSize: '12px', mt: 1 }}>
+                  {errors.password.message}
+                </Typography>
+              )}
             </Box>
           </Box>
 
@@ -152,7 +144,7 @@ const Login = () => {
               py: '14px',
             }}
           >
-            Sign In{' '}
+            Access Grant{' '}
             <Box
               component='img'
               src={chevronRightIcon}
@@ -160,58 +152,9 @@ const Login = () => {
               sx={{ height: '12px' }}
             />
           </CustomButton>
-
-          <Typography
-            sx={(theme) => ({
-              fontSize: '12px',
-              fontWeight: 400,
-              color: theme.palette.text.steelGray,
-              mt: 1,
-            })}
-          >
-            By Signing up to Chainpage, means you agree to our{' '}
-            <Link
-              sx={(theme) => ({
-                cursor: 'pointer',
-                color: theme.palette.text.steelGray,
-                textDecoration: 'underline',
-              })}
-            >
-              Privacy Policy
-            </Link>{' '}
-            and{' '}
-            <Link
-              sx={(theme) => ({
-                cursor: 'pointer',
-                color: theme.palette.text.steelGray,
-                textDecoration: 'underline',
-              })}
-            >
-              Terms of Service
-            </Link>
-          </Typography>
-
-          <Typography
-            sx={(theme) => ({
-              color: theme.palette.text.darkGray,
-              textAlign: 'center',
-              mt: 4,
-            })}
-          >
-            Don't you have an account?{' '}
-            <Link
-              onClick={() => navigate('/sign-up')}
-              sx={{
-                textDecoration: 'underline',
-                color: 'white',
-                fontWeight: 900,
-                cursor: 'pointer',
-              }}
-            >
-              Sign Up
-            </Link>
-          </Typography>
         </Box>
+
+        <BackCircle redirect={-1} />
       </Box>
 
       <Box
@@ -230,4 +173,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default AdminParent;

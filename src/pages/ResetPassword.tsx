@@ -5,21 +5,24 @@ import CustomInput from '../components/common/CustomInput';
 import BottomMaskImg from '../assets/images/bottom-mask.png';
 import CustomButton from '../components/common/CustomButton';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { loginSchema, LoginFormInputs } from '../utils/validation';
+import {
+  resetPasswordSchema,
+  ResetPasswordFormInputs,
+} from '../utils/validation';
 import chevronRightIcon from '../assets/icons/chevron-right.png';
 
-const Login = () => {
+const ResetPassword = () => {
   const navigate = useNavigate();
 
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<LoginFormInputs>({
-    resolver: zodResolver(loginSchema),
+  } = useForm<ResetPasswordFormInputs>({
+    resolver: zodResolver(resetPasswordSchema),
   });
 
-  const onSubmit = (data: LoginFormInputs) => {
+  const onSubmit = (data: ResetPasswordFormInputs) => {
     console.log('Form submitted:', data);
   };
 
@@ -81,7 +84,19 @@ const Login = () => {
           onSubmit={handleSubmit(onSubmit)}
         >
           <Typography sx={{ fontSize: '30px', fontWeight: 600, mb: 3 }}>
-            Sign In
+            Reset Your Password
+          </Typography>
+
+          <Typography
+            sx={(theme) => ({
+              fontSize: '14px',
+              fontWeight: 400,
+              mb: 5,
+              color: theme.palette.text.softGray,
+              opacity: 0.5,
+            })}
+          >
+            Type in your registered email address to reset password
           </Typography>
 
           <Box
@@ -105,38 +120,6 @@ const Login = () => {
                 </Typography>
               )}
             </Box>
-
-            <Box>
-              <CustomInput
-                type='password'
-                placeholder='•••••••••••••••••••'
-                label='password'
-                {...register('password')}
-              />
-              <Box
-                sx={{
-                  display: 'flex',
-                  justifyContent: errors.password ? 'space-between' : 'end',
-                  mt: 1,
-                }}
-              >
-                {errors.password && (
-                  <Typography sx={{ color: 'red', fontSize: '12px' }}>
-                    {errors.password.message}
-                  </Typography>
-                )}
-                <Link
-                  onClick={() => navigate('/reset-password')}
-                  sx={(theme) => ({
-                    fontSize: '12px',
-                    color: theme.palette.text.steelGray,
-                    cursor: 'pointer',
-                  })}
-                >
-                  Forgot your password?
-                </Link>
-              </Box>
-            </Box>
           </Box>
 
           <CustomButton
@@ -152,7 +135,7 @@ const Login = () => {
               py: '14px',
             }}
           >
-            Sign In{' '}
+            Next{' '}
             <Box
               component='img'
               src={chevronRightIcon}
@@ -163,44 +146,14 @@ const Login = () => {
 
           <Typography
             sx={(theme) => ({
-              fontSize: '12px',
-              fontWeight: 400,
-              color: theme.palette.text.steelGray,
-              mt: 1,
-            })}
-          >
-            By Signing up to Chainpage, means you agree to our{' '}
-            <Link
-              sx={(theme) => ({
-                cursor: 'pointer',
-                color: theme.palette.text.steelGray,
-                textDecoration: 'underline',
-              })}
-            >
-              Privacy Policy
-            </Link>{' '}
-            and{' '}
-            <Link
-              sx={(theme) => ({
-                cursor: 'pointer',
-                color: theme.palette.text.steelGray,
-                textDecoration: 'underline',
-              })}
-            >
-              Terms of Service
-            </Link>
-          </Typography>
-
-          <Typography
-            sx={(theme) => ({
               color: theme.palette.text.darkGray,
               textAlign: 'center',
               mt: 4,
             })}
           >
-            Don't you have an account?{' '}
+            Back to{' '}
             <Link
-              onClick={() => navigate('/sign-up')}
+              onClick={() => navigate('/sign-in')}
               sx={{
                 textDecoration: 'underline',
                 color: 'white',
@@ -208,7 +161,7 @@ const Login = () => {
                 cursor: 'pointer',
               }}
             >
-              Sign Up
+              LOG IN
             </Link>
           </Typography>
         </Box>
@@ -230,4 +183,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default ResetPassword;
