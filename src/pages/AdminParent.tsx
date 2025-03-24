@@ -1,174 +1,133 @@
-// import { useNavigate } from 'react-router-dom';
-import { useForm } from 'react-hook-form';
 import { Box, Typography } from '@mui/material';
-import CustomInput from '../components/common/CustomInput';
-import BottomMaskImg from '../assets/images/bottom-mask.png';
-import CustomButton from '../components/common/CustomButton';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { adminParentSchema, AdminParentFormInputs } from '../utils/validation';
-import BackCircle from '../components/common/BackCircle';
-import chevronRightIcon from '../assets/icons/chevron-right.png';
+import AdminHeader from '../components/admin-parent/AdminHeader';
+import UserDashboard from '../components/admin-parent/UserDashboard';
+import RecentUserItem from '../components/admin-parent/RecentUserItem';
+import SessionReviewsItem from '../components/admin-parent/SessionReviewsItem';
+import { recentUsersData, sessionReviewsData } from '../../mockData';
 
 const AdminParent = () => {
-  //   const navigate = useNavigate();
-
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<AdminParentFormInputs>({
-    resolver: zodResolver(adminParentSchema),
-  });
-
-  const onSubmit = (data: AdminParentFormInputs) => {
-    console.log('Form submitted:', data);
-  };
-
   return (
-    <Box
-      sx={{
-        backgroundColor: 'black',
-        color: 'white',
-        minHeight: '100vh',
-        position: 'relative',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        zIndex: 100,
-        py: 6,
-      }}
-    >
+    <Box>
+      <AdminHeader />
+
       <Box
         sx={{
-          backgroundColor: 'rgba(89, 89, 89, 0.2)',
-          border: '2px solid rgba(141, 141, 141, 0.2)',
-          borderRadius: '24px',
           px: 12,
-          py: 6,
-          mx: 2,
-          position: 'relative',
-
-          '@media (max-width: 640px)': {
-            px: 6,
-            width: '100%',
+          py: 8,
+          '@media (max-width: 1280px)': {
+            px: 8,
+            py: 6,
           },
-          '@media (max-width: 480px)': {
-            px: 2,
-            mx: 1,
+          '@media (max-width: 768px)': {
+            px: 6,
+            py: 5,
+          },
+          '@media (max-width: 640px)': {
+            p: 2,
           },
         }}
       >
-        <Box
-          component='form'
-          sx={{
-            width: '440px',
-            mx: 'auto',
-
-            '@media (max-width: 640px)': {
-              width: '100%',
-            },
-          }}
-          onSubmit={handleSubmit(onSubmit)}
-        >
-          <Typography
-            sx={{
-              fontSize: '40px',
-              fontWeight: 400,
-              mb: 3,
-              textAlign: 'center',
-            }}
-          >
-            Add Children
-          </Typography>
-
-          <Box
-            sx={{
-              display: 'flex',
-              flexDirection: 'column',
-              gap: '20px',
-              mb: 6,
-            }}
-          >
-            <Box>
-              <CustomInput
-                placeholder='john'
-                label='first name'
-                {...register('first_name')}
-              />
-              {errors.first_name && (
-                <Typography sx={{ color: 'red', fontSize: '12px', mt: 1 }}>
-                  {errors.first_name.message}
-                </Typography>
-              )}
-            </Box>
-
-            <Box>
-              <CustomInput
-                placeholder='johndoe@email.com'
-                label='email'
-                type='email'
-                {...register('email')}
-              />
-              {errors.email && (
-                <Typography sx={{ color: 'red', fontSize: '12px', mt: 1 }}>
-                  {errors.email.message}
-                </Typography>
-              )}
-            </Box>
-
-            <Box>
-              <CustomInput
-                type='password'
-                placeholder='•••••••••••••••••••'
-                label='password'
-                {...register('password')}
-              />
-              {errors.password && (
-                <Typography sx={{ color: 'red', fontSize: '12px', mt: 1 }}>
-                  {errors.password.message}
-                </Typography>
-              )}
-            </Box>
-          </Box>
-
-          <CustomButton
-            type='submit'
-            sx={{
-              width: '100%',
-              fontSize: '16px',
-              fontWeight: 700,
-              display: 'flex',
-              alignItems: 'center',
-              gap: '14px',
-              borderRadius: '100px',
-              py: '14px',
-            }}
-          >
-            Access Grant{' '}
-            <Box
-              component='img'
-              src={chevronRightIcon}
-              alt='Chevron right icon'
-              sx={{ height: '12px' }}
-            />
-          </CustomButton>
-        </Box>
-
-        <BackCircle redirect={-1} />
+        <UserDashboard />
       </Box>
 
       <Box
-        component='img'
-        src={BottomMaskImg}
-        alt='Bottom Mask'
         sx={{
-          position: 'absolute',
-          bottom: 0,
-          left: 0,
-          width: '100%',
-          zIndex: -50,
+          my: 10,
+          '@media (max-width: 768px)': {
+            my: 5,
+          },
         }}
-      />
+      >
+        <Typography
+          sx={{ fontSize: '40px', fontWeight: 700, textAlign: 'center', mb: 5 }}
+        >
+          Recent Users
+        </Typography>
+        <Box
+          sx={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(3, 1fr)',
+            gap: 3,
+            justifyContent: 'center',
+            justifyItems: 'center',
+            mx: 'auto',
+            maxWidth: '1620px',
+
+            '@media (max-width: 1440px)': {
+              width: '90%',
+              mx: 'auto',
+            },
+
+            '@media (max-width: 900px)': {
+              justifyContent: 'center',
+              justifyItems: 'center',
+              gridTemplateColumns: 'repeat(2, 1fr)',
+              mx: 'auto',
+              width: '600px',
+            },
+
+            '@media (max-width: 680px)': {
+              gridTemplateColumns: 'repeat(1, 1fr)',
+              width: '100%',
+            },
+          }}
+        >
+          {recentUsersData.map((user, index) => (
+            <RecentUserItem
+              key={index}
+              image={user.image}
+              first_name={user.first_name}
+              last_name={user.last_name}
+              role={user.role}
+            />
+          ))}
+        </Box>
+      </Box>
+
+      <Box
+        sx={{
+          my: 16,
+          '@media (max-width: 768px)': {
+            my: 8,
+          },
+        }}
+      >
+        <Typography
+          sx={{ fontSize: '40px', fontWeight: 700, textAlign: 'center', mb: 5 }}
+        >
+          Session Reviews
+        </Typography>
+
+        <Box
+          sx={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(2, 1fr)',
+            justifyContent: 'center',
+            justifyItems: 'center',
+            maxWidth: '1120px',
+            width: '100%',
+            mx: 'auto',
+            px: 2,
+            columnGap: 3,
+            rowGap: '24px',
+
+            '@media (max-width: 900px)': {
+              gridTemplateColumns: 'repeat(1, 1fr)',
+            },
+          }}
+        >
+          {sessionReviewsData.map((review, index) => (
+            <SessionReviewsItem
+              key={index}
+              image={review.image}
+              title={review.title}
+              description={review.description}
+              status={review.status}
+              role={review.role}
+            />
+          ))}
+        </Box>
+      </Box>
     </Box>
   );
 };

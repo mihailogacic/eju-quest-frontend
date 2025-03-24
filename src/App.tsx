@@ -11,9 +11,12 @@ import Register from './pages/Register';
 import ResetPassword from './pages/ResetPassword';
 import ChangePassword from './pages/ChangePassword';
 import PasswordChanged from './pages/PasswordChanged';
-import AdminParent from './pages/AdminParent';
+import AddChildren from './pages/AddChildren';
 import UserProfile from './pages/UserProfile';
-import NewTopic from './pages/NewTopic';
+import AdminParent from './pages/AdminParent';
+import ContentReviewDetail from './pages/ContentReviewDetail';
+import ContentReviews from './pages/ContentReviews';
+import ExploreTopics from './pages/ExploreTopics';
 
 const App = () => {
   return (
@@ -40,7 +43,7 @@ const App = () => {
           <Route path='/reset-password' element={<ResetPassword />} />
           <Route path='/reset-password/uid' element={<ChangePassword />} />
           <Route path='/reset-password/success' element={<PasswordChanged />} />
-          <Route path='/admin' element={<AdminParent />} />
+          <Route path='/add-children' element={<AddChildren />} />
 
           <Route
             path='/'
@@ -63,11 +66,41 @@ const App = () => {
             }
           />
           <Route
-            path='/new-topic'
+            path='/admin'
             element={
               <ProtectedRoute>
                 <Layout>
-                  <NewTopic />
+                  <AdminParent />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path='/reviews/detail'
+            element={
+              <ProtectedRoute>
+                <Layout>
+                  <ContentReviewDetail />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path='/reviews'
+            element={
+              <ProtectedRoute>
+                <Layout>
+                  <ContentReviews />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path='/explore-topics'
+            element={
+              <ProtectedRoute>
+                <Layout>
+                  <ExploreTopics />
                 </Layout>
               </ProtectedRoute>
             }
