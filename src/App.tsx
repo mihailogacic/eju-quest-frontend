@@ -14,6 +14,7 @@ import PasswordChanged from './pages/PasswordChanged';
 import AddChildren from './pages/AddChildren';
 import UserProfile from './pages/UserProfile';
 import AdminParent from './pages/AdminParent';
+import ContentReviewDetail from './pages/ContentReviewDetail';
 
 const App = () => {
   return (
@@ -68,6 +69,16 @@ const App = () => {
               <ProtectedRoute>
                 <Layout>
                   <AdminParent />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path='/reviews/detail'
+            element={
+              <ProtectedRoute>
+                <Layout>
+                  <ContentReviewDetail />
                 </Layout>
               </ProtectedRoute>
             }

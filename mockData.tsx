@@ -1,5 +1,6 @@
 import profileIcon from './src/assets/icons/profile-icon.png';
 import sessionPlaceholder from './src/assets/images/session-placeholder.png';
+import reviewPlaceholder from './src/assets/images/review-placeholder.png';
 
 export const recentUsersData = [
   {
@@ -38,3 +39,23 @@ export const sessionReviewsData = [
     role: 'Editor',
   },
 ];
+
+export const contentReviewDetailData = {
+  image: reviewPlaceholder,
+  title: 'Maths - for Standard 3 Students | Episode 2',
+  lesson_number: 49,
+  completion_time: '1 Month',
+  students: '12,000+',
+  course_details:
+    'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Quis ipsum suspendisse ultrices gravida. Risus commodo viverra maecenas accumsan lacus vel facilisis consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Quis ipsum suspendisse ultrices gravida. Risus commodo viverra maecenas accumsan.',
+  certification:
+    'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Quis ipsum suspendisse ultrices gravida. Risus commodo viverra maecenas accumsan lacus vel facilisis consectetur adipiscing elit.',
+  course_for:
+    'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Quis ipsum suspendisse ultrices gravida. Risus commodo viverra maecenas accumsan lacus vel facilisis consectetur adipiscing elit.',
+  what_you_learn: [
+    'Lorem ipsum dolor sit amet, consectetur adipiscing elit',
+    'Lorem ipsum dolor sit amet, consectetur adipiscing elit',
+    'Lorem ipsum dolor sit amet, consectetur adipiscing elit',
+    'Lorem ipsum dolor sit amet, consectetur adipiscing elit',
+  ],
+};
