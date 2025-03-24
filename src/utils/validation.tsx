@@ -45,9 +45,16 @@ export const lessonSummarySchema = z.object({
     .nonempty('Summary is required'),
 });
 
+export const topicDetailsSchema = z.object({
+  topic_name: z.string().min(2, 'Topic name is required'),
+  age_level: z.string().min(1, 'Age level is required'),
+  lesson_length: z.string().min(1, 'Lesson length is required'),
+});
+
 export type LoginFormInputs = z.infer<typeof loginSchema>;
 export type RegisterFormInputs = z.infer<typeof registerSchema>;
 export type ResetPasswordFormInputs = z.infer<typeof resetPasswordSchema>;
 export type ChangePasswordFormInputs = z.infer<typeof changePasswordSchema>;
 export type AddChildrenFormInputs = z.infer<typeof addChildrenSchema>;
 export type LessonSummaryInputs = z.infer<typeof lessonSummarySchema>;
+export type TopicDetailsInputs = z.infer<typeof topicDetailsSchema>;

@@ -13,11 +13,11 @@ import { styled } from '@mui/system';
 const StyledTextField = styled(TextField, {
   shouldForwardProp: (prop) => prop !== 'haslabel',
 })<{ haslabel?: boolean }>(({ theme, haslabel }) => ({
-  backgroundColor: 'inherit',
+  backgroundColor: theme.palette.text.secondary,
   borderRadius: '8px',
 
   '& .MuiOutlinedInput-root': {
-    backgroundColor: theme.palette.text.secondary,
+    backgroundColor: 'inherit',
     padding: haslabel ? '24px 14px 10px' : undefined,
     borderRadius: 'inherit',
     '& fieldset': {
@@ -104,6 +104,7 @@ const CustomInput = ({
         variant='outlined'
         fullWidth
         haslabel={hasLabel}
+        sx={props.sx}
         slotProps={{
           input: {
             startAdornment: startIcon ? (

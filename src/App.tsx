@@ -19,6 +19,7 @@ import ContentReviews from './pages/ContentReviews';
 import ExploreTopics from './pages/ExploreTopics';
 import LessonDisplay from './pages/LessonDisplay';
 import LessonSummary from './pages/LessonSummary';
+import AddTopic from './pages/AddTopic';
 
 const App = () => {
   return (
@@ -123,6 +124,16 @@ const App = () => {
               <ProtectedRoute>
                 <Layout>
                   <LessonSummary />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path='/add-topic'
+            element={
+              <ProtectedRoute>
+                <Layout>
+                  <AddTopic />
                 </Layout>
               </ProtectedRoute>
             }
