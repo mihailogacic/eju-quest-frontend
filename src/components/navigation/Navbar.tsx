@@ -63,8 +63,12 @@ const Navbar = () => {
         component='img'
         src={logo}
         alt='Eju Quest Logo'
+        onClick={
+          isAuthenticated ? () => navigate('/admin') : () => navigate('/')
+        }
         sx={{
           width: '140px',
+          cursor: 'pointer',
           '@media (max-width: 440px)': { transform: 'scale(0.9)' },
           '@media (max-width: 340px)': { transform: 'scale(0.8)' },
         }}

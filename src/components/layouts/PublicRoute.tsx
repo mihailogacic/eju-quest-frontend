@@ -10,7 +10,7 @@ const PublicRoute: React.FC<PublicRouteProps> = ({ children }) => {
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
 
   if (isAuthenticated) {
-    return <Navigate to='/user-profile' />;
+    return <Navigate to='/admin' />;
   }
 
   return children;
