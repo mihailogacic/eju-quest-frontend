@@ -1,6 +1,9 @@
 import profileIcon from './src/assets/icons/profile-icon.png';
 import sessionPlaceholder from './src/assets/images/session-placeholder.png';
 import reviewPlaceholder from './src/assets/images/review-placeholder.png';
+import coursePlaceholder from './src/assets/images/course-placeholder.png';
+import recentActivityPlaceholder from './src/assets/images/recent-activity-placeholder.png';
+import profilePlaceholder from './src/assets/images/profile-placeholder.png';
 
 export const recentUsersData = [
   {
@@ -106,5 +109,51 @@ export const reviewsData = [
     status: 'Pending',
     role: 'Editor',
     hasEdit: true,
+  },
+];
+
+export const courseData = [
+  {
+    image: coursePlaceholder,
+    name: 'Course 1',
+    description:
+      'There are many variations of passages of Lorem Ipsum available, but the majority have suffered .',
+  },
+  {
+    image: coursePlaceholder,
+    name: 'Course 2',
+    description:
+      'There are many variations of passages of Lorem Ipsum available, but the majority have suffered .',
+  },
+  {
+    image: coursePlaceholder,
+    name: 'Course 3',
+    description:
+      'There are many variations of passages of Lorem Ipsum available, but the majority have suffered .',
+  },
+  {
+    image: coursePlaceholder,
+    name: 'Course 4',
+    description:
+      'There are many variations of passages of Lorem Ipsum available, but the majority have suffered .',
+  },
+];
+
+export const recentActivityData = [
+  {
+    profile_picture: profilePlaceholder,
+    first_name: 'Swift',
+    last_name: 'Smith',
+    image: recentActivityPlaceholder,
+    title: 'Excited to start a new topic!',
+    hashtags: ['learning'],
+  },
+  {
+    profile_picture: profilePlaceholder,
+    first_name: 'Swift',
+    last_name: 'Smith',
+    image: recentActivityPlaceholder,
+    title: 'Excited to start a new topic!',
+    hashtags: ['learning'],
   },
 ];

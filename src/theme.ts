@@ -17,6 +17,7 @@ declare module '@mui/material/styles' {
     midnightBlue: string;
     charcoalBlack: string;
     mediumGray: string;
+    slateBlack: string;
   }
 
   interface Palette {
@@ -56,6 +57,7 @@ const theme = createTheme({
       midnightBlue: '#191F33',
       charcoalBlack: '#212121',
       mediumGray: '#999999',
+      slateBlack: '#131313',
     },
     border: {
       midGray: '#8D8D8D',

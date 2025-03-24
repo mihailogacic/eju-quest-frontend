@@ -12,19 +12,32 @@ const AdminParent = () => {
 
       <Box
         sx={{
-          my: 5,
-          mx: 'auto',
-          width: '85%',
-          maxWidth: '1224px',
-          '@media (max-width: 1080px)': {
-            width: '90%',
+          px: 12,
+          py: 8,
+          '@media (max-width: 1280px)': {
+            px: 8,
+            py: 6,
+          },
+          '@media (max-width: 768px)': {
+            px: 6,
+            py: 5,
+          },
+          '@media (max-width: 640px)': {
+            p: 2,
           },
         }}
       >
         <UserDashboard />
       </Box>
 
-      <Box sx={{ my: 10 }}>
+      <Box
+        sx={{
+          my: 10,
+          '@media (max-width: 768px)': {
+            my: 5,
+          },
+        }}
+      >
         <Typography
           sx={{ fontSize: '40px', fontWeight: 700, textAlign: 'center', mb: 5 }}
         >
@@ -37,10 +50,10 @@ const AdminParent = () => {
             gap: 3,
             justifyContent: 'center',
             justifyItems: 'center',
-            width: '1200px',
             mx: 'auto',
+            maxWidth: '1620px',
 
-            '@media (max-width: 1439px)': {
+            '@media (max-width: 1440px)': {
               width: '90%',
               mx: 'auto',
             },
@@ -71,7 +84,14 @@ const AdminParent = () => {
         </Box>
       </Box>
 
-      <Box sx={{ my: 16 }}>
+      <Box
+        sx={{
+          my: 16,
+          '@media (max-width: 768px)': {
+            my: 8,
+          },
+        }}
+      >
         <Typography
           sx={{ fontSize: '40px', fontWeight: 700, textAlign: 'center', mb: 5 }}
         >
@@ -88,8 +108,8 @@ const AdminParent = () => {
             width: '100%',
             mx: 'auto',
             px: 2,
-            columnGap: 2,
-            rowGap: '20px',
+            columnGap: 3,
+            rowGap: '24px',
 
             '@media (max-width: 900px)': {
               gridTemplateColumns: 'repeat(1, 1fr)',
