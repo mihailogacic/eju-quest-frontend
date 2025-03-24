@@ -3,6 +3,7 @@ import CustomButton from '../components/common/CustomButton';
 import profilePlaceholder from '../assets/images/profile-placeholder.png';
 import starImg from '../assets/images/star.png';
 import hourglassImg from '../assets/images/hourglass.png';
+import BackCircle from '../components/common/BackCircle';
 
 const UserProfile = () => {
   return (
@@ -25,9 +26,13 @@ const UserProfile = () => {
           border: `2px solid ${theme.palette.text.midGray}`,
           borderRadius: '24px',
           py: 8,
-          px: 12,
+          px: 20,
           mx: 2,
+          position: 'relative',
 
+          '@media (max-width: 900px)': {
+            px: 12,
+          },
           '@media (max-width: 700px)': {
             width: '100%',
             px: 4,
@@ -35,7 +40,7 @@ const UserProfile = () => {
 
           '@media (max-width: 470px)': {
             px: 2,
-            py: 6,
+            py: 7,
           },
 
           '@media (max-width: 440px)': {
@@ -64,13 +69,25 @@ const UserProfile = () => {
               '@media (max-width: 520px)': {
                 gap: 3,
               },
+
+              '@media (max-width: 370px)': {
+                gap: '12px',
+              },
             }}
           >
             <Box
               component='img'
               src={profilePlaceholder}
               alt='profile picture'
-              sx={{ width: '100px', height: '100px', borderRadius: '50%' }}
+              sx={{
+                width: '100px',
+                height: '100px',
+                borderRadius: '50%',
+                '@media (max-width: 640px)': {
+                  width: '90px',
+                  height: '90px',
+                },
+              }}
             />
             <Box
               sx={{
@@ -151,9 +168,19 @@ const UserProfile = () => {
                   borderRadius: '50%',
                   mx: 'auto',
                   mb: 2,
+
+                  '@media (max-width: 640px)': {
+                    width: '90px',
+                    height: '90px',
+                  },
                 }}
               >
-                <Box component='img' src={starImg} alt='star image' />
+                <Box
+                  component='img'
+                  src={starImg}
+                  alt='star image'
+                  sx={{ width: '60px', height: '60px' }}
+                />
               </Box>
 
               <Typography
@@ -190,9 +217,19 @@ const UserProfile = () => {
                   borderRadius: '50%',
                   mx: 'auto',
                   mb: 2,
+
+                  '@media (max-width: 640px)': {
+                    width: '90px',
+                    height: '90px',
+                  },
                 }}
               >
-                <Box component='img' src={hourglassImg} alt='hourglass image' />
+                <Box
+                  component='img'
+                  src={hourglassImg}
+                  alt='hourglass image'
+                  sx={{ width: '60px', height: '60px' }}
+                />
               </Box>
 
               <Typography
@@ -218,6 +255,21 @@ const UserProfile = () => {
             </Box>
           </Box>
         </Box>
+        <BackCircle
+          redirect={-1}
+          sx={{
+            '@media (max-width: 700px)': {
+              top: 16,
+              left: 16,
+              width: '36px',
+              height: '36px',
+            },
+            '@media (max-width: 470px)': {
+              top: 12,
+              left: 12,
+            },
+          }}
+        />
       </Box>
     </Box>
   );

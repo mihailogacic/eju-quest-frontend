@@ -17,6 +17,7 @@ import AdminParent from './pages/AdminParent';
 import ContentReviewDetail from './pages/ContentReviewDetail';
 import ContentReviews from './pages/ContentReviews';
 import ExploreTopics from './pages/ExploreTopics';
+import LessonDisplay from './pages/LessonDisplay';
 
 const App = () => {
   return (
@@ -101,6 +102,16 @@ const App = () => {
               <ProtectedRoute>
                 <Layout>
                   <ExploreTopics />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path='/lesson'
+            element={
+              <ProtectedRoute>
+                <Layout>
+                  <LessonDisplay />
                 </Layout>
               </ProtectedRoute>
             }
