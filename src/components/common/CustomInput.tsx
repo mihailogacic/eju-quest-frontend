@@ -10,13 +10,16 @@ import {
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { styled } from '@mui/system';
 
-const StyledTextField = styled(TextField)(({ theme }) => ({
-  backgroundColor: theme.palette.text.softGray,
+const StyledTextField = styled(TextField, {
+  shouldForwardProp: (prop) => prop !== 'haslabel',
+})<{ haslabel?: boolean }>(({ theme, haslabel }) => ({
+  backgroundColor: 'inherit',
   borderRadius: '8px',
 
   '& .MuiOutlinedInput-root': {
     backgroundColor: theme.palette.text.secondary,
-    padding: '24px 14px 10px',
+    padding: haslabel ? '24px 14px 10px' : undefined,
+    borderRadius: 'inherit',
     '& fieldset': {
       border: 'none',
     },
@@ -24,7 +27,7 @@ const StyledTextField = styled(TextField)(({ theme }) => ({
   '& .MuiInputBase-input': {
     color: 'white',
     fontSize: '16px',
-    padding: '12px 0px 4px 0px',
+    padding: haslabel ? '12px 0px 4px 0px' : '10px 16px',
   },
   '& .MuiInputBase-input::placeholder': {
     color: theme.palette.text.darkGray,
@@ -60,12 +63,14 @@ const OutlinedTextField = styled(TextField)(({ theme }) => ({
 type CustomInputProps = TextFieldProps & {
   label?: string;
   variantType?: 'default' | 'outlined';
+  startIcon?: React.ReactNode;
 };
 
 const CustomInput = ({
   label,
   type,
   variantType = 'default',
+  startIcon,
   ...props
 }: CustomInputProps) => {
   const [showPassword, setShowPassword] = useState(false);
@@ -73,29 +78,39 @@ const CustomInput = ({
   const InputComponent =
     variantType === 'outlined' ? OutlinedTextField : StyledTextField;
 
+  const hasLabel = !!label;
+
   return (
     <Box sx={{ position: 'relative', width: '100%' }}>
-      <Typography
-        sx={(theme) => ({
-          position: 'absolute',
-          top: '12px',
-          left: '14px',
-          color: theme.palette.text.darkGray,
-          fontSize: '12px',
-          textTransform: 'uppercase',
-          pointerEvents: 'none',
-          zIndex: 10,
-        })}
-      >
-        {label}
-      </Typography>
+      {label && (
+        <Typography
+          sx={(theme) => ({
+            position: 'absolute',
+            top: '12px',
+            left: '14px',
+            color: theme.palette.text.darkGray,
+            fontSize: '12px',
+            textTransform: 'uppercase',
+            pointerEvents: 'none',
+            zIndex: 10,
+          })}
+        >
+          {label}
+        </Typography>
+      )}
       <InputComponent
         {...props}
         type={type === 'password' ? (showPassword ? 'text' : 'password') : type}
         variant='outlined'
         fullWidth
+        haslabel={hasLabel}
         slotProps={{
           input: {
+            startAdornment: startIcon ? (
+              <InputAdornment position='start' sx={{ ml: '2px', mr: '-6px' }}>
+                {startIcon}
+              </InputAdornment>
+            ) : null,
             endAdornment:
               type === 'password' ? (
                 <InputAdornment position='end'>
