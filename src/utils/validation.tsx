@@ -38,8 +38,16 @@ export const addChildrenSchema = z.object({
   password: z.string().min(6, 'Password must be at least 6 characters'),
 });
 
+export const lessonSummarySchema = z.object({
+  summary: z
+    .string()
+    .min(10, 'Summary must be at least 10 characters')
+    .nonempty('Summary is required'),
+});
+
 export type LoginFormInputs = z.infer<typeof loginSchema>;
 export type RegisterFormInputs = z.infer<typeof registerSchema>;
 export type ResetPasswordFormInputs = z.infer<typeof resetPasswordSchema>;
 export type ChangePasswordFormInputs = z.infer<typeof changePasswordSchema>;
 export type AddChildrenFormInputs = z.infer<typeof addChildrenSchema>;
+export type LessonSummaryInputs = z.infer<typeof lessonSummarySchema>;

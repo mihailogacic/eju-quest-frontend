@@ -1,34 +1,33 @@
 import { TextField } from '@mui/material';
 import { styled } from '@mui/system';
 
-const OutlinedTextArea = styled(TextField)(({ theme }) => ({
+const OutlinedTextArea = styled(TextField)({
   '& .MuiOutlinedInput-root': {
-    backgroundColor: 'white',
+    backgroundColor: 'hsla(0, 0%, 100%, 0.2)',
     borderRadius: '8px',
     padding: '14px',
 
     '& fieldset': {
-      borderColor: theme.palette.border.cyanGray,
+      borderColor: 'hsla(0, 0%, 0% 0.1)',
     },
     '&:hover fieldset': {
-      borderColor: theme.palette.text.midGray,
+      borderColor: 'transparent',
     },
     '&.Mui-focused fieldset': {
-      borderColor: theme.palette.text.midGray,
+      borderColor: 'transparent',
     },
   },
   '& .MuiInputBase-input': {
-    color: theme.palette.text.secondary,
+    color: 'white',
     fontSize: '16px',
     minHeight: '120px',
-    maxHeight: '292px',
+    maxHeight: '282px',
     overflowY: 'auto',
   },
   '& .MuiInputBase-input::placeholder': {
-    color: theme.palette.text.charcoalBlack,
-    opacity: 0.4,
+    color: 'hsla(0, 0%, 100%, 0.5)',
   },
-}));
+});
 
 const CustomTextArea = ({ ...props }) => {
   return (

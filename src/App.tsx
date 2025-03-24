@@ -18,6 +18,7 @@ import ContentReviewDetail from './pages/ContentReviewDetail';
 import ContentReviews from './pages/ContentReviews';
 import ExploreTopics from './pages/ExploreTopics';
 import LessonDisplay from './pages/LessonDisplay';
+import LessonSummary from './pages/LessonSummary';
 
 const App = () => {
   return (
@@ -112,6 +113,16 @@ const App = () => {
               <ProtectedRoute>
                 <Layout>
                   <LessonDisplay />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path='/lesson-summary'
+            element={
+              <ProtectedRoute>
+                <Layout>
+                  <LessonSummary />
                 </Layout>
               </ProtectedRoute>
             }
