@@ -19,8 +19,7 @@ const useAuthStore = create<AuthState>()(
   persist(
     (set) => ({
       user: null,
-      // TODO: set back to false
-      isAuthenticated: true,
+      isAuthenticated: false,
       token: null,
       refreshToken: null,
 
