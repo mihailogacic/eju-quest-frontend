@@ -59,3 +59,52 @@ export const contentReviewDetailData = {
     'Lorem ipsum dolor sit amet, consectetur adipiscing elit',
   ],
 };
+
+export const reviewsData = [
+  {
+    image: sessionPlaceholder,
+    title: 'Great Session',
+    description: 'Awesome user engagement',
+    status: '5 stars',
+    role: 'Admin',
+  },
+  {
+    image: sessionPlaceholder,
+    title: 'Great Session',
+    description: 'Awesome user engagement',
+    status: '5 stars',
+    role: 'Admin',
+  },
+  {
+    image: sessionPlaceholder,
+    title: 'Feedback Needed',
+    description: 'Interaction improvements suggested',
+    status: 'Pending',
+    role: 'Editor',
+    hasEdit: true,
+  },
+  {
+    image: sessionPlaceholder,
+    title: 'Feedback Needed',
+    description: 'Interaction improvements suggested',
+    status: 'Pending',
+    role: 'Editor',
+    hasEdit: true,
+  },
+  {
+    image: sessionPlaceholder,
+    title: 'Feedback Needed',
+    description: 'Interaction improvements suggested',
+    status: 'Pending',
+    role: 'Editor',
+    hasEdit: true,
+  },
+  {
+    image: sessionPlaceholder,
+    title: 'Feedback Needed',
+    description: 'Interaction improvements suggested',
+    status: 'Pending',
+    role: 'Editor',
+    hasEdit: true,
+  },
+];

@@ -15,6 +15,7 @@ import AddChildren from './pages/AddChildren';
 import UserProfile from './pages/UserProfile';
 import AdminParent from './pages/AdminParent';
 import ContentReviewDetail from './pages/ContentReviewDetail';
+import ContentReviews from './pages/ContentReviews';
 
 const App = () => {
   return (
@@ -79,6 +80,16 @@ const App = () => {
               <ProtectedRoute>
                 <Layout>
                   <ContentReviewDetail />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path='/reviews'
+            element={
+              <ProtectedRoute>
+                <Layout>
+                  <ContentReviews />
                 </Layout>
               </ProtectedRoute>
             }
