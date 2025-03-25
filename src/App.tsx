@@ -20,6 +20,7 @@ import ExploreTopics from './pages/ExploreTopics';
 import LessonDisplay from './pages/LessonDisplay';
 import LessonSummary from './pages/LessonSummary';
 import AddTopic from './pages/AddTopic';
+import NotFound from './pages/NotFound';
 
 const App = () => {
   return (
@@ -43,9 +44,32 @@ const App = () => {
               </PublicRoute>
             }
           />
-          <Route path='/reset-password' element={<ResetPassword />} />
-          <Route path='/reset-password/uid' element={<ChangePassword />} />
-          <Route path='/reset-password/success' element={<PasswordChanged />} />
+          <Route
+            path='/reset-password'
+            element={
+              <PublicRoute>
+                <ResetPassword />
+              </PublicRoute>
+            }
+          />
+          <Route
+            path='/reset-password/uid'
+            element={
+              <PublicRoute>
+                <ChangePassword />
+              </PublicRoute>
+            }
+          />
+          <Route
+            path='/reset-password/success'
+            element={
+              <PublicRoute>
+                <PasswordChanged />
+              </PublicRoute>
+            }
+          />
+
+          {/* TODO: check what route addchildren should be */}
           <Route path='/add-children' element={<AddChildren />} />
 
           <Route
@@ -138,6 +162,8 @@ const App = () => {
               </ProtectedRoute>
             }
           />
+
+          <Route path='*' element={<NotFound />} />
         </Routes>
       </Router>
     </ThemeProvider>
