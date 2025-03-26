@@ -38,7 +38,7 @@ const TopicHeader = () => {
         <Typography sx={{ fontWeight: 700, fontSize: '40px' }}>
           Add Topic Details
         </Typography>
-        <Typography>Enter the required information</Typography>
+        <Typography sx={{ mb: 5 }}>Enter the required information</Typography>
       </Box>
 
       <Box
