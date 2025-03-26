@@ -1,15 +1,14 @@
 import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
+import { User } from '../types/auth-types';
 
 type AuthState = {
-  // eslint-disable-next-line
-  user: any | null;
+  user: User | null;
   isAuthenticated: boolean;
   token: string | null;
   refreshToken: string | null;
 
-  // eslint-disable-next-line
-  setUser: (user: any | null) => void;
+  setUser: (user: User | null) => void;
   setToken: (token: string) => void;
   setRefreshToken: (refreshToken: string) => void;
   clearAuth: () => void;

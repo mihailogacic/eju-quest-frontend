@@ -178,12 +178,14 @@ const Register = () => {
             }}
           >
             {isPending ? 'Signing Up...' : 'Sign Up'}{' '}
-            <Box
-              component='img'
-              src={chevronRightIcon}
-              alt='Chevron right icon'
-              sx={{ height: '12px' }}
-            />
+            {!isPending && (
+              <Box
+                component='img'
+                src={chevronRightIcon}
+                alt='Chevron right icon'
+                sx={{ height: '12px' }}
+              />
+            )}
           </CustomButton>
 
           <Typography

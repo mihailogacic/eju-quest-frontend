@@ -1,6 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import axiosInstance from '../api/axios-instance';
-import { RegisterTypes } from '../types/auth-types';
+import {
+  RegisterTypes,
+  LoginTypes,
+  LoginResponseTypes,
+} from '../types/auth-types';
 
 export const register = async (data: RegisterTypes) => {
   try {
@@ -14,5 +18,22 @@ export const register = async (data: RegisterTypes) => {
     throw (
       error.response?.data || 'An error occurred during registering process.'
     );
+  }
+};
+
+export const login = async (data: LoginTypes): Promise<LoginResponseTypes> => {
+  try {
+    const response = await axiosInstance.post<LoginResponseTypes>(
+      `/auth/login/`,
+      data,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }
+    );
+    return response.data;
+  } catch (error: any) {
+    throw error?.response?.data || 'An error occurred during login process.';
   }
 };

@@ -1,4 +1,5 @@
-import { useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { Box, Typography, Link } from '@mui/material';
 import CustomInput from '../components/common/CustomInput';
@@ -6,10 +7,21 @@ import BottomMaskImg from '../assets/images/bottom-mask.png';
 import CustomButton from '../components/common/CustomButton';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { loginSchema, LoginFormInputs } from '../utils/validation';
+import { useLogin } from '../hooks/auth-hook';
+import { toast } from 'react-toastify';
 import chevronRightIcon from '../assets/icons/chevron-right.png';
 
 const Login = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+
+  useEffect(() => {
+    if (location.state?.registered) {
+      toast.success('Successfully registered. Verify your email.');
+    }
+  }, [location.state]);
+
+  const { mutate, isPending } = useLogin();
 
   const {
     register,
@@ -20,7 +32,7 @@ const Login = () => {
   });
 
   const onSubmit = (data: LoginFormInputs) => {
-    console.log('Form submitted:', data);
+    mutate(data);
   };
 
   return (
@@ -141,6 +153,7 @@ const Login = () => {
 
           <CustomButton
             type='submit'
+            disabled={isPending}
             sx={{
               width: '100%',
               fontSize: '16px',
@@ -152,13 +165,15 @@ const Login = () => {
               py: '14px',
             }}
           >
-            Sign In{' '}
-            <Box
-              component='img'
-              src={chevronRightIcon}
-              alt='Chevron right icon'
-              sx={{ height: '12px' }}
-            />
+            {isPending ? 'Signing In...' : 'Sign In'}{' '}
+            {!isPending && (
+              <Box
+                component='img'
+                src={chevronRightIcon}
+                alt='Chevron right icon'
+                sx={{ height: '12px' }}
+              />
+            )}
           </CustomButton>
 
           <Typography
