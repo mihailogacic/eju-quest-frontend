@@ -1,0 +1,18 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import axiosInstance from '../api/axios-instance';
+import { RegisterTypes } from '../types/auth-types';
+
+export const register = async (data: RegisterTypes) => {
+  try {
+    const response = await axiosInstance.post(`/auth/register/`, data, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    return response.data;
+  } catch (error: any) {
+    throw (
+      error.response?.data || 'An error occurred during registering process.'
+    );
+  }
+};
