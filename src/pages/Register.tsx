@@ -6,10 +6,12 @@ import BottomMaskImg from '../assets/images/bottom-mask.png';
 import CustomButton from '../components/common/CustomButton';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { registerSchema, RegisterFormInputs } from '../utils/validation';
+import { useRegister } from '../hooks/auth-hook';
 import chevronRightIcon from '../assets/icons/chevron-right.png';
 
 const Register = () => {
   const navigate = useNavigate();
+  const { mutate, isPending } = useRegister();
 
   const {
     register,
@@ -20,7 +22,7 @@ const Register = () => {
   });
 
   const onSubmit = (data: RegisterFormInputs) => {
-    console.log('Form submitted:', data);
+    mutate(data);
   };
 
   return (
@@ -163,6 +165,7 @@ const Register = () => {
 
           <CustomButton
             type='submit'
+            disabled={isPending}
             sx={{
               width: '100%',
               fontSize: '16px',
@@ -174,7 +177,7 @@ const Register = () => {
               py: '14px',
             }}
           >
-            Sign Up{' '}
+            {isPending ? 'Signing Up...' : 'Sign Up'}{' '}
             <Box
               component='img'
               src={chevronRightIcon}

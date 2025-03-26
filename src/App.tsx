@@ -2,6 +2,8 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import theme from './theme';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import Layout from './components/layouts/Layout';
 import ProtectedRoute from './components/layouts/ProtectedRoute';
 import PublicRoute from './components/layouts/PublicRoute';
@@ -28,6 +30,17 @@ const App = () => {
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <Router>
+        <ToastContainer
+          position='top-center'
+          autoClose={4000}
+          hideProgressBar={false}
+          newestOnTop={true}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+        />
         <Routes>
           <Route
             path='/sign-in'
