@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useNavigate } from 'react-router-dom';
 import { useMutation } from '@tanstack/react-query';
-import { register, login } from '../services/auth-api';
+import { register, login, resetPassword } from '../services/auth-api';
 import useAuthStore from '../store/auth-store';
 import {
   RegisterTypes,
@@ -47,6 +47,24 @@ export const useLogin = () => {
     onError: (error: any) => {
       const message =
         error?.response?.data?.detail || error?.detail || 'Login failed.';
+      toast.error(message);
+    },
+  });
+};
+
+export const useResetPassword = () => {
+  return useMutation({
+    mutationFn: (data: { email: string }) => resetPassword(data),
+    onSuccess: () => {
+      toast.success(
+        'Password reset request was successfully sent to your email.'
+      );
+    },
+    onError: (error: any) => {
+      const message =
+        error?.response?.data?.detail ||
+        error?.detail ||
+        'Reset password request failed.';
       toast.error(message);
     },
   });

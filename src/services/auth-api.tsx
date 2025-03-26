@@ -37,3 +37,22 @@ export const login = async (data: LoginTypes): Promise<LoginResponseTypes> => {
     throw error?.response?.data || 'An error occurred during login process.';
   }
 };
+
+export const resetPassword = async (data: { email: string }) => {
+  try {
+    const response = await axiosInstance.post(
+      `/auth/password-reset/request/`,
+      data,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }
+    );
+    return response.data;
+  } catch (error: any) {
+    throw (
+      error.response?.data || 'An error occurred during password reset process.'
+    );
+  }
+};

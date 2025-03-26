@@ -67,7 +67,7 @@ const App = () => {
             }
           />
           <Route
-            path='/reset-password/uid'
+            path='/reset-password/:uid'
             element={
               <PublicRoute>
                 <ChangePassword />
