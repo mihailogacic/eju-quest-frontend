@@ -20,6 +20,7 @@ import ExploreTopics from './pages/ExploreTopics';
 import LessonDisplay from './pages/LessonDisplay';
 import LessonSummary from './pages/LessonSummary';
 import AddTopic from './pages/AddTopic';
+import Quiz from './pages/Quiz';
 import NotFound from './pages/NotFound';
 
 const App = () => {
@@ -158,6 +159,16 @@ const App = () => {
               <ProtectedRoute>
                 <Layout>
                   <AddTopic />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path='/quiz'
+            element={
+              <ProtectedRoute>
+                <Layout footerEnabled={false}>
+                  <Quiz />
                 </Layout>
               </ProtectedRoute>
             }
