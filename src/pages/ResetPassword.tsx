@@ -9,10 +9,13 @@ import {
   resetPasswordSchema,
   ResetPasswordFormInputs,
 } from '../utils/validation';
+import { useResetPassword } from '../hooks/auth-hook';
 import chevronRightIcon from '../assets/icons/chevron-right.png';
 
 const ResetPassword = () => {
   const navigate = useNavigate();
+
+  const { mutate, isPending } = useResetPassword();
 
   const {
     register,
@@ -23,7 +26,7 @@ const ResetPassword = () => {
   });
 
   const onSubmit = (data: ResetPasswordFormInputs) => {
-    console.log('Form submitted:', data);
+    mutate(data);
   };
 
   return (
@@ -124,6 +127,7 @@ const ResetPassword = () => {
 
           <CustomButton
             type='submit'
+            disabled={isPending}
             sx={{
               width: '100%',
               fontSize: '16px',
@@ -135,13 +139,15 @@ const ResetPassword = () => {
               py: '14px',
             }}
           >
-            Next{' '}
-            <Box
-              component='img'
-              src={chevronRightIcon}
-              alt='Chevron right icon'
-              sx={{ height: '12px' }}
-            />
+            {isPending ? 'Submitting...' : 'Submit'}{' '}
+            {!isPending && (
+              <Box
+                component='img'
+                src={chevronRightIcon}
+                alt='Chevron right icon'
+                sx={{ height: '12px' }}
+              />
+            )}
           </CustomButton>
 
           <Typography

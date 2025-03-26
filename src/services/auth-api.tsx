@@ -1,6 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import axiosInstance from '../api/axios-instance';
-import { RegisterTypes } from '../types/auth-types';
+import {
+  RegisterTypes,
+  LoginTypes,
+  LoginResponseTypes,
+} from '../types/auth-types';
 
 export const register = async (data: RegisterTypes) => {
   try {
@@ -13,6 +17,42 @@ export const register = async (data: RegisterTypes) => {
   } catch (error: any) {
     throw (
       error.response?.data || 'An error occurred during registering process.'
+    );
+  }
+};
+
+export const login = async (data: LoginTypes): Promise<LoginResponseTypes> => {
+  try {
+    const response = await axiosInstance.post<LoginResponseTypes>(
+      `/auth/login/`,
+      data,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }
+    );
+    return response.data;
+  } catch (error: any) {
+    throw error?.response?.data || 'An error occurred during login process.';
+  }
+};
+
+export const resetPassword = async (data: { email: string }) => {
+  try {
+    const response = await axiosInstance.post(
+      `/auth/password-reset/request/`,
+      data,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }
+    );
+    return response.data;
+  } catch (error: any) {
+    throw (
+      error.response?.data || 'An error occurred during password reset process.'
     );
   }
 };
