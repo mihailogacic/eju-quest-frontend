@@ -57,6 +57,7 @@ const UserProfile = () => {
 
             '@media (max-width: 700px)': {
               width: '100%',
+              justifyContent: 'space-around',
             },
           }}
         >
@@ -66,11 +67,11 @@ const UserProfile = () => {
               alignItems: 'center',
               gap: 4,
 
-              '@media (max-width: 520px)': {
+              '@media (max-width: 640px)': {
                 gap: 3,
               },
 
-              '@media (max-width: 370px)': {
+              '@media (max-width: 480px)': {
                 gap: '12px',
               },
             }}
@@ -136,6 +137,7 @@ const UserProfile = () => {
 
               '@media (max-width: 640px)': {
                 fontSize: '30px',
+                mb: 2,
               },
             }}
           >
@@ -147,7 +149,14 @@ const UserProfile = () => {
               display: 'flex',
               justifyContent: 'space-between',
               mx: 4,
+              gap: 2,
 
+              '@media (max-width: 700px)': {
+                justifyContent: 'space-around',
+              },
+              '@media (max-width: 480px)': {
+                justifyContent: 'space-between',
+              },
               '@media (max-width: 370px)': {
                 mx: 2,
               },
@@ -170,8 +179,9 @@ const UserProfile = () => {
                   mb: 2,
 
                   '@media (max-width: 640px)': {
-                    width: '90px',
-                    height: '90px',
+                    width: '80px',
+                    height: '80px',
+                    mb: 1,
                   },
                 }}
               >
@@ -179,7 +189,14 @@ const UserProfile = () => {
                   component='img'
                   src={starImg}
                   alt='star image'
-                  sx={{ width: '60px', height: '60px' }}
+                  sx={{
+                    width: '60px',
+                    height: '60px',
+                    '@media (max-width: 640px)': {
+                      width: '45px',
+                      height: '45px',
+                    },
+                  }}
                 />
               </Box>
 
@@ -189,6 +206,10 @@ const UserProfile = () => {
                   fontWeight: 400,
                   textAlign: 'center',
                   mb: '4px',
+                  lineHeight: 1.2,
+                  '@media (max-width: 640px)': {
+                    mb: 0,
+                  },
                 }}
               >
                 Reward Balance
@@ -219,8 +240,9 @@ const UserProfile = () => {
                   mb: 2,
 
                   '@media (max-width: 640px)': {
-                    width: '90px',
-                    height: '90px',
+                    width: '80px',
+                    height: '80px',
+                    mb: 1,
                   },
                 }}
               >
@@ -228,7 +250,14 @@ const UserProfile = () => {
                   component='img'
                   src={hourglassImg}
                   alt='hourglass image'
-                  sx={{ width: '60px', height: '60px' }}
+                  sx={{
+                    width: '60px',
+                    height: '60px',
+                    '@media (max-width: 640px)': {
+                      width: '45px',
+                      height: '45px',
+                    },
+                  }}
                 />
               </Box>
 
@@ -238,6 +267,10 @@ const UserProfile = () => {
                   fontWeight: 400,
                   textAlign: 'center',
                   mb: '4px',
+                  lineHeight: 1.2,
+                  '@media (max-width: 640px)': {
+                    mb: 0,
+                  },
                 }}
               >
                 Reward Rate

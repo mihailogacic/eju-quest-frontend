@@ -184,7 +184,7 @@ const Login = () => {
               mt: 1,
             })}
           >
-            By Signing up to Chainpage, means you agree to our{' '}
+            By Signing up to EjuQuest, means you agree to our{' '}
             <Link
               sx={(theme) => ({
                 cursor: 'pointer',

@@ -23,15 +23,20 @@ const useAuthStore = create<AuthState>()(
       refreshToken: null,
 
       setUser: (user) => set({ user, isAuthenticated: !!user }),
-      setToken: (token) => set({ token }),
+      setToken: (token) => {
+        localStorage.setItem('access_token', token);
+        set({ token });
+      },
       setRefreshToken: (refreshToken) => set({ refreshToken }),
-      clearAuth: () =>
+      clearAuth: () => {
+        localStorage.removeItem('access_token');
         set({
           user: null,
           isAuthenticated: false,
           token: null,
           refreshToken: null,
-        }),
+        });
+      },
     }),
     {
       name: 'auth-eju-quest-storage',

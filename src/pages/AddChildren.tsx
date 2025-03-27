@@ -1,4 +1,3 @@
-// import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { Box, Typography } from '@mui/material';
 import CustomInput from '../components/common/CustomInput';
@@ -7,10 +6,11 @@ import CustomButton from '../components/common/CustomButton';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { addChildrenSchema, AddChildrenFormInputs } from '../utils/validation';
 import BackCircle from '../components/common/BackCircle';
+import { useAddChild } from '../hooks/users-hook';
 import chevronRightIcon from '../assets/icons/chevron-right.png';
 
 const AddChildren = () => {
-  //   const navigate = useNavigate();
+  const { mutate: addChild, isPending } = useAddChild();
 
   const {
     register,
@@ -21,7 +21,7 @@ const AddChildren = () => {
   });
 
   const onSubmit = (data: AddChildrenFormInputs) => {
-    console.log('Form submitted:', data);
+    addChild({ ...data, role: 'child' });
   };
 
   return (
@@ -133,6 +133,7 @@ const AddChildren = () => {
 
           <CustomButton
             type='submit'
+            disabled={isPending}
             sx={{
               width: '100%',
               fontSize: '16px',
@@ -144,13 +145,15 @@ const AddChildren = () => {
               py: '14px',
             }}
           >
-            Access Grant{' '}
-            <Box
-              component='img'
-              src={chevronRightIcon}
-              alt='Chevron right icon'
-              sx={{ height: '12px' }}
-            />
+            {isPending ? 'Accessing...' : 'Access Grant'}{' '}
+            {!isPending && (
+              <Box
+                component='img'
+                src={chevronRightIcon}
+                alt='Chevron right icon'
+                sx={{ height: '12px' }}
+              />
+            )}
           </CustomButton>
         </Box>
 
