@@ -25,3 +25,8 @@ export type LoginResponseTypes = {
   refresh_token: string;
   user: User;
 };
+
+export type ConfirmResetPasswordTypes = {
+  new_password: string;
+  confirm_new_password: string;
+};

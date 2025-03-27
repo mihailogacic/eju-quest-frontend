@@ -4,6 +4,7 @@ import {
   RegisterTypes,
   LoginTypes,
   LoginResponseTypes,
+  ConfirmResetPasswordTypes,
 } from '../types/auth-types';
 
 export const register = async (data: RegisterTypes) => {
@@ -53,6 +54,30 @@ export const resetPassword = async (data: { email: string }) => {
   } catch (error: any) {
     throw (
       error.response?.data || 'An error occurred during password reset process.'
+    );
+  }
+};
+
+export const confirmResetPassword = async (
+  uid: string,
+  token: string,
+  data: ConfirmResetPasswordTypes
+) => {
+  try {
+    const response = await axiosInstance.post(
+      `/auth/password-reset/confirm/${uid}/${token}/`,
+      data,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }
+    );
+    return response.data;
+  } catch (error: any) {
+    throw (
+      error.response?.data ||
+      'An error occurred while confirming password reset.'
     );
   }
 };

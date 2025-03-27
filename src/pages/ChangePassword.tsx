@@ -1,3 +1,4 @@
+import { useParams } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { Box, Typography } from '@mui/material';
 import CustomInput from '../components/common/CustomInput';
@@ -8,9 +9,13 @@ import {
   changePasswordSchema,
   ChangePasswordFormInputs,
 } from '../utils/validation';
+import { useConfirmResetPassword } from '../hooks/auth-hook';
 import chevronRightIcon from '../assets/icons/chevron-right.png';
 
 const ChangePassword = () => {
+  const { uid, token } = useParams();
+  const { mutate, isPending } = useConfirmResetPassword(uid!, token!);
+
   const {
     register,
     handleSubmit,
@@ -20,7 +25,10 @@ const ChangePassword = () => {
   });
 
   const onSubmit = (data: ChangePasswordFormInputs) => {
-    console.log('Form submitted:', data);
+    mutate({
+      new_password: data.new_password,
+      confirm_new_password: data.confirm_new_password,
+    });
   };
 
   return (
@@ -97,12 +105,12 @@ const ChangePassword = () => {
                 type='password'
                 placeholder='•••••••••••••••••••'
                 label='password'
-                {...register('password')}
+                {...register('new_password')}
               />
 
-              {errors.password && (
+              {errors.new_password && (
                 <Typography sx={{ color: 'red', fontSize: '12px', mt: 1 }}>
-                  {errors.password.message}
+                  {errors.new_password.message}
                 </Typography>
               )}
             </Box>
@@ -112,12 +120,12 @@ const ChangePassword = () => {
                 type='password'
                 placeholder='•••••••••••••••••••'
                 label='confirm password'
-                {...register('confirm_password')}
+                {...register('confirm_new_password')}
               />
 
-              {errors.confirm_password && (
+              {errors.confirm_new_password && (
                 <Typography sx={{ color: 'red', fontSize: '12px', mt: 1 }}>
-                  {errors.confirm_password.message}
+                  {errors.confirm_new_password.message}
                 </Typography>
               )}
             </Box>
@@ -125,6 +133,7 @@ const ChangePassword = () => {
 
           <CustomButton
             type='submit'
+            disabled={isPending}
             sx={{
               width: '100%',
               fontSize: '16px',
@@ -136,13 +145,15 @@ const ChangePassword = () => {
               py: '14px',
             }}
           >
-            Confirm{' '}
-            <Box
-              component='img'
-              src={chevronRightIcon}
-              alt='Chevron right icon'
-              sx={{ height: '12px' }}
-            />
+            {isPending ? 'Confirming...' : 'Confirm'}{' '}
+            {!isPending && (
+              <Box
+                component='img'
+                src={chevronRightIcon}
+                alt='Chevron right icon'
+                sx={{ height: '12px' }}
+              />
+            )}
           </CustomButton>
         </Box>
       </Box>
