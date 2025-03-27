@@ -4,6 +4,7 @@ export type RegisterTypes = {
   email: string;
   password: string;
   confirm_password: string;
+  role: 'parent';
 };
 
 export type LoginTypes = {
@@ -23,4 +24,9 @@ export type LoginResponseTypes = {
   access_token: string;
   refresh_token: string;
   user: User;
+};
+
+export type ConfirmResetPasswordTypes = {
+  new_password: string;
+  confirm_new_password: string;
 };

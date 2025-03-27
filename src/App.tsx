@@ -23,6 +23,8 @@ import LessonDisplay from './pages/LessonDisplay';
 import LessonSummary from './pages/LessonSummary';
 import AddTopic from './pages/AddTopic';
 import Quiz from './pages/Quiz';
+import Terms from './pages/Terms';
+import PrivacyPolicy from './pages/PrivacyPolicy';
 import NotFound from './pages/NotFound';
 
 const App = () => {
@@ -67,7 +69,7 @@ const App = () => {
             }
           />
           <Route
-            path='/reset-password/:uid'
+            path='/reset-password/:uid/:token'
             element={
               <PublicRoute>
                 <ChangePassword />
@@ -83,8 +85,14 @@ const App = () => {
             }
           />
 
-          {/* TODO: check what route addchildren should be */}
-          <Route path='/add-children' element={<AddChildren />} />
+          <Route
+            path='/add-children'
+            element={
+              <ProtectedRoute>
+                <AddChildren />
+              </ProtectedRoute>
+            }
+          />
 
           <Route
             path='/'
@@ -184,6 +192,23 @@ const App = () => {
                   <Quiz />
                 </Layout>
               </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path='/terms'
+            element={
+              <Layout>
+                <Terms />
+              </Layout>
+            }
+          />
+          <Route
+            path='/privacy-policy'
+            element={
+              <Layout>
+                <PrivacyPolicy />
+              </Layout>
             }
           />
 

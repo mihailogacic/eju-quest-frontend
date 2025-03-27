@@ -1,21 +1,32 @@
-import { useState, FormEvent } from 'react';
+import { useEffect } from 'react';
 import { Box, Typography } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import CustomInput from '../common/CustomInput';
 import CustomButton from '../common/CustomButton';
 
-const UserDashboard = () => {
-  const [search, setSearch] = useState('');
+type UserDashboardProps = {
+  search: string;
+  setSearch: (value: string) => void;
+  onAddUser: () => void;
+  onSearchTrigger: (value: string) => void;
+};
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    console.log('submit');
-  };
+const UserDashboard = ({
+  search,
+  setSearch,
+  onAddUser,
+  onSearchTrigger,
+}: UserDashboardProps) => {
+  useEffect(() => {
+    const debounce = setTimeout(() => {
+      onSearchTrigger(search);
+    }, 500);
+
+    return () => clearTimeout(debounce);
+  }, [search, onSearchTrigger]);
 
   return (
     <Box
-      component='form'
-      onSubmit={handleSubmit}
       sx={{
         color: 'white',
         backgroundColor: 'black',
@@ -90,7 +101,7 @@ const UserDashboard = () => {
           }}
         />
         <CustomButton
-          type='submit'
+          onClick={onAddUser}
           sx={{
             height: '48px',
             width: '240px',

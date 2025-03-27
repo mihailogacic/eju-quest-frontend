@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { Box, Typography, Link } from '@mui/material';
@@ -14,12 +14,15 @@ import chevronRightIcon from '../assets/icons/chevron-right.png';
 const Login = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const hasShownToast = useRef(false);
 
   useEffect(() => {
-    if (location.state?.registered) {
+    if (location.state?.registered && !hasShownToast.current) {
       toast.success('Successfully registered. Verify your email.');
+      hasShownToast.current = true;
+      navigate(location.pathname, { replace: true });
     }
-  }, [location.state]);
+  }, [location.state, navigate, location.pathname]);
 
   const { mutate, isPending } = useLogin();
 
@@ -184,8 +187,9 @@ const Login = () => {
               mt: 1,
             })}
           >
-            By Signing up to Chainpage, means you agree to our{' '}
+            By Signing up to EjuQuest, means you agree to our{' '}
             <Link
+              onClick={() => navigate('/privacy-policy')}
               sx={(theme) => ({
                 cursor: 'pointer',
                 color: theme.palette.text.steelGray,
@@ -196,6 +200,7 @@ const Login = () => {
             </Link>{' '}
             and{' '}
             <Link
+              onClick={() => navigate('/terms')}
               sx={(theme) => ({
                 cursor: 'pointer',
                 color: theme.palette.text.steelGray,

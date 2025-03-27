@@ -10,8 +10,14 @@ export const registerSchema = z
     first_name: z.string().min(2, 'First name must be at least 2 characters'),
     last_name: z.string().min(2, 'Last name must be at least 2 characters'),
     email: z.string().email('Invalid email format').min(1, 'Email is required'),
-    password: z.string().min(6, 'Password must be at least 6 characters'),
-    confirm_password: z.string().min(6, 'Confirm password must match'),
+    password: z
+      .string()
+      .min(8, 'Password must be at least 8 characters long')
+      .regex(
+        /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])/,
+        'Password must contain letters, numbers, and special characters.'
+      ),
+    confirm_password: z.string().min(8, 'Confirm password must match'),
   })
   .refine((data) => data.password === data.confirm_password, {
     message: 'Passwords do not match',
@@ -24,6 +30,19 @@ export const resetPasswordSchema = z.object({
 
 export const changePasswordSchema = z
   .object({
+    new_password: z.string().min(6, 'Password must be at least 6 characters'),
+    confirm_new_password: z.string().min(6, 'Confirm password must match'),
+  })
+  .refine((data) => data.new_password === data.confirm_new_password, {
+    message: 'Passwords do not match',
+    path: ['confirm_password'],
+  });
+
+export const addChildrenSchema = z
+  .object({
+    first_name: z.string().min(2, 'First name must be at least 2 characters'),
+    last_name: z.string().min(2, 'Last name must be at least 2 characters'),
+    email: z.string().email('Invalid email format').min(1, 'Email is required'),
     password: z.string().min(6, 'Password must be at least 6 characters'),
     confirm_password: z.string().min(6, 'Confirm password must match'),
   })
@@ -31,12 +50,6 @@ export const changePasswordSchema = z
     message: 'Passwords do not match',
     path: ['confirm_password'],
   });
-
-export const addChildrenSchema = z.object({
-  first_name: z.string().min(2, 'First name must be at least 2 characters'),
-  email: z.string().email('Invalid email format').min(1, 'Email is required'),
-  password: z.string().min(6, 'Password must be at least 6 characters'),
-});
 
 export const lessonSummarySchema = z.object({
   summary: z

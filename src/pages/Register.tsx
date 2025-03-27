@@ -22,7 +22,7 @@ const Register = () => {
   });
 
   const onSubmit = (data: RegisterFormInputs) => {
-    mutate(data);
+    mutate({ ...data, role: 'parent' });
   };
 
   return (
