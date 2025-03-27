@@ -16,3 +16,20 @@ export const addChild = async (data: AddChildTypes) => {
     );
   }
 };
+
+export const getDashboardUsers = async (search: string) => {
+  try {
+    const response = await axiosInstance.get('/users/dashboard/', {
+      params: { search },
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    return response.data;
+  } catch (error: any) {
+    throw (
+      error.response?.data ||
+      'An error occurred while fetching dashboard users.'
+    );
+  }
+};

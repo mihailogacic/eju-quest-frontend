@@ -83,8 +83,14 @@ const App = () => {
             }
           />
 
-          {/* TODO: check what route addchildren should be */}
-          <Route path='/add-children' element={<AddChildren />} />
+          <Route
+            path='/add-children'
+            element={
+              <ProtectedRoute>
+                <AddChildren />
+              </ProtectedRoute>
+            }
+          />
 
           <Route
             path='/'

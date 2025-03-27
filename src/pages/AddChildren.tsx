@@ -104,6 +104,19 @@ const AddChildren = () => {
 
             <Box>
               <CustomInput
+                placeholder='Doe'
+                label='last name'
+                {...register('last_name')}
+              />
+              {errors.last_name && (
+                <Typography sx={{ color: 'red', fontSize: '12px', mt: 1 }}>
+                  {errors.last_name.message}
+                </Typography>
+              )}
+            </Box>
+
+            <Box>
+              <CustomInput
                 placeholder='johndoe@email.com'
                 label='email'
                 type='email'
@@ -126,6 +139,20 @@ const AddChildren = () => {
               {errors.password && (
                 <Typography sx={{ color: 'red', fontSize: '12px', mt: 1 }}>
                   {errors.password.message}
+                </Typography>
+              )}
+            </Box>
+
+            <Box>
+              <CustomInput
+                type='password'
+                placeholder='•••••••••••••••••••'
+                label='confirm password'
+                {...register('confirm_password')}
+              />
+              {errors.confirm_password && (
+                <Typography sx={{ color: 'red', fontSize: '12px', mt: 1 }}>
+                  {errors.confirm_password.message}
                 </Typography>
               )}
             </Box>

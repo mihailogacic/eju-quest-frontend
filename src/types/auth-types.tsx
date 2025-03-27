@@ -4,6 +4,7 @@ export type RegisterTypes = {
   email: string;
   password: string;
   confirm_password: string;
+  role: 'parent';
 };
 
 export type LoginTypes = {

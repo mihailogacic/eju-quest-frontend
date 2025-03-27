@@ -1,11 +1,28 @@
+import { useState } from 'react';
 import { Box, Typography } from '@mui/material';
 import AdminHeader from '../components/admin-parent/AdminHeader';
 import UserDashboard from '../components/admin-parent/UserDashboard';
 import RecentUserItem from '../components/admin-parent/RecentUserItem';
 import SessionReviewsItem from '../components/admin-parent/SessionReviewsItem';
+import { useDashboardUsers } from '../hooks/users-hook';
 import { recentUsersData, sessionReviewsData } from '../../mockData';
 
 const AdminParent = () => {
+  const [search, setSearch] = useState('');
+  const [submittedSearch, setSubmittedSearch] = useState('');
+
+  // TODO: check where to put searched users (add isPending too)
+  const { data: searchUsers } = useDashboardUsers(submittedSearch);
+  console.log(searchUsers);
+
+  const handleSearchTrigger = (value: string) => {
+    setSubmittedSearch(value);
+  };
+
+  const handleAddUser = () => {
+    console.log('add user');
+  };
+
   return (
     <Box>
       <AdminHeader />
@@ -27,7 +44,12 @@ const AdminParent = () => {
           },
         }}
       >
-        <UserDashboard />
+        <UserDashboard
+          search={search}
+          setSearch={setSearch}
+          onSearchTrigger={handleSearchTrigger}
+          onAddUser={handleAddUser}
+        />
       </Box>
 
       <Box

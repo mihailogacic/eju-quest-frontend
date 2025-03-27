@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useNavigate } from 'react-router-dom';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import { toast } from 'react-toastify';
-import { addChild } from '../services/users-api';
+import { addChild, getDashboardUsers } from '../services/users-api';
 import { AddChildTypes } from '../types/users-types';
 
 export const useAddChild = () => {
@@ -21,5 +21,13 @@ export const useAddChild = () => {
         'Failed to add child user.';
       toast.error(message);
     },
+  });
+};
+
+export const useDashboardUsers = (search: string) => {
+  return useQuery({
+    queryKey: ['dashboard-users', search],
+    queryFn: () => getDashboardUsers(search),
+    enabled: !!search,
   });
 };
