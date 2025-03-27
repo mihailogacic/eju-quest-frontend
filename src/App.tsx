@@ -23,6 +23,8 @@ import LessonDisplay from './pages/LessonDisplay';
 import LessonSummary from './pages/LessonSummary';
 import AddTopic from './pages/AddTopic';
 import Quiz from './pages/Quiz';
+import Terms from './pages/Terms';
+import PrivacyPolicy from './pages/PrivacyPolicy';
 import NotFound from './pages/NotFound';
 
 const App = () => {
@@ -190,6 +192,23 @@ const App = () => {
                   <Quiz />
                 </Layout>
               </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path='/terms'
+            element={
+              <Layout>
+                <Terms />
+              </Layout>
+            }
+          />
+          <Route
+            path='/privacy-policy'
+            element={
+              <Layout>
+                <PrivacyPolicy />
+              </Layout>
             }
           />
 

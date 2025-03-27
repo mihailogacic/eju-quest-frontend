@@ -189,6 +189,7 @@ const Login = () => {
           >
             By Signing up to EjuQuest, means you agree to our{' '}
             <Link
+              onClick={() => navigate('/privacy-policy')}
               sx={(theme) => ({
                 cursor: 'pointer',
                 color: theme.palette.text.steelGray,
@@ -199,6 +200,7 @@ const Login = () => {
             </Link>{' '}
             and{' '}
             <Link
+              onClick={() => navigate('/terms')}
               sx={(theme) => ({
                 cursor: 'pointer',
                 color: theme.palette.text.steelGray,
