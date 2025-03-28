@@ -16,6 +16,7 @@ const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
     '/reviews',
     '/add-topic',
     '/user-management',
+    '/add-children',
   ];
   const childRoutes = [
     '/user-profile',

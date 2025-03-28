@@ -11,9 +11,7 @@ const AdminParent = () => {
   const [search, setSearch] = useState('');
   const [submittedSearch, setSubmittedSearch] = useState('');
 
-  // TODO: check where to put searched users (add isPending too)
-  const { data: searchUsers } = useDashboardUsers(submittedSearch);
-  console.log(searchUsers);
+  const { data: searchUsers, isPending } = useDashboardUsers(submittedSearch);
 
   const handleSearchTrigger = (value: string) => {
     setSubmittedSearch(value);
@@ -44,6 +42,11 @@ const AdminParent = () => {
           search={search}
           setSearch={setSearch}
           onSearchTrigger={handleSearchTrigger}
+          searchResults={
+            Array.isArray(searchUsers?.users) ? searchUsers.users : []
+          }
+          isVisible={search.trim().length > 0}
+          isPending={isPending}
         />
       </Box>
 

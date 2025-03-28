@@ -17,9 +17,11 @@ export const addChild = async (data: AddChildTypes) => {
   }
 };
 
-export const getDashboardUsers = async (search: string) => {
+export const getDashboardUsers = async (
+  search: string
+): Promise<ChildTypes> => {
   try {
-    const response = await axiosInstance.get('/users/dashboard/', {
+    const response = await axiosInstance.get<ChildTypes>('/users/dashboard/', {
       params: { search },
       headers: {
         'Content-Type': 'application/json',
