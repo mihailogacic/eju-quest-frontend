@@ -4,18 +4,40 @@ import CustomButton from '../common/CustomButton';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { topicDetailsSchema, TopicDetailsInputs } from '../../utils/validation';
+import { useGenerateLesson } from '../../hooks/lessons-hook';
+import { GenerateLessonResponse } from '../../types/lessons-types';
 
-const TopicHeader = () => {
+type TopicHeaderProps = {
+  onGenerate: (res: GenerateLessonResponse) => void;
+  onFormChange: (data: TopicDetailsInputs) => void;
+};
+
+const TopicHeader = ({ onGenerate, onFormChange }: TopicHeaderProps) => {
+  const { mutate, isPending } = useGenerateLesson();
+
   const {
     register,
     handleSubmit,
     formState: { errors },
+    watch,
   } = useForm<TopicDetailsInputs>({
     resolver: zodResolver(topicDetailsSchema),
   });
 
   const onSubmit = (data: TopicDetailsInputs) => {
-    console.log('Form submitted:', data);
+    console.log('Payload iz TopicHeader komponente: ', data);
+    mutate(
+      {
+        title: data.topic_name,
+        age_level: Number(data.age_level),
+        lesson_length: data.lesson_length as 'short' | 'medium' | 'long',
+      },
+      {
+        onSuccess: (res) => {
+          onGenerate(res);
+        },
+      }
+    );
   };
 
   return (
@@ -63,7 +85,14 @@ const TopicHeader = () => {
           </Typography>
           <CustomInput
             placeholder='Enter Topic Name'
-            {...register('topic_name')}
+            {...register('topic_name', {
+              onChange: (e) =>
+                onFormChange({
+                  topic_name: e.target.value,
+                  age_level: watch('age_level'),
+                  lesson_length: watch('lesson_length'),
+                }),
+            })}
             sx={{
               backgroundColor: 'hsla(0, 0%, 100%, 0.1)',
               '& .MuiInputBase-input::placeholder': {
@@ -86,7 +115,14 @@ const TopicHeader = () => {
           </Typography>
           <CustomInput
             placeholder='Select Age Level'
-            {...register('age_level')}
+            {...register('age_level', {
+              onChange: (e) =>
+                onFormChange({
+                  topic_name: watch('topic_name'),
+                  age_level: e.target.value,
+                  lesson_length: watch('lesson_length'),
+                }),
+            })}
             sx={{
               backgroundColor: 'hsla(0, 0%, 100%, 0.1)',
               '& .MuiInputBase-input::placeholder': {
@@ -109,7 +145,14 @@ const TopicHeader = () => {
           </Typography>
           <CustomInput
             placeholder='Enter Lesson Length'
-            {...register('lesson_length')}
+            {...register('lesson_length', {
+              onChange: (e) =>
+                onFormChange({
+                  topic_name: watch('topic_name'),
+                  age_level: watch('age_level'),
+                  lesson_length: e.target.value,
+                }),
+            })}
             sx={{
               backgroundColor: 'hsla(0, 0%, 100%, 0.1)',
               '& .MuiInputBase-input::placeholder': {
@@ -126,6 +169,7 @@ const TopicHeader = () => {
         <Box sx={{ display: 'flex', justifyContent: 'end' }}>
           <CustomButton
             type='submit'
+            disabled={isPending}
             sx={{
               maxWidth: '220px',
               width: '100%',
@@ -134,7 +178,7 @@ const TopicHeader = () => {
               },
             }}
           >
-            Generate Content
+            {isPending ? 'Generating...' : 'Generate Content'}
           </CustomButton>
         </Box>
       </Box>

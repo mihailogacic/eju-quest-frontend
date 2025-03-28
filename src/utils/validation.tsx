@@ -59,7 +59,7 @@ export const lessonSummarySchema = z.object({
 });
 
 export const topicDetailsSchema = z.object({
-  topic_name: z.string().min(2, 'Topic name is required'),
+  topic_name: z.string().min(1, 'Topic name is required'),
   age_level: z.string().min(1, 'Age level is required'),
   lesson_length: z.string().min(1, 'Lesson length is required'),
 });

@@ -5,6 +5,8 @@ import { usePendingLessons } from '../hooks/lessons-hook';
 const ContentReviews = () => {
   const { data: lessons, isPending, isError } = usePendingLessons();
 
+  console.log(lessons);
+
   return (
     <Box
       sx={{
@@ -67,9 +69,9 @@ const ContentReviews = () => {
                 key={lesson.id}
                 image={lesson.image}
                 title={lesson.title}
-                description={`Created by: ${lesson.creator}`}
+                description='Description'
                 status={lesson.status}
-                role='lesson'
+                role='Admin'
               />
             ))
           ) : (

@@ -1,8 +1,9 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Box, Typography } from '@mui/material';
 import CustomInput from '../common/CustomInput';
 import CustomSwitch from '../common/CustomSwitch';
 import CustomButton from '../common/CustomButton';
+import { useSubmitLesson } from '../../hooks/lessons-hook';
 
 const questionWrapperStyle = {
   minWidth: '400px',
@@ -42,20 +43,93 @@ const underInputStyle = {
   mt: '4px',
 };
 
-const Choices = () => {
-  const [answers, setAnswers] = useState<(number | null)[]>([
-    null,
-    null,
-    null,
-    null,
-  ]);
+type ChoicesProps = {
+  questions: {
+    question: string;
+    options: {
+      option: string;
+      text: string;
+    }[];
+    answer: string;
+  }[];
+  lessonInfo: {
+    title: string;
+    age_level: number;
+    lesson_length: 'short' | 'medium' | 'long';
+  };
+};
 
-  const handleSwitchChange = (questionIndex: number, optionIndex: number) => {
-    setAnswers((prev) => {
-      const newAnswers = [...prev];
-      newAnswers[questionIndex] = optionIndex;
-      return newAnswers;
+const Choices = ({ questions, lessonInfo }: ChoicesProps) => {
+  const { mutate: submitLesson } = useSubmitLesson();
+
+  const defaultState = Array(4)
+    .fill(null)
+    .map(() => ({
+      question: '',
+      options: Array(4).fill(''),
+      answerIndex: null as number | null,
+    }));
+
+  const [formData, setFormData] = useState(defaultState);
+
+  useEffect(() => {
+    if (questions.length > 0) {
+      const updated = questions.map((q) => ({
+        question: q.question,
+        options: q.options.map((opt) => opt.text),
+        answerIndex: q.options.findIndex((opt) => opt.option === q.answer),
+      }));
+
+      setFormData((prev) => prev.map((_, i) => updated[i] || prev[i]));
+    }
+  }, [questions]);
+
+  const handleInputChange =
+    (qIdx: number, optIdx?: number) =>
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      setFormData((prev) => {
+        const updated = [...prev];
+        if (optIdx !== undefined) {
+          updated[qIdx].options[optIdx] = e.target.value;
+        } else {
+          updated[qIdx].question = e.target.value;
+        }
+        return updated;
+      });
+    };
+
+  const handleSwitchChange = (qIdx: number, selectedIdx: number) => {
+    setFormData((prev) => {
+      const updated = [...prev];
+      updated[qIdx].answerIndex = selectedIdx;
+      return updated;
     });
+  };
+
+  const handleSubmit = () => {
+    const formattedQuestions = formData.map((q) => ({
+      question: q.question,
+      options: q.options.map((text, i) => ({
+        option: String.fromCharCode(65 + i),
+        text,
+      })),
+      answer: String.fromCharCode(65 + (q.answerIndex ?? 0)),
+    }));
+
+    const payload = {
+      title: lessonInfo.title,
+      age_level: lessonInfo.age_level,
+      lesson_length: lessonInfo.lesson_length,
+      questions: formattedQuestions,
+      // TODO: generisan kontent dodati ovde.
+      content: [],
+    };
+
+    submitLesson(payload);
+  };
+
+  const handleClear = () => {
+    setFormData(defaultState);
   };
 
   return (
@@ -107,27 +181,35 @@ const Choices = () => {
           },
         }}
       >
-        {[0, 1, 2, 3].map((questionIndex) => (
+        {formData.map((q, questionIndex) => (
           <Box key={questionIndex} sx={questionWrapperStyle}>
             <Box>
               <Box component='label' sx={labelStyle}>
                 Question {questionIndex + 1}
               </Box>
-              <CustomInput sx={inputStyle} />
+              <CustomInput
+                value={q.question}
+                onChange={handleInputChange(questionIndex)}
+                sx={inputStyle}
+              />
               <Typography sx={underInputStyle}>
                 Write question {questionIndex + 1}
               </Typography>
             </Box>
 
-            {[0, 1, 2, 3].map((optionIndex) => (
+            {q.options.map((optText, optionIndex) => (
               <Box key={optionIndex}>
                 <Box component='label' sx={labelStyle}>
                   Option {optionIndex + 1}
                 </Box>
                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-                  <CustomInput sx={inputStyle} />
+                  <CustomInput
+                    value={optText}
+                    onChange={handleInputChange(questionIndex, optionIndex)}
+                    sx={inputStyle}
+                  />
                   <CustomSwitch
-                    checked={answers[questionIndex] === optionIndex}
+                    checked={q.answerIndex === optionIndex}
                     onChange={() =>
                       handleSwitchChange(questionIndex, optionIndex)
                     }
@@ -152,6 +234,7 @@ const Choices = () => {
         }}
       >
         <CustomButton
+          onClick={handleClear}
           sx={{
             border: '1px solid black',
             width: '100%',
@@ -165,6 +248,7 @@ const Choices = () => {
         </CustomButton>
 
         <CustomButton
+          onClick={handleSubmit}
           sx={{
             backgroundColor: 'black',
             color: 'white',

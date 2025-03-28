@@ -1,11 +1,33 @@
+import { useState } from 'react';
 import { Box } from '@mui/material';
 import TopicHeader from '../components/add-topic/TopicHeader';
 import Choices from '../components/add-topic/Choices';
+import { LessonQuestion } from '../types/lessons-types';
 
 const AddTopic = () => {
+  const [generatedQuestions, setGeneratedQuestions] = useState<
+    LessonQuestion[]
+  >([]);
+  const [lessonInfo, setLessonInfo] = useState({
+    title: '',
+    age_level: 0,
+    lesson_length: 'short' as 'short' | 'medium' | 'long',
+  });
+
   return (
     <Box>
-      <TopicHeader />
+      <TopicHeader
+        onGenerate={(res) => {
+          setGeneratedQuestions(res.lesson.questions);
+        }}
+        onFormChange={(data) => {
+          setLessonInfo({
+            title: data.topic_name,
+            age_level: Number(data.age_level),
+            lesson_length: data.lesson_length as 'short' | 'medium' | 'long',
+          });
+        }}
+      />
       <Box
         sx={{
           px: 12,
@@ -24,7 +46,7 @@ const AddTopic = () => {
           },
         }}
       >
-        <Choices />
+        <Choices questions={generatedQuestions} lessonInfo={lessonInfo} />
       </Box>
     </Box>
   );

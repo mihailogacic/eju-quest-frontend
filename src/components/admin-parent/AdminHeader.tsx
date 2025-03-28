@@ -123,7 +123,10 @@ const AdminHeader = () => {
         >
           Logout
         </CustomButton>
-        <CustomButton sx={{ width: '160px', height: '48px' }}>
+        <CustomButton
+          onClick={() => navigate('/add-topic')}
+          sx={{ width: '160px', height: '48px' }}
+        >
           Add New Topic
         </CustomButton>
       </Box>
