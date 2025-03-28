@@ -30,3 +30,13 @@ export type ConfirmResetPasswordTypes = {
   new_password: string;
   confirm_new_password: string;
 };
+
+export type UserDetailsTypes = {
+  id: number;
+  first_name: string;
+  last_name: string;
+  email: string;
+  role: string;
+  profile_picture: string;
+  created_at: string;
+};

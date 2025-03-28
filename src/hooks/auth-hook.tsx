@@ -1,11 +1,13 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useNavigate } from 'react-router-dom';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import {
   register,
   login,
   resetPassword,
   confirmResetPassword,
+  fetchUserProfile,
+  updateUserProfile,
 } from '../services/auth-api';
 import useAuthStore from '../store/auth-store';
 import {
@@ -89,6 +91,29 @@ export const useConfirmResetPassword = (uid: string, token: string) => {
           ? Object.values(data).flat().join('\n')
           : 'Password reset failed.';
       toast.error(message);
+    },
+  });
+};
+
+export const useUserProfile = () => {
+  return useQuery({
+    queryKey: ['user-profile'],
+    queryFn: fetchUserProfile,
+    staleTime: 1000 * 60 * 5,
+  });
+};
+
+export const useUpdateUserProfile = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: updateUserProfile,
+    onSuccess: () => {
+      toast.success('Profile updated successfully!');
+      queryClient.invalidateQueries({ queryKey: ['user-profile'] });
+    },
+    onError: () => {
+      toast.error('Failed to update profile.');
     },
   });
 };

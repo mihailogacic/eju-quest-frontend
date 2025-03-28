@@ -80,6 +80,13 @@ export const topicDetailsSchema = z.object({
     ),
 });
 
+export const updateProfileSchema = z.object({
+  first_name: z.string().min(1, 'First name is required'),
+  last_name: z.string().min(1, 'Last name is required'),
+  email: z.string().email('Invalid email format'),
+  profile_picture: z.string().optional(),
+});
+
 export type LoginFormInputs = z.infer<typeof loginSchema>;
 export type RegisterFormInputs = z.infer<typeof registerSchema>;
 export type ResetPasswordFormInputs = z.infer<typeof resetPasswordSchema>;
@@ -87,3 +94,4 @@ export type ChangePasswordFormInputs = z.infer<typeof changePasswordSchema>;
 export type AddChildrenFormInputs = z.infer<typeof addChildrenSchema>;
 export type LessonSummaryInputs = z.infer<typeof lessonSummarySchema>;
 export type TopicDetailsInputs = z.infer<typeof topicDetailsSchema>;
+export type UpdateProfileInputs = z.infer<typeof updateProfileSchema>;

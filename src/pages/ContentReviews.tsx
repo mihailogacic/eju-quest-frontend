@@ -1,6 +1,7 @@
 import { Box, Typography, CircularProgress } from '@mui/material';
 import SessionReviewsItem from '../components/admin-parent/SessionReviewsItem';
 import { usePendingLessons } from '../hooks/lessons-hook';
+import { capitalize } from '../utils/helper-functions';
 
 const ContentReviews = () => {
   const { data: lessons, isPending, isError } = usePendingLessons();
@@ -70,7 +71,7 @@ const ContentReviews = () => {
                 image={lesson.image}
                 title={lesson.title}
                 description='Description'
-                status={lesson.status}
+                status={capitalize(lesson.status)}
                 role='Admin'
               />
             ))

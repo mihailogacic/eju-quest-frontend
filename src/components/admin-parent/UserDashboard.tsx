@@ -5,6 +5,7 @@ import SearchIcon from '@mui/icons-material/Search';
 import CustomInput from '../common/CustomInput';
 import CustomButton from '../common/CustomButton';
 import { SingleUser } from '../../types/users-types';
+import { filterUsersBySearch } from '../../utils/helper-functions';
 
 type UserDashboardProps = {
   search: string;
@@ -33,13 +34,7 @@ const UserDashboard = ({
     return () => clearTimeout(debounce);
   }, [search, onSearchTrigger]);
 
-  const filteredResults = searchResults
-    .filter((user) => user.role === 'child')
-    .filter((user) =>
-      `${user.first_name} ${user.last_name}`
-        .toLowerCase()
-        .includes(search.toLowerCase())
-    );
+  const filteredResults = filterUsersBySearch(searchResults, search, 'child');
 
   return (
     <Box

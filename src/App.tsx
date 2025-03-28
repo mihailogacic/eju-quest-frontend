@@ -43,6 +43,7 @@ const App = () => {
           pauseOnFocusLoss
           draggable
           pauseOnHover
+          toastClassName='custom-toast'
         />
         <Routes>
           <Route
