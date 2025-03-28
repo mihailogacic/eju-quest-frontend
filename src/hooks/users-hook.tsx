@@ -1,18 +1,20 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useNavigate } from 'react-router-dom';
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'react-toastify';
-import { addChild, getDashboardUsers } from '../services/users-api';
+import { addChild, getDashboardUsers, getUsers } from '../services/users-api';
 import { AddChildTypes } from '../types/users-types';
 
 export const useAddChild = () => {
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: (data: AddChildTypes) => addChild(data),
     onSuccess: () => {
       toast.success('Child user successfully added.');
-      navigate('/user-profile');
+      queryClient.invalidateQueries({ queryKey: ['users'] });
+      navigate('/admin');
     },
     onError: (error: any) => {
       const message =
@@ -29,5 +31,12 @@ export const useDashboardUsers = (search: string) => {
     queryKey: ['dashboard-users', search],
     queryFn: () => getDashboardUsers(search),
     enabled: !!search,
+  });
+};
+
+export const useGetUsers = () => {
+  return useQuery({
+    queryKey: ['users'],
+    queryFn: getUsers,
   });
 };

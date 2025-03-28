@@ -1,8 +1,10 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Box, Typography } from '@mui/material';
 import CustomInput from '../common/CustomInput';
 import CustomSwitch from '../common/CustomSwitch';
 import CustomButton from '../common/CustomButton';
+import { useSubmitLesson } from '../../hooks/lessons-hook';
+import { toast } from 'react-toastify';
 
 const questionWrapperStyle = {
   minWidth: '400px',
@@ -42,20 +44,121 @@ const underInputStyle = {
   mt: '4px',
 };
 
-const Choices = () => {
-  const [answers, setAnswers] = useState<(number | null)[]>([
-    null,
-    null,
-    null,
-    null,
-  ]);
+type ChoicesProps = {
+  questions: {
+    question: string;
+    options: {
+      option: string;
+      text: string;
+    }[];
+    answer: string;
+  }[];
+  lessonInfo: {
+    title: string;
+    age_level: number;
+    lesson_length: 'short' | 'medium' | 'long';
+  };
+  isGenerated: boolean;
+};
 
-  const handleSwitchChange = (questionIndex: number, optionIndex: number) => {
-    setAnswers((prev) => {
-      const newAnswers = [...prev];
-      newAnswers[questionIndex] = optionIndex;
-      return newAnswers;
+const Choices = ({ questions, lessonInfo, isGenerated }: ChoicesProps) => {
+  const { mutate: submitLesson } = useSubmitLesson();
+
+  const defaultState = Array(4)
+    .fill(null)
+    .map(() => ({
+      question: '',
+      options: Array(4).fill(''),
+      answerIndex: null as number | null,
+    }));
+
+  const [formData, setFormData] = useState(defaultState);
+
+  useEffect(() => {
+    if (questions.length > 0) {
+      const updated = questions.map((q) => ({
+        question: q.question,
+        options: q.options.map((opt) => opt.text),
+        answerIndex: q.options.findIndex((opt) => opt.option === q.answer),
+      }));
+
+      setFormData((prev) => prev.map((_, i) => updated[i] || prev[i]));
+    }
+  }, [questions]);
+
+  const handleInputChange =
+    (qIdx: number, optIdx?: number) =>
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      setFormData((prev) => {
+        const updated = [...prev];
+        if (optIdx !== undefined) {
+          updated[qIdx].options[optIdx] = e.target.value;
+        } else {
+          updated[qIdx].question = e.target.value;
+        }
+        return updated;
+      });
+    };
+
+  const handleSwitchChange = (qIdx: number, selectedIdx: number) => {
+    setFormData((prev) => {
+      const updated = [...prev];
+      updated[qIdx].answerIndex = selectedIdx;
+      return updated;
     });
+  };
+
+  const handleSubmit = () => {
+    const isFormValid = formData.every((q) => {
+      const hasQuestion = q.question.trim() !== '';
+      const allOptionsFilled = q.options.every((opt) => opt.trim() !== '');
+      const hasAnswer = q.answerIndex !== null;
+      return hasQuestion && allOptionsFilled && hasAnswer;
+    });
+
+    const isHeaderValid =
+      lessonInfo.title.trim() !== '' &&
+      lessonInfo.age_level >= 4 &&
+      lessonInfo.age_level <= 18 &&
+      ['short', 'medium', 'long'].includes(lessonInfo.lesson_length);
+
+    if (!isHeaderValid) {
+      toast.error(
+        'Please fill in topic title, valid age level (4-18), and select lesson length.'
+      );
+      return;
+    }
+
+    if (!isFormValid) {
+      toast.error(
+        'Please fill in all questions, options and select the correct answer.'
+      );
+      return;
+    }
+
+    const formattedQuestions = formData.map((q) => ({
+      question: q.question,
+      options: q.options.map((text, i) => ({
+        option: String.fromCharCode(65 + i),
+        text,
+      })),
+      answer: String.fromCharCode(65 + (q.answerIndex ?? 0)),
+    }));
+
+    const payload = {
+      title: lessonInfo.title,
+      age_level: lessonInfo.age_level,
+      lesson_length: lessonInfo.lesson_length,
+      questions: formattedQuestions,
+      // TODO: generisan kontent dodati ovde.
+      content: [],
+    };
+
+    submitLesson(payload);
+  };
+
+  const handleClear = () => {
+    setFormData(defaultState);
   };
 
   return (
@@ -107,27 +210,37 @@ const Choices = () => {
           },
         }}
       >
-        {[0, 1, 2, 3].map((questionIndex) => (
+        {formData.map((q, questionIndex) => (
           <Box key={questionIndex} sx={questionWrapperStyle}>
             <Box>
               <Box component='label' sx={labelStyle}>
                 Question {questionIndex + 1}
               </Box>
-              <CustomInput sx={inputStyle} />
+              <CustomInput
+                autoComplete='off'
+                value={q.question}
+                onChange={handleInputChange(questionIndex)}
+                sx={inputStyle}
+              />
               <Typography sx={underInputStyle}>
                 Write question {questionIndex + 1}
               </Typography>
             </Box>
 
-            {[0, 1, 2, 3].map((optionIndex) => (
+            {q.options.map((optText, optionIndex) => (
               <Box key={optionIndex}>
                 <Box component='label' sx={labelStyle}>
                   Option {optionIndex + 1}
                 </Box>
                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-                  <CustomInput sx={inputStyle} />
+                  <CustomInput
+                    autoComplete='off'
+                    value={optText}
+                    onChange={handleInputChange(questionIndex, optionIndex)}
+                    sx={inputStyle}
+                  />
                   <CustomSwitch
-                    checked={answers[questionIndex] === optionIndex}
+                    checked={q.answerIndex === optionIndex}
                     onChange={() =>
                       handleSwitchChange(questionIndex, optionIndex)
                     }
@@ -152,6 +265,7 @@ const Choices = () => {
         }}
       >
         <CustomButton
+          onClick={handleClear}
           sx={{
             border: '1px solid black',
             width: '100%',
@@ -165,6 +279,8 @@ const Choices = () => {
         </CustomButton>
 
         <CustomButton
+          onClick={handleSubmit}
+          disabled={!isGenerated}
           sx={{
             backgroundColor: 'black',
             color: 'white',
@@ -173,6 +289,10 @@ const Choices = () => {
             '&:hover': {
               backgroundColor: 'black',
               color: 'white',
+            },
+            '&:disabled': {
+              color: 'white',
+              opacity: 0.6,
             },
             '@media (max-width: 640px)': {
               maxWidth: '100%',

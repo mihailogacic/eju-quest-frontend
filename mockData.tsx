@@ -3,7 +3,7 @@ import sessionPlaceholder from './src/assets/images/session-placeholder.png';
 import reviewPlaceholder from './src/assets/images/review-placeholder.png';
 import coursePlaceholder from './src/assets/images/course-placeholder.png';
 import recentActivityPlaceholder from './src/assets/images/recent-activity-placeholder.png';
-import profilePlaceholder from './src/assets/images/profile-placeholder.png';
+import profilePlaceholder from './src/assets/images/profile-placeholder.jpg';
 
 export const recentUsersData = [
   {

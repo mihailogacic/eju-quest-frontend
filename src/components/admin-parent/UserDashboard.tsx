@@ -1,22 +1,30 @@
 import { useEffect } from 'react';
-import { Box, Typography } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
+import { Box, Typography, CircularProgress } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import CustomInput from '../common/CustomInput';
 import CustomButton from '../common/CustomButton';
+import { SingleUser } from '../../types/users-types';
 
 type UserDashboardProps = {
   search: string;
   setSearch: (value: string) => void;
-  onAddUser: () => void;
   onSearchTrigger: (value: string) => void;
+  searchResults: SingleUser[];
+  isVisible: boolean;
+  isPending: boolean;
 };
 
 const UserDashboard = ({
   search,
   setSearch,
-  onAddUser,
   onSearchTrigger,
+  searchResults,
+  isVisible,
+  isPending,
 }: UserDashboardProps) => {
+  const navigate = useNavigate();
+
   useEffect(() => {
     const debounce = setTimeout(() => {
       onSearchTrigger(search);
@@ -24,6 +32,14 @@ const UserDashboard = ({
 
     return () => clearTimeout(debounce);
   }, [search, onSearchTrigger]);
+
+  const filteredResults = searchResults
+    .filter((user) => user.role === 'child')
+    .filter((user) =>
+      `${user.first_name} ${user.last_name}`
+        .toLowerCase()
+        .includes(search.toLowerCase())
+    );
 
   return (
     <Box
@@ -82,26 +98,78 @@ const UserDashboard = ({
           },
         }}
       >
-        <CustomInput
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          placeholder='Search'
-          startIcon={
-            <SearchIcon
-              sx={(theme) => ({
-                color: theme.palette.text.silver,
-              })}
-            />
-          }
-          sx={{
-            borderRadius: '120px',
-            border: '2px solid #ededed33',
-            width: '100%',
-            maxWidth: '360px',
-          }}
-        />
+        <Box sx={{ position: 'relative', width: '100%', maxWidth: '360px' }}>
+          <CustomInput
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            placeholder='Search'
+            startIcon={
+              <SearchIcon
+                sx={(theme) => ({
+                  color: theme.palette.text.silver,
+                })}
+              />
+            }
+            sx={{
+              borderRadius: '120px',
+              border: '2px solid #ededed33',
+              width: '100%',
+              maxWidth: '360px',
+            }}
+          />
+          {isVisible && (
+            <Box
+              sx={{
+                position: 'absolute',
+                backgroundColor: '#fff',
+                color: '#000',
+                borderRadius: '8px',
+                boxShadow: 3,
+                mt: '4px',
+                width: '100%',
+                maxWidth: '360px',
+                zIndex: 10,
+                py: 1,
+              }}
+            >
+              {isPending ? (
+                <Box display='flex' justifyContent='center' py={2}>
+                  <CircularProgress size={24} />
+                </Box>
+              ) : filteredResults.length > 0 ? (
+                filteredResults.map((user, idx) => (
+                  <Box
+                    key={idx}
+                    sx={{
+                      mb: 1,
+                      cursor: 'pointer',
+                      '&:hover': { backgroundColor: '#f5f5f5' },
+                      p: 2,
+                    }}
+                    onClick={() => navigate('/user-management')}
+                  >
+                    <Typography variant='body2' fontWeight={500}>
+                      {user.first_name} {user.last_name}
+                    </Typography>
+                    <Typography variant='caption' color='text.secondary'>
+                      {user.email}
+                    </Typography>
+                  </Box>
+                ))
+              ) : (
+                <Typography
+                  variant='body2'
+                  color='text.secondary'
+                  align='center'
+                >
+                  No results found.
+                </Typography>
+              )}
+            </Box>
+          )}
+        </Box>
         <CustomButton
-          onClick={onAddUser}
+          onClick={() => navigate('/add-children')}
           sx={{
             height: '48px',
             width: '240px',

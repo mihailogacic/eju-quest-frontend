@@ -26,6 +26,7 @@ import Quiz from './pages/Quiz';
 import Terms from './pages/Terms';
 import PrivacyPolicy from './pages/PrivacyPolicy';
 import NotFound from './pages/NotFound';
+import UserManagement from './pages/UserManagement';
 
 const App = () => {
   return (
@@ -140,6 +141,16 @@ const App = () => {
               <ProtectedRoute>
                 <Layout>
                   <ContentReviews />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path='/user-management'
+            element={
+              <ProtectedRoute>
+                <Layout>
+                  <UserManagement />
                 </Layout>
               </ProtectedRoute>
             }

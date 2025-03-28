@@ -20,6 +20,7 @@ declare module '@mui/material/styles' {
     slateBlack: string;
     lightSlate: string;
     lightGreen: string;
+    noData: string;
   }
 
   interface Palette {
@@ -62,6 +63,7 @@ const theme = createTheme({
       slateBlack: '#131313',
       lightSlate: '#F1F5F9',
       lightGreen: '#A3E635',
+      noData: 'hsl(0, 0%, 50%)',
     },
     border: {
       midGray: '#8D8D8D',

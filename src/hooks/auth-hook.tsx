@@ -34,8 +34,6 @@ export const useRegister = () => {
 };
 
 export const useLogin = () => {
-  const navigate = useNavigate();
-
   return useMutation({
     mutationFn: (data: LoginTypes) => login(data),
     onSuccess: (data: LoginResponseTypes) => {
@@ -46,8 +44,6 @@ export const useLogin = () => {
       setUser(user);
       setToken(access_token);
       setRefreshToken(refresh_token);
-
-      navigate('/admin');
     },
     onError: (error: any) => {
       const message =
