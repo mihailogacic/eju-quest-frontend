@@ -5,6 +5,7 @@ import {
   LoginTypes,
   LoginResponseTypes,
   ConfirmResetPasswordTypes,
+  UserDetailsTypes,
 } from '../types/auth-types';
 
 export const register = async (data: RegisterTypes) => {
@@ -80,4 +81,19 @@ export const confirmResetPassword = async (
       'An error occurred while confirming password reset.'
     );
   }
+};
+
+export const fetchUserProfile = async (): Promise<UserDetailsTypes> => {
+  const response = await axiosInstance.get<UserDetailsTypes>('/users/profile/');
+  return response.data;
+};
+
+export const updateUserProfile = async (data: {
+  profile_picture: string;
+  first_name: string;
+  last_name: string;
+  email: string;
+}) => {
+  const response = await axiosInstance.patch('/users/profile/', data);
+  return response.data;
 };
