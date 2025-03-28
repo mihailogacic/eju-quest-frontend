@@ -1,8 +1,10 @@
-import { Box, Typography } from '@mui/material';
+import { Box, Typography, CircularProgress } from '@mui/material';
 import SessionReviewsItem from '../components/admin-parent/SessionReviewsItem';
-import { reviewsData } from '../../mockData';
+import { usePendingLessons } from '../hooks/lessons-hook';
 
 const ContentReviews = () => {
+  const { data: lessons, isPending, isError } = usePendingLessons();
+
   return (
     <Box
       sx={{
@@ -30,37 +32,58 @@ const ContentReviews = () => {
         Review and take action on pending content items.
       </Typography>
 
-      <Box
-        sx={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(2, 1fr)',
-          justifyContent: 'center',
-          justifyItems: 'center',
-          maxWidth: '1120px',
-          width: '100%',
-          mx: 'auto',
-          px: 2,
-          columnGap: 2,
-          rowGap: '20px',
-          my: 6,
+      {isPending ? (
+        <Box display='flex' justifyContent='center' mt={6}>
+          <CircularProgress />
+        </Box>
+      ) : isError ? (
+        <Typography color='error' textAlign='center' mt={4}>
+          Failed to load pending lessons.
+        </Typography>
+      ) : (
+        <Box
+          sx={{
+            display: 'grid',
+            gridTemplateColumns:
+              lessons.length > 0 ? 'repeat(2, 1fr)' : 'repeat(1, 1fr)',
+            justifyContent: 'center',
+            justifyItems: 'center',
+            maxWidth: '1120px',
+            width: '100%',
+            mx: 'auto',
+            px: 2,
+            columnGap: 2,
+            rowGap: '20px',
+            my: 6,
 
-          '@media (max-width: 900px)': {
-            gridTemplateColumns: 'repeat(1, 1fr)',
-          },
-        }}
-      >
-        {reviewsData.map((review, index) => (
-          <SessionReviewsItem
-            key={index}
-            image={review.image}
-            title={review.title}
-            description={review.description}
-            status={review.status}
-            role={review.role}
-            hasEdit={review.hasEdit}
-          />
-        ))}
-      </Box>
+            '@media (max-width: 900px)': {
+              gridTemplateColumns: 'repeat(1, 1fr)',
+            },
+          }}
+        >
+          {lessons.length > 0 ? (
+            lessons.map((lesson) => (
+              <SessionReviewsItem
+                key={lesson.id}
+                image={lesson.image}
+                title={lesson.title}
+                description={`Created by: ${lesson.creator}`}
+                status={lesson.status}
+                role='lesson'
+              />
+            ))
+          ) : (
+            <Typography
+              sx={(theme) => ({
+                fontSize: '14px',
+                color: theme.palette.text.noData,
+              })}
+            >
+              No pending lessons found.
+            </Typography>
+          )}
+        </Box>
+      )}
     </Box>
   );
 };

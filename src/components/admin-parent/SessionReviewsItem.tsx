@@ -1,5 +1,4 @@
 import { Box, Typography } from '@mui/material';
-import editIcon from '../../assets/icons/edit-icon.png';
 
 type SessionReviewsItemProps = {
   image: string;
@@ -16,7 +15,6 @@ const SessionReviewsItem = ({
   description,
   status,
   role,
-  hasEdit = false,
 }: SessionReviewsItemProps) => {
   return (
     <Box
@@ -89,15 +87,6 @@ const SessionReviewsItem = ({
           </Typography>
         </Box>
       </Box>
-
-      {hasEdit && (
-        <Box
-          component='img'
-          src={editIcon}
-          alt='edit icon'
-          sx={{ position: 'absolute', top: 8, right: 8, cursor: 'pointer' }}
-        />
-      )}
     </Box>
   );
 };
