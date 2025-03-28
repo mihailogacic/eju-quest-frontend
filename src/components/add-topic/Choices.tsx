@@ -4,6 +4,7 @@ import CustomInput from '../common/CustomInput';
 import CustomSwitch from '../common/CustomSwitch';
 import CustomButton from '../common/CustomButton';
 import { useSubmitLesson } from '../../hooks/lessons-hook';
+import { toast } from 'react-toastify';
 
 const questionWrapperStyle = {
   minWidth: '400px',
@@ -57,9 +58,10 @@ type ChoicesProps = {
     age_level: number;
     lesson_length: 'short' | 'medium' | 'long';
   };
+  isGenerated: boolean;
 };
 
-const Choices = ({ questions, lessonInfo }: ChoicesProps) => {
+const Choices = ({ questions, lessonInfo, isGenerated }: ChoicesProps) => {
   const { mutate: submitLesson } = useSubmitLesson();
 
   const defaultState = Array(4)
@@ -107,6 +109,33 @@ const Choices = ({ questions, lessonInfo }: ChoicesProps) => {
   };
 
   const handleSubmit = () => {
+    const isFormValid = formData.every((q) => {
+      const hasQuestion = q.question.trim() !== '';
+      const allOptionsFilled = q.options.every((opt) => opt.trim() !== '');
+      const hasAnswer = q.answerIndex !== null;
+      return hasQuestion && allOptionsFilled && hasAnswer;
+    });
+
+    const isHeaderValid =
+      lessonInfo.title.trim() !== '' &&
+      lessonInfo.age_level >= 4 &&
+      lessonInfo.age_level <= 18 &&
+      ['short', 'medium', 'long'].includes(lessonInfo.lesson_length);
+
+    if (!isHeaderValid) {
+      toast.error(
+        'Please fill in topic title, valid age level (4-18), and select lesson length.'
+      );
+      return;
+    }
+
+    if (!isFormValid) {
+      toast.error(
+        'Please fill in all questions, options and select the correct answer.'
+      );
+      return;
+    }
+
     const formattedQuestions = formData.map((q) => ({
       question: q.question,
       options: q.options.map((text, i) => ({
@@ -188,6 +217,7 @@ const Choices = ({ questions, lessonInfo }: ChoicesProps) => {
                 Question {questionIndex + 1}
               </Box>
               <CustomInput
+                autoComplete='off'
                 value={q.question}
                 onChange={handleInputChange(questionIndex)}
                 sx={inputStyle}
@@ -204,6 +234,7 @@ const Choices = ({ questions, lessonInfo }: ChoicesProps) => {
                 </Box>
                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
                   <CustomInput
+                    autoComplete='off'
                     value={optText}
                     onChange={handleInputChange(questionIndex, optionIndex)}
                     sx={inputStyle}
@@ -249,6 +280,7 @@ const Choices = ({ questions, lessonInfo }: ChoicesProps) => {
 
         <CustomButton
           onClick={handleSubmit}
+          disabled={!isGenerated}
           sx={{
             backgroundColor: 'black',
             color: 'white',
@@ -257,6 +289,10 @@ const Choices = ({ questions, lessonInfo }: ChoicesProps) => {
             '&:hover': {
               backgroundColor: 'black',
               color: 'white',
+            },
+            '&:disabled': {
+              color: 'white',
+              opacity: 0.6,
             },
             '@media (max-width: 640px)': {
               maxWidth: '100%',

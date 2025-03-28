@@ -2,16 +2,21 @@ import { useState } from 'react';
 import { Box } from '@mui/material';
 import TopicHeader from '../components/add-topic/TopicHeader';
 import Choices from '../components/add-topic/Choices';
+import TopicContent from '../components/add-topic/TopicContent';
 import { LessonQuestion } from '../types/lessons-types';
 
 const AddTopic = () => {
+  const [isGenerated, setIsGenerated] = useState(false);
   const [generatedQuestions, setGeneratedQuestions] = useState<
     LessonQuestion[]
+  >([]);
+  const [generatedContent, setGeneratedContent] = useState<
+    { heading: string; text: string }[]
   >([]);
   const [lessonInfo, setLessonInfo] = useState({
     title: '',
     age_level: 0,
-    lesson_length: 'short' as 'short' | 'medium' | 'long',
+    lesson_length: '' as 'short' | 'medium' | 'long',
   });
 
   return (
@@ -19,6 +24,13 @@ const AddTopic = () => {
       <TopicHeader
         onGenerate={(res) => {
           setGeneratedQuestions(res.lesson.questions);
+          setGeneratedContent(res.lesson.content);
+          setLessonInfo({
+            title: res.prompt_input.title,
+            age_level: res.prompt_input.age_level,
+            lesson_length: res.prompt_input.lesson_length,
+          });
+          setIsGenerated(true);
         }}
         onFormChange={(data) => {
           setLessonInfo({
@@ -46,7 +58,15 @@ const AddTopic = () => {
           },
         }}
       >
-        <Choices questions={generatedQuestions} lessonInfo={lessonInfo} />
+        {isGenerated && generatedContent.length > 0 && (
+          <TopicContent content={generatedContent} />
+        )}
+
+        <Choices
+          questions={generatedQuestions}
+          lessonInfo={lessonInfo}
+          isGenerated={isGenerated}
+        />
       </Box>
     </Box>
   );

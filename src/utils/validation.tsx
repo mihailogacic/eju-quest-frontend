@@ -60,8 +60,24 @@ export const lessonSummarySchema = z.object({
 
 export const topicDetailsSchema = z.object({
   topic_name: z.string().min(1, 'Topic name is required'),
-  age_level: z.string().min(1, 'Age level is required'),
-  lesson_length: z.string().min(1, 'Lesson length is required'),
+  age_level: z
+    .string()
+    .min(1, 'Age level is required')
+    .transform((val) => Number(val))
+    .refine((val) => !isNaN(val), {
+      message: 'Age level must be a number',
+    })
+    .refine((val) => val >= 4 && val <= 18, {
+      message: 'Age level must be between 4 and 18',
+    }),
+  lesson_length: z
+    .string()
+    .min(1, 'Lesson length is required')
+    .transform((val) => val.toLowerCase())
+    .refine(
+      (val) => ['short', 'medium', 'long'].includes(val),
+      'Lesson length must be short, medium, or long'
+    ),
 });
 
 export type LoginFormInputs = z.infer<typeof loginSchema>;
