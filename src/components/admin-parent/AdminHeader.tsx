@@ -2,12 +2,12 @@ import { useNavigate } from 'react-router-dom';
 import { Box, Typography } from '@mui/material';
 import CustomButton from '../common/CustomButton';
 import useAuthStore from '../../store/auth-store';
-import profilePlaceholder from '../../assets/images/profile-placeholder.png';
+import profilePlaceholder from '../../assets/images/profile-placeholder.jpg';
 import editIcon from '../../assets/icons/edit-icon.png';
 
 const AdminHeader = () => {
   const navigate = useNavigate();
-  const { clearAuth } = useAuthStore();
+  const { clearAuth, user } = useAuthStore();
 
   const handleEditProfilePicture = () => {
     console.log('edit profile picture');
@@ -82,13 +82,18 @@ const AdminHeader = () => {
           }}
         >
           <Typography sx={{ fontWeight: 700, fontSize: '24px' }}>
-            John Doe
+            {user?.first_name || ''} {user?.last_name || ''}
           </Typography>
           <Typography
             sx={(theme) => ({
               fontWeight: 400,
               fontSize: '16px',
               color: theme.palette.text.mediumGray,
+              cursor: 'pointer',
+
+              '&:hover': {
+                textDecoration: 'underline',
+              },
             })}
           >
             User Profile and Settings

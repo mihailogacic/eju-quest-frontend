@@ -19,10 +19,6 @@ const AdminParent = () => {
     setSubmittedSearch(value);
   };
 
-  const handleAddUser = () => {
-    console.log('add user');
-  };
-
   return (
     <Box>
       <AdminHeader />
@@ -48,7 +44,6 @@ const AdminParent = () => {
           search={search}
           setSearch={setSearch}
           onSearchTrigger={handleSearchTrigger}
-          onAddUser={handleAddUser}
         />
       </Box>
 

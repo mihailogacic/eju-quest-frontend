@@ -1,11 +1,14 @@
 import { Box, Typography } from '@mui/material';
 import CustomButton from '../components/common/CustomButton';
-import profilePlaceholder from '../assets/images/profile-placeholder.png';
+import BackCircle from '../components/common/BackCircle';
+import useAuthStore from '../store/auth-store';
+import profilePlaceholder from '../assets/images/profile-placeholder.jpg';
 import starImg from '../assets/images/star.png';
 import hourglassImg from '../assets/images/hourglass.png';
-import BackCircle from '../components/common/BackCircle';
 
 const UserProfile = () => {
+  const { user } = useAuthStore();
+
   return (
     <Box
       sx={{
@@ -97,8 +100,17 @@ const UserProfile = () => {
                 gap: '10px',
               }}
             >
-              <Typography sx={{ fontWeight: 700, fontSize: '24px' }}>
-                Alice
+              <Typography
+                sx={{
+                  fontWeight: 700,
+                  fontSize: '24px',
+                  lineHeight: 1.2,
+                  '@media (max-width: 640px)': {
+                    fontSize: '20px',
+                  },
+                }}
+              >
+                {user?.first_name || ''} {user?.last_name || ''}
               </Typography>
               <Typography
                 sx={{
@@ -114,7 +126,7 @@ const UserProfile = () => {
                   fontSize: '12px',
                 }}
               >
-                Child
+                {user?.role || ''}
               </Typography>
             </Box>
           </Box>

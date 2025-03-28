@@ -4,18 +4,52 @@ import { Box, Drawer, List, ListItem, ListItemText } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import CloseIcon from '@mui/icons-material/Close';
 import CustomButton from '../common/CustomButton';
-import logo from '../../assets/images/logo.png';
 import useAuthStore from '../../store/auth-store';
+import logo from '../../assets/images/logo.png';
 
 const authLinks = {
   fontSize: '14px',
   fontWeight: 400,
   mx: '6px',
   '@media (max-width: 1280px)': { mx: 0 },
+  '&:hover': {
+    textDecoration: 'underline',
+  },
 };
 
 const Navbar = () => {
   const navigate = useNavigate();
+  const { user, clearAuth } = useAuthStore();
+
+  const childLinks = [
+    { label: 'Home', onClick: () => navigate('') },
+    { label: 'Topics', onClick: () => navigate('/explore-topics') },
+    { label: 'Edit Profile', onClick: () => navigate('/user-profile') },
+    {
+      label: 'Logout',
+      onClick: () => {
+        clearAuth();
+        navigate('/sign-in');
+      },
+    },
+  ];
+
+  const parentLinks = [
+    {
+      label: 'User Management',
+      onClick: () => {
+        navigate('/user-management');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      },
+    },
+    {
+      label: 'Content Generation',
+      onClick: () => {
+        navigate('/add-topic');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      },
+    },
+  ];
 
   const [open, setOpen] = useState(false);
 
@@ -139,54 +173,16 @@ const Navbar = () => {
               },
             }}
           >
-            <CustomButton
-              buttonType='text'
-              onClick={() => {
-                window.scrollTo({
-                  top: 0,
-                  behavior: 'smooth',
-                });
-              }}
-              sx={authLinks}
-            >
-              User Management
-            </CustomButton>
-            <CustomButton
-              buttonType='text'
-              onClick={() => {
-                window.scrollTo({
-                  top: 0,
-                  behavior: 'smooth',
-                });
-              }}
-              sx={authLinks}
-            >
-              Content Generation
-            </CustomButton>
-            <CustomButton
-              buttonType='text'
-              onClick={() => {
-                window.scrollTo({
-                  top: 0,
-                  behavior: 'smooth',
-                });
-              }}
-              sx={authLinks}
-            >
-              Session Reviews
-            </CustomButton>
-            <CustomButton
-              buttonType='text'
-              onClick={() => {
-                window.scrollTo({
-                  top: 0,
-                  behavior: 'smooth',
-                });
-              }}
-              sx={authLinks}
-            >
-              Rewards Management
-            </CustomButton>
+            {(user?.role === 'child' ? childLinks : parentLinks).map((link) => (
+              <CustomButton
+                key={link.label}
+                buttonType='text'
+                onClick={link.onClick}
+                sx={authLinks}
+              >
+                {link.label}
+              </CustomButton>
+            ))}
           </Box>
         </Box>
       )}

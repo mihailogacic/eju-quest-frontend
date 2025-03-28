@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Box, Typography } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import CustomInput from '../common/CustomInput';
@@ -7,16 +8,16 @@ import CustomButton from '../common/CustomButton';
 type UserDashboardProps = {
   search: string;
   setSearch: (value: string) => void;
-  onAddUser: () => void;
   onSearchTrigger: (value: string) => void;
 };
 
 const UserDashboard = ({
   search,
   setSearch,
-  onAddUser,
   onSearchTrigger,
 }: UserDashboardProps) => {
+  const navigate = useNavigate();
+
   useEffect(() => {
     const debounce = setTimeout(() => {
       onSearchTrigger(search);
@@ -101,7 +102,7 @@ const UserDashboard = ({
           }}
         />
         <CustomButton
-          onClick={onAddUser}
+          onClick={() => navigate('/add-children')}
           sx={{
             height: '48px',
             width: '240px',
