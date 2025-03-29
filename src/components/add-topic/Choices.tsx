@@ -59,10 +59,16 @@ type ChoicesProps = {
     lesson_length: 'short' | 'medium' | 'long';
   };
   isGenerated: boolean;
+  onClearAll: () => void;
 };
 
-const Choices = ({ questions, lessonInfo, isGenerated }: ChoicesProps) => {
-  const { mutate: submitLesson } = useSubmitLesson();
+const Choices = ({
+  questions,
+  lessonInfo,
+  isGenerated,
+  onClearAll,
+}: ChoicesProps) => {
+  const { mutate: submitLesson, isPending } = useSubmitLesson();
 
   const defaultState = Array(4)
     .fill(null)
@@ -150,7 +156,6 @@ const Choices = ({ questions, lessonInfo, isGenerated }: ChoicesProps) => {
       age_level: lessonInfo.age_level,
       lesson_length: lessonInfo.lesson_length,
       questions: formattedQuestions,
-      // TODO: generisan kontent dodati ovde.
       content: [],
     };
 
@@ -159,6 +164,7 @@ const Choices = ({ questions, lessonInfo, isGenerated }: ChoicesProps) => {
 
   const handleClear = () => {
     setFormData(defaultState);
+    onClearAll();
   };
 
   return (
@@ -280,7 +286,7 @@ const Choices = ({ questions, lessonInfo, isGenerated }: ChoicesProps) => {
 
         <CustomButton
           onClick={handleSubmit}
-          disabled={!isGenerated}
+          disabled={!isGenerated || isPending}
           sx={{
             backgroundColor: 'black',
             color: 'white',
@@ -299,7 +305,7 @@ const Choices = ({ questions, lessonInfo, isGenerated }: ChoicesProps) => {
             },
           }}
         >
-          Add Topic
+          {isPending ? 'Adding...' : 'Add Topic'}
         </CustomButton>
       </Box>
     </Box>

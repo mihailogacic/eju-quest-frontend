@@ -3,17 +3,15 @@ import { Box, Typography } from '@mui/material';
 type ContentReviewHeaderProps = {
   image: string;
   title: string;
-  lesson_number: number | string;
-  completion_time: string;
-  students: string;
+  age_level: number | string;
+  lesson_length: string;
 };
 
 const ContentReviewHeader = ({
   image,
   title,
-  lesson_number,
-  completion_time,
-  students,
+  age_level,
+  lesson_length,
 }: ContentReviewHeaderProps) => {
   return (
     <Box
@@ -67,21 +65,15 @@ const ContentReviewHeader = ({
           {title}
         </Typography>
         <Typography>
-          Number of lessons:{' '}
+          Age level:{' '}
           <Typography component='span' sx={{ fontWeight: 700 }}>
-            {lesson_number} {lesson_number === 1 ? 'Lesson' : 'Lessons'}
+            {age_level}
           </Typography>
         </Typography>
         <Typography>
-          Completion time:{' '}
+          Lesson length:{' '}
           <Typography component='span' sx={{ fontWeight: 700 }}>
-            {completion_time}
-          </Typography>
-        </Typography>
-        <Typography>
-          Students have learned:{' '}
-          <Typography component='span' sx={{ fontWeight: 700 }}>
-            {students}
+            {lesson_length}
           </Typography>
         </Typography>
       </Box>

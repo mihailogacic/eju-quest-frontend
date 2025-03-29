@@ -1,6 +1,8 @@
+import { useNavigate } from 'react-router-dom';
 import { Box, Typography } from '@mui/material';
 
 type SessionReviewsItemProps = {
+  id: string | number;
   image: string;
   title: string;
   description: string;
@@ -15,9 +17,13 @@ const SessionReviewsItem = ({
   description,
   status,
   role,
+  id,
 }: SessionReviewsItemProps) => {
+  const navigate = useNavigate();
+
   return (
     <Box
+      onClick={() => navigate(`/reviews/${id}`)}
       sx={{
         backgroundColor: 'black',
         color: 'white',
@@ -29,6 +35,7 @@ const SessionReviewsItem = ({
         alignItems: 'center',
         borderRadius: '6px',
         position: 'relative',
+        cursor: 'pointer',
       }}
     >
       <Box

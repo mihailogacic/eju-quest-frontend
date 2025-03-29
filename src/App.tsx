@@ -127,7 +127,7 @@ const App = () => {
             }
           />
           <Route
-            path='/reviews/detail'
+            path='/reviews/:id'
             element={
               <ProtectedRoute>
                 <Layout>

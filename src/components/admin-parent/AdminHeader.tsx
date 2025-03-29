@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 import { Box, Typography } from '@mui/material';
 import CustomButton from '../common/CustomButton';
@@ -20,8 +21,10 @@ const AdminHeader = () => {
     setIsModalOpen(true);
   };
 
+  const queryClient = useQueryClient();
   const handleLogout = () => {
     clearAuth();
+    queryClient.clear();
     navigate('/sign-in');
   };
 
