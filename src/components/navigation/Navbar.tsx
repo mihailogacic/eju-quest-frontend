@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 import { Box, Drawer, List, ListItem, ListItemText } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
@@ -21,6 +22,7 @@ const Navbar = () => {
   const navigate = useNavigate();
   const { user, clearAuth } = useAuthStore();
 
+  const queryClient = useQueryClient();
   const childLinks = [
     { label: 'Home', onClick: () => navigate('') },
     { label: 'Topics', onClick: () => navigate('/explore-topics') },
@@ -29,6 +31,7 @@ const Navbar = () => {
       label: 'Logout',
       onClick: () => {
         clearAuth();
+        queryClient.clear();
         navigate('/sign-in');
       },
     },
@@ -202,18 +205,11 @@ const Navbar = () => {
           }}
         >
           <List>
-            <ListItem component='div'>
-              <ListItemText primary='User Management' />
-            </ListItem>
-            <ListItem component='div'>
-              <ListItemText primary='Content Generation' />
-            </ListItem>
-            <ListItem component='div'>
-              <ListItemText primary='Session Reviews' />
-            </ListItem>
-            <ListItem component='div'>
-              <ListItemText primary='Rewards Management' />
-            </ListItem>
+            {(user?.role === 'child' ? childLinks : parentLinks).map((link) => (
+              <ListItem component='div' key={link.label}>
+                <ListItemText onClick={link.onClick} primary={link.label} />
+              </ListItem>
+            ))}
           </List>
         </Box>
       </Drawer>

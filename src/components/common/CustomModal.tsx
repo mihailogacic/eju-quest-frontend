@@ -20,6 +20,9 @@ const CustomModal = ({ isOpen, onClose, children }: CustomModalProps) => {
 
   if (!isOpen) return null;
 
+  const modalRoot = document.getElementById('modal');
+  if (!modalRoot) return null;
+
   return ReactDOM.createPortal(
     <Box
       sx={{
@@ -52,7 +55,7 @@ const CustomModal = ({ isOpen, onClose, children }: CustomModalProps) => {
         {children}
       </Box>
     </Box>,
-    document.getElementById('modal')!
+    modalRoot
   );
 };
 

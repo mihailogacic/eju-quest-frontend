@@ -10,14 +10,29 @@ const AddTopic = () => {
   const [generatedQuestions, setGeneratedQuestions] = useState<
     LessonQuestion[]
   >([]);
+
   const [generatedContent, setGeneratedContent] = useState<
     { heading: string; text: string }[]
   >([]);
+
   const [lessonInfo, setLessonInfo] = useState({
     title: '',
     age_level: 0,
     lesson_length: '' as 'short' | 'medium' | 'long',
   });
+
+  const [clearTrigger, setClearTrigger] = useState(0);
+
+  const handleClearAll = () => {
+    setLessonInfo({
+      title: '',
+      age_level: 0,
+      lesson_length: 'short',
+    });
+    setGeneratedQuestions([]);
+    setIsGenerated(false);
+    setClearTrigger((prev) => prev + 1);
+  };
 
   return (
     <Box>
@@ -39,6 +54,7 @@ const AddTopic = () => {
             lesson_length: data.lesson_length as 'short' | 'medium' | 'long',
           });
         }}
+        clearTrigger={clearTrigger}
       />
       <Box
         sx={{
@@ -66,6 +82,7 @@ const AddTopic = () => {
           questions={generatedQuestions}
           lessonInfo={lessonInfo}
           isGenerated={isGenerated}
+          onClearAll={handleClearAll}
         />
       </Box>
     </Box>

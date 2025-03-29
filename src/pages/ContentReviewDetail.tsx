@@ -1,9 +1,16 @@
+import { useParams } from 'react-router-dom';
 import { Box, Typography } from '@mui/material';
 import ContentReviewHeader from '../components/content-review/ContentReviewHeader';
-import checkListTypeIcon from '../assets/icons/check-list-type.png';
-import { contentReviewDetailData } from '../../mockData';
+import { useLessonDetail } from '../hooks/lessons-hook';
 
 const ContentReviewDetail = () => {
+  const { id } = useParams();
+
+  const { data, isPending, isError } = useLessonDetail(id as string);
+
+  if (isPending) return <Typography>Loading...</Typography>;
+  if (isError || !data) return <Typography>Error loading data</Typography>;
+
   return (
     <Box
       sx={{
@@ -23,11 +30,10 @@ const ContentReviewDetail = () => {
       }}
     >
       <ContentReviewHeader
-        image={contentReviewDetailData.image}
-        title={contentReviewDetailData.title}
-        lesson_number={contentReviewDetailData.lesson_number}
-        completion_time={contentReviewDetailData.completion_time}
-        students={contentReviewDetailData.students}
+        image={data.image}
+        title={data.title}
+        age_level={data.age_level}
+        lesson_length={data.lesson_length}
       />
 
       <Box
@@ -40,84 +46,20 @@ const ContentReviewDetail = () => {
           mb: 10,
         })}
       >
-        <Box>
-          <Typography
-            sx={{
-              fontSize: '18px',
-              fontWeight: 700,
-              mb: 1,
-            }}
-          >
-            Course Details
-          </Typography>
-          <Typography sx={{ fontSize: '14px' }}>
-            {contentReviewDetailData.course_details}
-          </Typography>
-        </Box>
-
-        <Box>
-          <Typography
-            sx={{
-              fontSize: '18px',
-              fontWeight: 700,
-              mb: 1,
-            }}
-          >
-            Certification
-          </Typography>
-          <Typography sx={{ fontSize: '14px' }}>
-            {contentReviewDetailData.certification}
-          </Typography>
-        </Box>
-
-        <Box>
-          <Typography
-            sx={{
-              fontSize: '18px',
-              fontWeight: 700,
-              mb: 1,
-            }}
-          >
-            Who this course is for
-          </Typography>
-          <Typography sx={{ fontSize: '14px' }}>
-            {contentReviewDetailData.course_for}
-          </Typography>
-        </Box>
-
-        <Box>
-          <Typography
-            sx={{
-              fontSize: '18px',
-              fontWeight: 700,
-              mb: '-12px',
-            }}
-          >
-            What you'll learn in this course:
-          </Typography>
-        </Box>
-        <Box component='ul' sx={{ pl: 0, m: 0, listStyle: 'none' }}>
-          {contentReviewDetailData.what_you_learn.map((item, index) => (
-            <Box
-              key={index}
-              component='li'
+        {data.sections.map((section, index) => (
+          <Box key={index}>
+            <Typography
               sx={{
-                display: 'flex',
-                alignItems: 'flex-start',
-                gap: 1.3,
-                mb: 1.5,
+                fontSize: '18px',
+                fontWeight: 700,
+                mb: 1,
               }}
             >
-              <Box
-                component='img'
-                src={checkListTypeIcon}
-                alt='check icon'
-                sx={{ width: 15, height: 15, mt: '3px' }}
-              />
-              <Typography sx={{ fontSize: '14px' }}>{item}</Typography>
-            </Box>
-          ))}
-        </Box>
+              {section.heading}
+            </Typography>
+            <Typography sx={{ fontSize: '14px' }}>{section.content}</Typography>
+          </Box>
+        ))}
       </Box>
     </Box>
   );

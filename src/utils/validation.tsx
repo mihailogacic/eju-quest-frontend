@@ -62,14 +62,15 @@ export const topicDetailsSchema = z.object({
   topic_name: z.string().min(1, 'Topic name is required'),
   age_level: z
     .string()
-    .min(1, 'Age level is required')
-    .transform((val) => Number(val))
-    .refine((val) => !isNaN(val), {
-      message: 'Age level must be a number',
-    })
-    .refine((val) => val >= 4 && val <= 18, {
-      message: 'Age level must be between 4 and 18',
-    }),
+    .refine(
+      (val) =>
+        val === '' ||
+        (!isNaN(Number(val)) && Number(val) >= 4 && Number(val) <= 18),
+      {
+        message: 'Age level must be between 4 and 18',
+      }
+    )
+    .transform((val) => (val === '' ? '' : Number(val))),
   lesson_length: z
     .string()
     .min(1, 'Lesson length is required')

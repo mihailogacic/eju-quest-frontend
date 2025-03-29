@@ -1,5 +1,5 @@
 export type PendingLessonsTypes = {
-  id: number;
+  id: number | string;
   title: string;
   image: string;
   age_level: number;
@@ -52,4 +52,19 @@ export type SubmitLessonPayload = {
     }[];
     answer: string;
   }[];
+};
+
+export type LessonSection = {
+  heading: string;
+  content: string;
+};
+
+export type LessonDetail = {
+  id: number | string;
+  title: string;
+  image: string;
+  age_level: number;
+  lesson_length: 'short' | 'medium' | 'long';
+  status: string;
+  sections: LessonSection[];
 };

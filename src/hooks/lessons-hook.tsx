@@ -4,8 +4,9 @@ import {
   getPendingLessons,
   generateNewLesson,
   submitNewLesson,
+  getLessonDetail,
 } from '../services/lessons-api';
-import { PendingLessonsTypes } from '../types/lessons-types';
+import { PendingLessonsTypes, LessonDetail } from '../types/lessons-types';
 import { toast } from 'react-toastify';
 
 export const usePendingLessons = () => {
@@ -18,6 +19,9 @@ export const usePendingLessons = () => {
 export const useGenerateLesson = () => {
   return useMutation({
     mutationFn: generateNewLesson,
+    onSuccess: () => {
+      toast.success('Lesson was generated successfully!');
+    },
     onError: (error: any) => {
       const message =
         error?.response?.data?.detail ||
@@ -31,6 +35,9 @@ export const useGenerateLesson = () => {
 export const useSubmitLesson = () => {
   return useMutation({
     mutationFn: submitNewLesson,
+    onSuccess: () => {
+      toast.success('Lesson successfully added!');
+    },
     onError: (error: any) => {
       const message =
         error?.response?.data?.detail ||
@@ -38,5 +45,13 @@ export const useSubmitLesson = () => {
         'Something went wrong while submitting the lesson.';
       toast.error(message);
     },
+  });
+};
+
+export const useLessonDetail = (id: string | number) => {
+  return useQuery<LessonDetail>({
+    queryKey: ['lesson-detail', id],
+    queryFn: () => getLessonDetail(id),
+    enabled: !!id,
   });
 };

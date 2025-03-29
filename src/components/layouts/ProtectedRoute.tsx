@@ -12,7 +12,6 @@ const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
 
   const parentRoutes = [
     '/admin',
-    '/reviews/detail',
     '/reviews',
     '/add-topic',
     '/user-management',
@@ -32,7 +31,10 @@ const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
     return <Navigate to='/sign-in' replace />;
   }
 
-  if (user?.role === 'parent' && !parentRoutes.includes(currentPath)) {
+  if (
+    user?.role === 'parent' &&
+    !(parentRoutes.includes(currentPath) || currentPath.startsWith('/reviews/'))
+  ) {
     return <Navigate to='/' replace />;
   }
 

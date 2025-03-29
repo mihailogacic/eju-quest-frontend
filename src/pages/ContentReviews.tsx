@@ -6,8 +6,6 @@ import { capitalize } from '../utils/helper-functions';
 const ContentReviews = () => {
   const { data: lessons, isPending, isError } = usePendingLessons();
 
-  console.log(lessons);
-
   return (
     <Box
       sx={{
@@ -73,6 +71,7 @@ const ContentReviews = () => {
                 description='Description'
                 status={capitalize(lesson.status)}
                 role='Admin'
+                id={lesson.id}
               />
             ))
           ) : (

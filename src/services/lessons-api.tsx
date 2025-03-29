@@ -5,6 +5,7 @@ import {
   GenerateLessonInput,
   GenerateLessonResponse,
   SubmitLessonPayload,
+  LessonDetail,
 } from '../types/lessons-types';
 
 export const getPendingLessons = async (): Promise<PendingLessonsTypes> => {
@@ -63,4 +64,11 @@ export const submitNewLesson = async (
       error.response?.data || 'An error occurred while submitting the lesson.'
     );
   }
+};
+
+export const getLessonDetail = async (
+  id: string | number
+): Promise<LessonDetail> => {
+  const response = await axiosInstance.get<LessonDetail>(`/lessons/${id}/`);
+  return response.data;
 };

@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { Box, Typography } from '@mui/material';
 import CustomInput from '../common/CustomInput';
 import CustomButton from '../common/CustomButton';
@@ -10,9 +11,14 @@ import { GenerateLessonResponse } from '../../types/lessons-types';
 type TopicHeaderProps = {
   onGenerate: (res: GenerateLessonResponse) => void;
   onFormChange: (data: TopicDetailsInputs) => void;
+  clearTrigger: number;
 };
 
-const TopicHeader = ({ onGenerate, onFormChange }: TopicHeaderProps) => {
+const TopicHeader = ({
+  onGenerate,
+  onFormChange,
+  clearTrigger,
+}: TopicHeaderProps) => {
   const { mutate, isPending } = useGenerateLesson();
 
   const {
@@ -20,12 +26,12 @@ const TopicHeader = ({ onGenerate, onFormChange }: TopicHeaderProps) => {
     handleSubmit,
     formState: { errors },
     watch,
+    reset,
   } = useForm<TopicDetailsInputs>({
     resolver: zodResolver(topicDetailsSchema),
   });
 
   const onSubmit = (data: TopicDetailsInputs) => {
-    console.log('Payload iz TopicHeader komponente: ', data);
     mutate(
       {
         title: data.topic_name,
@@ -39,6 +45,14 @@ const TopicHeader = ({ onGenerate, onFormChange }: TopicHeaderProps) => {
       }
     );
   };
+
+  useEffect(() => {
+    reset({
+      topic_name: '',
+      age_level: '',
+      lesson_length: '',
+    });
+  }, [clearTrigger, reset]);
 
   return (
     <Box
