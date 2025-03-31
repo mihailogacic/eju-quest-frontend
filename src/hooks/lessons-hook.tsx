@@ -5,6 +5,7 @@ import {
   generateNewLesson,
   submitNewLesson,
   getLessonDetail,
+  getApprovedLessons,
 } from '../services/lessons-api';
 import { PendingLessonsTypes, LessonDetail } from '../types/lessons-types';
 import { toast } from 'react-toastify';
@@ -53,5 +54,12 @@ export const useLessonDetail = (id: string | number) => {
     queryKey: ['lesson-detail', id],
     queryFn: () => getLessonDetail(id),
     enabled: !!id,
+  });
+};
+
+export const useApprovedLessons = () => {
+  return useQuery<PendingLessonsTypes>({
+    queryKey: ['approved-lessons'],
+    queryFn: getApprovedLessons,
   });
 };

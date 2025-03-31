@@ -1,11 +1,23 @@
-import { Box, Typography } from '@mui/material';
+import { Box, Typography, CircularProgress } from '@mui/material';
 import CourseItem from '../components/explore-topics/CourseItem';
 import RecentActivity from '../components/explore-topics/RecentActivity';
-import { courseData } from '../../mockData';
+import { useApprovedLessons } from '../hooks/lessons-hook';
 
 const ExploreTopics = () => {
+  const { data, isPending, isError } = useApprovedLessons();
+
   return (
-    <Box>
+    <Box
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        minHeight: 'calc(100vh - 104px - 90px)',
+
+        '@media (max-width: 640px)': {
+          minHeight: 'calc(100vh - 180px)',
+        },
+      }}
+    >
       <Box
         sx={{
           backgroundColor: 'black',
@@ -41,6 +53,7 @@ const ExploreTopics = () => {
 
       <Box
         sx={{
+          flexGrow: 1,
           px: 12,
           py: 8,
           '@media (max-width: 1280px)': {
@@ -84,18 +97,51 @@ const ExploreTopics = () => {
             },
           }}
         >
-          {courseData.map((course, index) => (
-            <CourseItem
-              key={index}
-              image={course.image}
-              name={course.name}
-              description={course.description}
-            />
-          ))}
+          {isPending ? (
+            <Box
+              display='flex'
+              justifyContent='center'
+              py={2}
+              gridColumn='1 / -1'
+            >
+              <CircularProgress size={32} />
+            </Box>
+          ) : isError ? (
+            <Typography
+              variant='body2'
+              color='error'
+              align='center'
+              sx={{ gridColumn: '1 / -1' }}
+            >
+              Failed to load approved lessons.
+            </Typography>
+          ) : data?.recommended_courses?.length > 0 ? (
+            data.recommended_courses.map((course, index) => (
+              <CourseItem
+                key={index}
+                image={course.image}
+                name={course.title}
+                description='Need Description'
+              />
+            ))
+          ) : (
+            <Typography
+              variant='body2'
+              color='text.secondary'
+              align='center'
+              sx={{ gridColumn: '1 / -1' }}
+            >
+              No courses found.
+            </Typography>
+          )}
         </Box>
       </Box>
 
-      <RecentActivity />
+      <RecentActivity
+        cardData={data?.recent_activity || []}
+        isLoading={isPending}
+        isError={isError}
+      />
     </Box>
   );
 };

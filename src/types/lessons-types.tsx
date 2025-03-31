@@ -1,12 +1,27 @@
-export type PendingLessonsTypes = {
+export type RecommendedCoursesTypes = {
   id: number | string;
   title: string;
   image: string;
   age_level: number;
-  lesson_length: string;
-  status: string;
+  lesson_length: 'short' | 'medium' | 'long';
+  status: 'approved' | 'unapproved';
   creator: string;
-}[];
+};
+
+export type RecentActivityTypes = {
+  id: number | string;
+  title: string;
+  image: string;
+  age_level: number;
+  lesson_length: 'short' | 'medium' | 'long';
+  status: 'approved' | 'unapproved';
+  creator: string;
+};
+
+export type PendingLessonsTypes = {
+  recommended_courses: RecommendedCoursesTypes[];
+  recent_activity: RecentActivityTypes[];
+};
 
 export type GenerateLessonInput = {
   title: string;

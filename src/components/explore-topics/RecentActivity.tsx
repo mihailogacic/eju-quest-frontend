@@ -1,8 +1,18 @@
-import { Box, Typography } from '@mui/material';
+import { Box, Typography, CircularProgress } from '@mui/material';
 import RecentActivityCard from './RecentActivityCard';
-import { recentActivityData } from '../../../mockData';
+import { RecentActivityTypes } from '../../types/lessons-types';
 
-const RecentActivity = () => {
+type RecentActivityProps = {
+  cardData: RecentActivityTypes[] | null;
+  isLoading?: boolean;
+  isError?: boolean;
+};
+
+const RecentActivity = ({
+  cardData,
+  isLoading = false,
+  isError = false,
+}: RecentActivityProps) => {
   return (
     <Box
       sx={{
@@ -11,6 +21,7 @@ const RecentActivity = () => {
         borderBottom: '1px solid white',
         px: 12,
         py: 8,
+        // flexGrow: 1,
         '@media (max-width: 1280px)': {
           px: 8,
           py: 6,
@@ -52,17 +63,46 @@ const RecentActivity = () => {
           },
         }}
       >
-        {recentActivityData.map((card, index) => (
-          <RecentActivityCard
-            key={index}
-            profile_picture={card.profile_picture}
-            first_name={card.first_name}
-            last_name={card.last_name}
-            image={card.image}
-            title={card.title}
-            hashtags={card.hashtags}
-          />
-        ))}
+        {isLoading ? (
+          <Box
+            display='flex'
+            justifyContent='center'
+            py={2}
+            gridColumn='1 / -1'
+          >
+            <CircularProgress size={32} sx={{ color: 'white' }} />
+          </Box>
+        ) : isError ? (
+          <Typography
+            variant='body2'
+            color='error'
+            align='center'
+            sx={{ gridColumn: '1 / -1' }}
+          >
+            Failed to load recent activity.
+          </Typography>
+        ) : cardData && cardData.length > 0 ? (
+          cardData.map((card, index) => (
+            <RecentActivityCard
+              key={index}
+              profile_picture=''
+              first_name='NaN'
+              last_name='NaN'
+              image={card.image}
+              title={card.title}
+              hashtags={['learning']}
+            />
+          ))
+        ) : (
+          <Typography
+            variant='body2'
+            color='text.secondary'
+            align='center'
+            sx={{ gridColumn: '1 / -1' }}
+          >
+            No recent activity found.
+          </Typography>
+        )}
       </Box>
     </Box>
   );

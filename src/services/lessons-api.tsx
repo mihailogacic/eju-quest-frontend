@@ -72,3 +72,22 @@ export const getLessonDetail = async (
   const response = await axiosInstance.get<LessonDetail>(`/lessons/${id}/`);
   return response.data;
 };
+
+export const getApprovedLessons = async (): Promise<PendingLessonsTypes> => {
+  try {
+    const response = await axiosInstance.get<PendingLessonsTypes>(
+      '/lessons/explore-approved/',
+      {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }
+    );
+    return response.data;
+  } catch (error: any) {
+    throw (
+      error.response?.data ||
+      'An error occurred while fetching approved lessons.'
+    );
+  }
+};
