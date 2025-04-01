@@ -167,7 +167,7 @@ const App = () => {
             }
           />
           <Route
-            path='/lesson'
+            path='/lesson/:id'
             element={
               <ProtectedRoute>
                 <Layout>
@@ -177,7 +177,7 @@ const App = () => {
             }
           />
           <Route
-            path='/lesson-summary'
+            path='/lesson-summary/:id'
             element={
               <ProtectedRoute>
                 <Layout>
@@ -197,7 +197,7 @@ const App = () => {
             }
           />
           <Route
-            path='/quiz'
+            path='/quiz/:id'
             element={
               <ProtectedRoute>
                 <Layout footerEnabled={false}>

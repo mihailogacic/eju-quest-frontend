@@ -7,6 +7,10 @@ import {
   submitNewLesson,
   getLessonDetail,
   getApprovedLessons,
+  approveLesson,
+  unapproveLesson,
+  getLessonQuiz,
+  submitLessonSummary,
 } from '../services/lessons-api';
 import { PendingLessonsTypes, LessonDetail } from '../types/lessons-types';
 import { toast } from 'react-toastify';
@@ -65,5 +69,67 @@ export const useApprovedLessons = () => {
   return useQuery<PendingLessonsTypes>({
     queryKey: ['approved-lessons'],
     queryFn: getApprovedLessons,
+  });
+};
+
+export const useApproveLesson = () => {
+  const navigate = useNavigate();
+
+  return useMutation({
+    mutationFn: approveLesson,
+    onSuccess: () => {
+      toast.success('Lesson approved successfully!');
+      navigate('/reviews');
+    },
+    onError: (error: any) => {
+      const message =
+        error?.response?.data?.detail ||
+        error?.detail ||
+        'Something went wrong while approving the lesson.';
+      toast.error(message);
+    },
+  });
+};
+
+export const useUnapproveLesson = () => {
+  const navigate = useNavigate();
+
+  return useMutation({
+    mutationFn: unapproveLesson,
+    onSuccess: () => {
+      toast.success('Lesson unapproved successfully!');
+      navigate('/reviews');
+    },
+    onError: (error: any) => {
+      const message =
+        error?.response?.data?.detail ||
+        error?.detail ||
+        'Something went wrong while unapproving the lesson.';
+      toast.error(message);
+    },
+  });
+};
+
+export const useLessonQuiz = (id: string | number) => {
+  return useQuery({
+    queryKey: ['lesson-quiz', id],
+    queryFn: () => getLessonQuiz(id),
+    enabled: !!id,
+  });
+};
+
+export const useSubmitLessonSummary = () => {
+  return useMutation({
+    mutationFn: submitLessonSummary,
+    onSuccess: () => {
+      toast.success('Lesson summary submitted!');
+    },
+    onError: (error: any) => {
+      const message =
+        error?.response?.data?.detail ||
+        error?.detail ||
+        'Failed to submit lesson summary.';
+      toast.error(message);
+    },
   });
 };

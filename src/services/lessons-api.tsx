@@ -6,6 +6,7 @@ import {
   GenerateLessonResponse,
   SubmitLessonPayload,
   LessonDetail,
+  QuestionResponseTypes,
 } from '../types/lessons-types';
 
 export const getPendingLessons = async (): Promise<LessonDetail[]> => {
@@ -105,4 +106,59 @@ export const getApprovedLessons = async (): Promise<PendingLessonsTypes> => {
       'An error occurred while fetching approved lessons.'
     );
   }
+};
+
+export const approveLesson = async (lesson_id: number) => {
+  try {
+    const response = await axiosInstance.post(
+      '/lessons/approve/',
+      { lesson_id },
+      {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }
+    );
+    return response.data;
+  } catch (error: any) {
+    throw (
+      error.response?.data || 'An error occurred while approving the lesson.'
+    );
+  }
+};
+
+export const unapproveLesson = async (lesson_id: number) => {
+  try {
+    const response = await axiosInstance.post(
+      '/lessons/unapprove/',
+      { lesson_id },
+      {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }
+    );
+    return response.data;
+  } catch (error: any) {
+    throw (
+      error.response?.data || 'An error occurred while unapproving the lesson.'
+    );
+  }
+};
+
+export const getLessonQuiz = async (
+  id: string | number
+): Promise<QuestionResponseTypes> => {
+  const response = await axiosInstance.get<QuestionResponseTypes>(
+    `/lessons/quiz/${id}/`
+  );
+  return response.data;
+};
+
+export const submitLessonSummary = async (data: {
+  lesson_id: number;
+  description: string;
+}) => {
+  const response = await axiosInstance.post('/lessons/summary/', data);
+  return response.data;
 };

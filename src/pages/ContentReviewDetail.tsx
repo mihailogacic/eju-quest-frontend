@@ -1,20 +1,26 @@
 import { useParams } from 'react-router-dom';
 import { Box, Typography, CircularProgress } from '@mui/material';
 import ContentReviewHeader from '../components/content-review/ContentReviewHeader';
-import { useLessonDetail } from '../hooks/lessons-hook';
 import CustomButton from '../components/common/CustomButton';
+import {
+  useLessonDetail,
+  useApproveLesson,
+  useUnapproveLesson,
+} from '../hooks/lessons-hook';
 
 const ContentReviewDetail = () => {
   const { id } = useParams();
 
   const { data, isPending, isError } = useLessonDetail(id as string);
+  const { mutate: approve } = useApproveLesson();
+  const { mutate: unapprove } = useUnapproveLesson();
 
-  const handleUnapprove = () => {
-    console.log('unapprove');
+  const handleUnapprove = (lessonId: number) => {
+    unapprove(lessonId);
   };
 
-  const handleApprove = () => {
-    console.log('approve');
+  const handleApprove = (lessonId: number) => {
+    approve(lessonId);
   };
 
   if (isPending)
@@ -99,18 +105,18 @@ const ContentReviewDetail = () => {
           '@media (max-width: 1280px)': {
             gap: 1,
           },
-          '@media (max-width: 768px)': {
+          '@media (max-width: 640px)': {
             justifyContent: 'center',
           },
         }}
       >
         <CustomButton
-          onClick={handleUnapprove}
+          onClick={() => handleUnapprove(Number(data.id))}
           sx={{
             border: '1px solid black',
             width: '100%',
             maxWidth: '164px',
-            '@media (max-width: 768px)': {
+            '@media (max-width: 640px)': {
               maxWidth: '100%',
             },
           }}
@@ -119,13 +125,17 @@ const ContentReviewDetail = () => {
         </CustomButton>
         <CustomButton
           buttonType='text'
-          onClick={handleApprove}
+          onClick={() => handleApprove(Number(data.id))}
           sx={{
             backgroundColor: 'black',
             width: '100%',
             maxWidth: '164px',
-            '@media (max-width: 768px)': {
+            '@media (max-width: 640px)': {
               maxWidth: '100%',
+            },
+            '&:disabled': {
+              color: 'white',
+              opacity: 0.8,
             },
           }}
         >

@@ -21,9 +21,13 @@ const inputStyle = {
   mt: '2px',
 };
 
-const EditUserProfile = () => {
+type EditUserProfileProps = {
+  onSuccess: () => void;
+};
+
+const EditUserProfile = ({ onSuccess }: EditUserProfileProps) => {
   const { data, isPending: loadingData } = useUserProfile();
-  const { mutate, isPending } = useUpdateUserProfile();
+  const { mutate: updateProfile, isPending } = useUpdateUserProfile();
 
   const [profileImage, setProfileImage] = useState<string>(profilePlaceholder);
 
@@ -68,7 +72,11 @@ const EditUserProfile = () => {
   };
 
   const onSubmit = (formData: UpdateProfileInputs) => {
-    mutate(formData);
+    updateProfile(formData, {
+      onSuccess: () => {
+        onSuccess();
+      },
+    });
   };
 
   if (loadingData) {

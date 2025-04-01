@@ -1,11 +1,17 @@
+import { useParams, useNavigate } from 'react-router-dom';
 import { Box, Typography } from '@mui/material';
 import CustomTextArea from '../components/common/CustomTextArea';
 import CustomButton from '../components/common/CustomButton';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { lessonSummarySchema, LessonSummaryInputs } from '../utils/validation';
+import { useSubmitLessonSummary } from '../hooks/lessons-hook';
 
 const LessonSummary = () => {
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const { mutate: submitSummary } = useSubmitLessonSummary();
+
   const {
     register,
     handleSubmit,
@@ -19,7 +25,19 @@ const LessonSummary = () => {
   };
 
   const onSubmit = (data: LessonSummaryInputs) => {
-    console.log('Form submitted:', data);
+    if (!id) return;
+
+    submitSummary(
+      {
+        lesson_id: Number(id),
+        description: data.summary,
+      },
+      {
+        onSuccess: () => {
+          navigate('/explore-topics');
+        },
+      }
+    );
   };
 
   return (

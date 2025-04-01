@@ -1,4 +1,5 @@
 import { Box, Typography } from '@mui/material';
+import imagePlaceholder from '../../assets/images/no-image.webp';
 
 type ContentReviewHeaderProps = {
   image: string;
@@ -31,7 +32,7 @@ const ContentReviewHeader = ({
     >
       <Box
         component='img'
-        src={image}
+        src={image || imagePlaceholder}
         alt='Content Review Image'
         sx={{
           borderRadius: '12px',

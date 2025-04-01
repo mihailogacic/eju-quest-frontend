@@ -56,6 +56,7 @@ const ExploreTopics = () => {
           flexGrow: 1,
           px: 12,
           py: 8,
+          mb: 3,
           '@media (max-width: 1280px)': {
             px: 8,
             py: 6,
@@ -119,9 +120,10 @@ const ExploreTopics = () => {
             data.recommended_courses.map((course, index) => (
               <CourseItem
                 key={index}
+                id={course.id}
                 image={course.image}
                 name={course.title}
-                description='Need Description'
+                description=''
               />
             ))
           ) : (
