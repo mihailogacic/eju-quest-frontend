@@ -12,16 +12,16 @@ import CustomRadio from '../components/common/CustomRadio';
 import CustomButton from '../components/common/CustomButton';
 import CustomAccordion from '../components/common/CustomAccordion';
 import Timeout from '../components/quiz/Timeout';
-import { useLessonQuiz } from '../hooks/lessons-hook';
+import { useLessonQuiz, useSubmitQuiz } from '../hooks/lessons-hook';
 
 const Quiz = () => {
   // const [selected, setSelected] = useState<string | null>(null);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [answers, setAnswers] = useState<Record<number, number>>({});
+  const { mutate: submitQuiz } = useSubmitQuiz();
 
   const { id } = useParams();
   const { data, isPending, isError } = useLessonQuiz(id as string);
-  console.log(data);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const optionId = Number(event.target.value);
@@ -47,10 +47,24 @@ const Quiz = () => {
 
   const questions = data.questions;
 
-  console.log('questions: ', questions);
-
   const currentQuestion = questions[currentQuestionIndex];
   // const selectedAnswer = answers[currentQuestion.id] ?? '';
+
+  const handleSubmit = () => {
+    {
+      const payload = {
+        lesson_id: Number(id),
+        answers: questions.map((q) => ({
+          question_id: q.id,
+          selected_option:
+            q.options.find((opt) => opt.id === answers[q.id])?.option ?? '',
+        })),
+      };
+
+      console.log('Submitting payload:', payload);
+      submitQuiz(payload);
+    }
+  };
 
   return (
     <>
@@ -199,7 +213,7 @@ const Quiz = () => {
               </CustomButton>
             ) : (
               <CustomButton
-                onClick={() => console.log('Submit answers:', answers)}
+                onClick={handleSubmit}
                 disabled={!answers[currentQuestion.id]}
                 sx={{ width: '100%', maxWidth: '180px' }}
               >

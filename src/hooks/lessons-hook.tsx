@@ -11,6 +11,7 @@ import {
   unapproveLesson,
   getLessonQuiz,
   submitLessonSummary,
+  submitQuizAnswers,
 } from '../services/lessons-api';
 import { PendingLessonsTypes, LessonDetail } from '../types/lessons-types';
 import { toast } from 'react-toastify';
@@ -130,6 +131,20 @@ export const useSubmitLessonSummary = () => {
         error?.detail ||
         'Failed to submit lesson summary.';
       toast.error(message);
+    },
+  });
+};
+
+export const useSubmitQuiz = () => {
+  return useMutation({
+    mutationFn: submitQuizAnswers,
+    onSuccess: () => {
+      toast.success('Quiz submitted successfully!');
+    },
+    onError: (error: any) => {
+      toast.error(
+        error?.detail || 'An error occurred while submitting the quiz.'
+      );
     },
   });
 };

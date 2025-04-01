@@ -7,6 +7,7 @@ import {
   SubmitLessonPayload,
   LessonDetail,
   QuestionResponseTypes,
+  SubmitQuizPayload,
 } from '../types/lessons-types';
 
 export const getPendingLessons = async (): Promise<LessonDetail[]> => {
@@ -161,4 +162,19 @@ export const submitLessonSummary = async (data: {
 }) => {
   const response = await axiosInstance.post('/lessons/summary/', data);
   return response.data;
+};
+
+export const submitQuizAnswers = async (data: SubmitQuizPayload) => {
+  try {
+    const response = await axiosInstance.post('/lessons/submit-quiz/', data, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    return response.data;
+  } catch (error: any) {
+    throw (
+      error.response?.data || 'An error occurred while submitting the quiz.'
+    );
+  }
 };

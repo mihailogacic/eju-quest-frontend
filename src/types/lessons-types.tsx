@@ -114,3 +114,13 @@ export type QuestionResponseTypes = {
   lesson_detail: QuizLessonDetail;
   questions: QuizQuestion[];
 };
+
+export type SubmitQuizAnswer = {
+  question_id: number;
+  selected_option: string;
+};
+
+export type SubmitQuizPayload = {
+  lesson_id: number;
+  answers: SubmitQuizAnswer[];
+};
