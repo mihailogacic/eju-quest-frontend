@@ -167,7 +167,7 @@ const App = () => {
             }
           />
           <Route
-            path='/lesson'
+            path='/lesson/:id'
             element={
               <ProtectedRoute>
                 <Layout>

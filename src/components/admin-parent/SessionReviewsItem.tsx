@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import { Box, Typography } from '@mui/material';
+import imagePlaceholder from '../../assets/images/no-image.webp';
 
 type SessionReviewsItemProps = {
   id: string | number;
@@ -40,7 +41,7 @@ const SessionReviewsItem = ({
     >
       <Box
         component='img'
-        src={image}
+        src={image || imagePlaceholder}
         alt={`${title} image`}
         sx={{
           width: '100px',

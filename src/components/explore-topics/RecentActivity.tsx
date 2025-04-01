@@ -98,7 +98,7 @@ const RecentActivity = ({
             variant='body2'
             color='text.secondary'
             align='center'
-            sx={{ gridColumn: '1 / -1' }}
+            sx={{ gridColumn: '1 / -1', color: 'hsla(0, 0%, 100%, 0.6)' }}
           >
             No recent activity found.
           </Typography>

@@ -1,9 +1,15 @@
-import { Box, Typography } from '@mui/material';
-import BackCircle from '../components/common/BackCircle';
-import lessonPlaceholder from '../assets/images/lesson-placeholder.png';
+import { useParams } from 'react-router-dom';
+import { Box, Typography, CircularProgress } from '@mui/material';
 import CustomButton from '../components/common/CustomButton';
+import BackCircle from '../components/common/BackCircle';
+import { useLessonDetail } from '../hooks/lessons-hook';
+import lessonPlaceholder from '../assets/images/no-image.webp';
 
 const LessonDisplay = () => {
+  const { id } = useParams();
+
+  const { data, isPending, isError } = useLessonDetail(id as string);
+
   const handleLessonSummary = () => {
     console.log('lesson summary clicked');
   };
@@ -11,6 +17,20 @@ const LessonDisplay = () => {
   const handleQuiz = () => {
     console.log('quiz clicked');
   };
+
+  if (isPending)
+    return (
+      <Box
+        sx={{
+          display: 'flex',
+          justifyContent: 'center',
+          mt: 6,
+        }}
+      >
+        <CircularProgress />
+      </Box>
+    );
+  if (isError || !data) return <Typography>Error loading data</Typography>;
 
   return (
     <Box
@@ -64,7 +84,7 @@ const LessonDisplay = () => {
             },
           }}
         >
-          Mastering Illustration
+          {data?.title}
         </Typography>
       </Box>
 
@@ -78,7 +98,7 @@ const LessonDisplay = () => {
       >
         <Box
           component='img'
-          src={lessonPlaceholder}
+          src={data?.image || lessonPlaceholder}
           alt='Lesson Image'
           sx={{
             width: '100%',
@@ -98,80 +118,20 @@ const LessonDisplay = () => {
           mb: 3,
         })}
       >
-        <Box>
-          <Typography sx={{ fontSize: '24px', fontWeight: 700, mb: 1 }}>
-            Course Details
+        {data.sections.length > 0 ? (
+          data.sections.map((section, index) => (
+            <Box key={index}>
+              <Typography sx={{ fontSize: '24px', fontWeight: 700, mb: 1 }}>
+                {section.heading}
+              </Typography>
+              <Typography>{section.content}</Typography>
+            </Box>
+          ))
+        ) : (
+          <Typography sx={{ fontSize: '14px', textAlign: 'center' }}>
+            No content available for this lesson.
           </Typography>
-          <Typography>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-            eiusmod tempor incididunt ut labore et dolore magna aliqua. Quis
-            ipsum suspendisse ultrices gravida. Risus commodo viverra maecenas
-            accumsan lacus vel facilisis consectetur adipiscing elit. Lorem
-            ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-            tempor incididunt ut labore et dolore magna aliqua. Quis ipsum
-            suspendisse ultrices gravida. Risus commodo viverra maecenas
-            accumsan.
-          </Typography>
-        </Box>
-        <Box>
-          <Typography sx={{ fontSize: '24px', fontWeight: 700, mb: 1 }}>
-            Certification
-          </Typography>
-          <Typography>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-            eiusmod tempor incididunt ut labore et dolore magna aliqua. Quis
-            ipsum suspendisse ultrices gravida. Risus commodo viverra maecenas
-            accumsan lacus vel facilisis consectetur adipiscing elit.
-          </Typography>
-        </Box>
-        <Box>
-          <Typography sx={{ fontSize: '24px', fontWeight: 700, mb: 1 }}>
-            Who this course is for
-          </Typography>
-          <Typography>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-            eiusmod tempor incididunt ut labore et dolore magna aliqua. Quis
-            ipsum suspendisse ultrices gravida. Risus commodo viverra maecenas
-            accumsan lacus vel facilisis consectetur adipiscing elit.
-          </Typography>
-        </Box>
-        <Box>
-          <Typography sx={{ fontSize: '24px', fontWeight: 700, mb: 1 }}>
-            Certification
-          </Typography>
-          <Typography>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-            eiusmod tempor incididunt ut labore et dolore magna aliqua. Quis
-            ipsum suspendisse ultrices gravida. Risus commodo viverra maecenas
-            accumsan lacus vel facilisis consectetur adipiscing elit.
-          </Typography>
-        </Box>
-        <Box>
-          <Typography sx={{ fontSize: '24px', fontWeight: 700, mb: 1 }}>
-            Who this course is for
-          </Typography>
-          <Typography>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-            eiusmod tempor incididunt ut labore et dolore magna aliqua. Quis
-            ipsum suspendisse ultrices gravida. Risus commodo viverra maecenas
-            accumsan lacus vel facilisis consectetur adipiscing elit.
-          </Typography>
-        </Box>
-        <Box>
-          <Typography sx={{ fontSize: '24px', fontWeight: 700, mb: 1 }}>
-            Course Details
-          </Typography>
-          <Typography>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-            eiusmod tempor incididunt ut labore et dolore magna aliqua. Quis
-            ipsum suspendisse ultrices gravida. Risus commodo viverra maecenas
-            accumsan lacus vel facilisis consectetur adipiscing elit. Lorem
-            ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-            tempor incididunt ut labore et dolore magna aliqua. Quis ipsum
-            suspendisse ultrices gravida. Risus commodo viverra maecenas
-            accumsan.
-          </Typography>
-        </Box>
+        )}
       </Box>
 
       <Box

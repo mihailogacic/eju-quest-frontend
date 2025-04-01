@@ -106,3 +106,41 @@ export const getApprovedLessons = async (): Promise<PendingLessonsTypes> => {
     );
   }
 };
+
+export const approveLesson = async (lesson_id: number) => {
+  try {
+    const response = await axiosInstance.post(
+      '/lessons/approve/',
+      { lesson_id },
+      {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }
+    );
+    return response.data;
+  } catch (error: any) {
+    throw (
+      error.response?.data || 'An error occurred while approving the lesson.'
+    );
+  }
+};
+
+export const unapproveLesson = async (lesson_id: number) => {
+  try {
+    const response = await axiosInstance.post(
+      '/lessons/unapprove/',
+      { lesson_id },
+      {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }
+    );
+    return response.data;
+  } catch (error: any) {
+    throw (
+      error.response?.data || 'An error occurred while unapproving the lesson.'
+    );
+  }
+};

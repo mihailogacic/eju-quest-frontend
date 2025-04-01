@@ -1,18 +1,27 @@
+import { useNavigate } from 'react-router-dom';
 import { Box, Typography } from '@mui/material';
 
 type CourseItemProps = {
+  id: number | string;
   image: string;
   name: string;
   description: string;
 };
 
-const CourseItem = ({ image, name, description }: CourseItemProps) => {
+const CourseItem = ({ id, image, name, description }: CourseItemProps) => {
+  const navigate = useNavigate();
+
+  const handleClick = () => {
+    navigate(`/lesson/${id}`);
+  };
   return (
     <Box
+      onClick={handleClick}
       sx={{
         width: '280px',
         borderRadius: '8px',
         border: '1px solid hsla(0, 0%, 0%, 0.1)',
+        cursor: 'pointer',
 
         '@media (max-width: 640px)': {
           width: '100%',

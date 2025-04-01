@@ -119,9 +119,10 @@ const ExploreTopics = () => {
             data.recommended_courses.map((course, index) => (
               <CourseItem
                 key={index}
+                id={course.id}
                 image={course.image}
                 name={course.title}
-                description='Need Description'
+                description=''
               />
             ))
           ) : (

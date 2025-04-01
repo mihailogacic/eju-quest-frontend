@@ -72,7 +72,7 @@ const AdminHeader = () => {
           <Box sx={{ position: 'relative' }}>
             <Box
               component='img'
-              src={profilePlaceholder}
+              src={data?.profile_image || profilePlaceholder}
               alt='profile picture'
               sx={{ width: '100px', height: '100px', borderRadius: '50%' }}
             />

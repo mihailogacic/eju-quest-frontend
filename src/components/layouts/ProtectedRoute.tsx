@@ -38,7 +38,10 @@ const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
     return <Navigate to='/' replace />;
   }
 
-  if (user?.role === 'child' && !childRoutes.includes(currentPath)) {
+  if (
+    user?.role === 'child' &&
+    !childRoutes.some((route) => currentPath.startsWith(route))
+  ) {
     return <Navigate to='/' replace />;
   }
 
