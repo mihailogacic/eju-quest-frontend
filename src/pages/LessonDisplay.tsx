@@ -1,4 +1,4 @@
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { Box, Typography, CircularProgress } from '@mui/material';
 import CustomButton from '../components/common/CustomButton';
 import BackCircle from '../components/common/BackCircle';
@@ -6,16 +6,17 @@ import { useLessonDetail } from '../hooks/lessons-hook';
 import lessonPlaceholder from '../assets/images/no-image.webp';
 
 const LessonDisplay = () => {
+  const navigate = useNavigate();
   const { id } = useParams();
 
   const { data, isPending, isError } = useLessonDetail(id as string);
 
   const handleLessonSummary = () => {
-    console.log('lesson summary clicked');
+    navigate(`/lesson-summary/${id}`);
   };
 
   const handleQuiz = () => {
-    console.log('quiz clicked');
+    navigate(`/quiz/${id}`);
   };
 
   if (isPending)

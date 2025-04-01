@@ -6,6 +6,7 @@ import {
   GenerateLessonResponse,
   SubmitLessonPayload,
   LessonDetail,
+  QuizQuestion,
 } from '../types/lessons-types';
 
 export const getPendingLessons = async (): Promise<LessonDetail[]> => {
@@ -143,4 +144,21 @@ export const unapproveLesson = async (lesson_id: number) => {
       error.response?.data || 'An error occurred while unapproving the lesson.'
     );
   }
+};
+
+export const getLessonQuiz = async (
+  id: string | number
+): Promise<{ questions: QuizQuestion[] }> => {
+  const response = await axiosInstance.get<{ questions: QuizQuestion[] }>(
+    `/lessons/quiz/${id}/`
+  );
+  return response.data;
+};
+
+export const submitLessonSummary = async (data: {
+  lesson_id: number;
+  description: string;
+}) => {
+  const response = await axiosInstance.post('/lessons/summary/', data);
+  return response.data;
 };

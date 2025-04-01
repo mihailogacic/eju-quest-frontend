@@ -1,18 +1,42 @@
 import { useState } from 'react';
+import { useParams } from 'react-router-dom';
 import {
   Box,
   FormControl,
   FormControlLabel,
   RadioGroup,
   Typography,
+  CircularProgress,
 } from '@mui/material';
 import CustomRadio from '../components/common/CustomRadio';
 import CustomButton from '../components/common/CustomButton';
 import CustomAccordion from '../components/common/CustomAccordion';
 import Timeout from '../components/quiz/Timeout';
+import { useLessonQuiz } from '../hooks/lessons-hook';
 
 const Quiz = () => {
   const [selected, setSelected] = useState<string | null>(null);
+
+  const { id } = useParams();
+  const { data, isPending, isError } = useLessonQuiz(id as string);
+
+  if (isPending)
+    return (
+      <Box
+        sx={{
+          display: 'flex',
+          justifyContent: 'center',
+          mt: 6,
+        }}
+      >
+        <CircularProgress />
+      </Box>
+    );
+  if (isError || !data) return <Typography>Error loading data</Typography>;
+
+  const questions = data.questions;
+
+  console.log('questions: ', questions);
 
   return (
     <>

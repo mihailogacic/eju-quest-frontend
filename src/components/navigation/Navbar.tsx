@@ -207,7 +207,13 @@ const Navbar = () => {
           <List>
             {(user?.role === 'child' ? childLinks : parentLinks).map((link) => (
               <ListItem component='div' key={link.label}>
-                <ListItemText onClick={link.onClick} primary={link.label} />
+                <ListItemText
+                  onClick={() => {
+                    link.onClick();
+                    setOpen(false);
+                  }}
+                  primary={link.label}
+                />
               </ListItem>
             ))}
           </List>

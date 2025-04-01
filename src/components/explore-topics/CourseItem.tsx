@@ -13,6 +13,7 @@ const CourseItem = ({ id, image, name, description }: CourseItemProps) => {
 
   const handleClick = () => {
     navigate(`/lesson/${id}`);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
   return (
     <Box

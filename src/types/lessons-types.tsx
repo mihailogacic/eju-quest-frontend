@@ -83,3 +83,10 @@ export type LessonDetail = {
   status: string;
   sections: LessonSection[];
 };
+
+export type QuizQuestion = {
+  id: number;
+  question_text: string;
+  options: Record<string, string>;
+  correct_option: string;
+};

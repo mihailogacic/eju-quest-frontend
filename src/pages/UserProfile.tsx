@@ -348,7 +348,7 @@ const UserProfile = () => {
         </Box>
       </Box>
       <CustomModal isOpen={isModalOpen} onClose={handleCloseModal}>
-        <EditUserProfile />
+        <EditUserProfile onSuccess={handleCloseModal} />
       </CustomModal>
     </>
   );
