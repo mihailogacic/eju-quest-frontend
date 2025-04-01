@@ -6,7 +6,7 @@ import {
   GenerateLessonResponse,
   SubmitLessonPayload,
   LessonDetail,
-  QuizQuestion,
+  QuestionResponseTypes,
 } from '../types/lessons-types';
 
 export const getPendingLessons = async (): Promise<LessonDetail[]> => {
@@ -148,8 +148,8 @@ export const unapproveLesson = async (lesson_id: number) => {
 
 export const getLessonQuiz = async (
   id: string | number
-): Promise<{ questions: QuizQuestion[] }> => {
-  const response = await axiosInstance.get<{ questions: QuizQuestion[] }>(
+): Promise<QuestionResponseTypes> => {
+  const response = await axiosInstance.get<QuestionResponseTypes>(
     `/lessons/quiz/${id}/`
   );
   return response.data;

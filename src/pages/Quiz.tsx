@@ -15,10 +15,21 @@ import Timeout from '../components/quiz/Timeout';
 import { useLessonQuiz } from '../hooks/lessons-hook';
 
 const Quiz = () => {
-  const [selected, setSelected] = useState<string | null>(null);
+  // const [selected, setSelected] = useState<string | null>(null);
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+  const [answers, setAnswers] = useState<Record<number, number>>({});
 
   const { id } = useParams();
   const { data, isPending, isError } = useLessonQuiz(id as string);
+  console.log(data);
+
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const optionId = Number(event.target.value);
+    setAnswers((prev) => ({
+      ...prev,
+      [currentQuestion.id]: optionId,
+    }));
+  };
 
   if (isPending)
     return (
@@ -37,6 +48,9 @@ const Quiz = () => {
   const questions = data.questions;
 
   console.log('questions: ', questions);
+
+  const currentQuestion = questions[currentQuestionIndex];
+  // const selectedAnswer = answers[currentQuestion.id] ?? '';
 
   return (
     <>
@@ -88,7 +102,7 @@ const Quiz = () => {
               },
             })}
           >
-            Course: mathematics 201
+            Course: {data.lesson_detail?.title || 'undefined'}
           </Typography>
 
           <Box component='hr' sx={{ opacity: 0.3, m: '24px 0 32px 0' }} />
@@ -110,26 +124,12 @@ const Quiz = () => {
               }}
             >
               <Typography sx={{ fontWeight: 600, fontSize: '24px' }}>
-                Question 4
+                Question {currentQuestionIndex + 1}
               </Typography>
             </Box>
 
             <Box sx={{ p: '24px 32px' }}>
-              <Typography>
-                There are many variations of passages of Lorem Ipsum available,
-                but the majority have suffered alteration in some form, by
-                injected humour, or randomised words which don't look even
-                slightly believable. If you are going to use a passage of Lorem
-                Ipsum, you need to be sure there isn't anything embarrassing
-                hidden in the middle of text.
-                <br />
-                <br />
-                All the Lorem Ipsum generators on the Internet tend to repeat
-                predefined chunks as necessary, making this the first true
-                generator on the Internet. It uses a dictionary of over 200
-                Latin words, combined with a handful of model sentence
-                structures, to generate Lorem Ipsum which looks reasonable.
-              </Typography>
+              <Typography>{currentQuestion.question_text}</Typography>
             </Box>
           </Box>
 
@@ -143,23 +143,18 @@ const Quiz = () => {
           >
             <FormControl sx={{ p: '24px 32px' }}>
               <RadioGroup
-                name='quiz-options'
-                value={selected}
-                onChange={(e) => setSelected(e.target.value)}
+                name={`quiz-options-${currentQuestion.id}`}
+                value={answers[currentQuestion.id] ?? ''}
+                onChange={handleChange}
               >
-                {[
-                  'Lorem Ipsum is simply dummy text of the printing and typesetting.',
-                  'Many desktop publishing packages and web page editors now use Lorem Ipsum.',
-                  'If you are going to use a passage of Lorem Ipsum, you need to be sure there.',
-                  'If you are going to use a passage of Lorem Ipsum, you need to be sure there.',
-                ].map((option, index) => (
+                {currentQuestion.options.map((option) => (
                   <FormControlLabel
-                    key={index}
-                    value={String(index)}
+                    key={option.id}
+                    value={option.id}
                     control={<CustomRadio />}
                     label={
                       <Typography sx={{ color: 'white', fontSize: '16px' }}>
-                        {option}
+                        {option.option_text}
                       </Typography>
                     }
                     sx={{
@@ -178,17 +173,39 @@ const Quiz = () => {
           >
             <CustomButton
               buttonType='text'
+              onClick={() => setCurrentQuestionIndex((prev) => prev - 1)}
+              disabled={currentQuestionIndex <= 0}
               sx={{
                 width: '100%',
                 maxWidth: '180px',
                 border: '1px solid white',
+
+                '&:disabled': {
+                  color: 'white',
+                  opacity: 0.8,
+                },
               }}
             >
               Previous
             </CustomButton>
-            <CustomButton sx={{ width: '100%', maxWidth: '180px' }}>
-              Next
-            </CustomButton>
+
+            {currentQuestionIndex < questions.length - 1 ? (
+              <CustomButton
+                onClick={() => setCurrentQuestionIndex((prev) => prev + 1)}
+                disabled={!answers[currentQuestion.id]}
+                sx={{ width: '100%', maxWidth: '180px' }}
+              >
+                Next
+              </CustomButton>
+            ) : (
+              <CustomButton
+                onClick={() => console.log('Submit answers:', answers)}
+                disabled={!answers[currentQuestion.id]}
+                sx={{ width: '100%', maxWidth: '180px' }}
+              >
+                Submit
+              </CustomButton>
+            )}
           </Box>
         </Box>
 

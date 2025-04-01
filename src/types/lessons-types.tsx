@@ -84,9 +84,33 @@ export type LessonDetail = {
   sections: LessonSection[];
 };
 
+type QuizOption = {
+  id: number;
+  option: string;
+  option_text: string;
+  correct: boolean;
+};
+
+type QuizLessonDetail = {
+  age_level: number;
+  creator: string;
+  description: string;
+  image: string;
+  id: number | string;
+  lesson_length: 'short' | 'medium' | 'long';
+  status: string;
+  title: string;
+};
+
 export type QuizQuestion = {
   id: number;
   question_text: string;
-  options: Record<string, string>;
+  options: QuizOption[];
   correct_option: string;
+};
+
+export type QuestionResponseTypes = {
+  id: number | string;
+  lesson_detail: QuizLessonDetail;
+  questions: QuizQuestion[];
 };
