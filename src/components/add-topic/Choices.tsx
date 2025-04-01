@@ -60,6 +60,8 @@ type ChoicesProps = {
   };
   isGenerated: boolean;
   onClearAll: () => void;
+  image?: File | null;
+  content: { heading: string; text: string }[];
 };
 
 const Choices = ({
@@ -67,6 +69,8 @@ const Choices = ({
   lessonInfo,
   isGenerated,
   onClearAll,
+  image,
+  content,
 }: ChoicesProps) => {
   const { mutate: submitLesson, isPending } = useSubmitLesson();
 
@@ -156,7 +160,8 @@ const Choices = ({
       age_level: lessonInfo.age_level,
       lesson_length: lessonInfo.lesson_length,
       questions: formattedQuestions,
-      content: [],
+      content,
+      image,
     };
 
     submitLesson(payload);

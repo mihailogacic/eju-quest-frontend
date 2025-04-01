@@ -1,14 +1,34 @@
 import { useParams } from 'react-router-dom';
-import { Box, Typography } from '@mui/material';
+import { Box, Typography, CircularProgress } from '@mui/material';
 import ContentReviewHeader from '../components/content-review/ContentReviewHeader';
 import { useLessonDetail } from '../hooks/lessons-hook';
+import CustomButton from '../components/common/CustomButton';
 
 const ContentReviewDetail = () => {
   const { id } = useParams();
 
   const { data, isPending, isError } = useLessonDetail(id as string);
 
-  if (isPending) return <Typography>Loading...</Typography>;
+  const handleUnapprove = () => {
+    console.log('unapprove');
+  };
+
+  const handleApprove = () => {
+    console.log('approve');
+  };
+
+  if (isPending)
+    return (
+      <Box
+        sx={{
+          display: 'flex',
+          justifyContent: 'center',
+          mt: 6,
+        }}
+      >
+        <CircularProgress />
+      </Box>
+    );
   if (isError || !data) return <Typography>Error loading data</Typography>;
 
   return (
@@ -42,24 +62,75 @@ const ContentReviewDetail = () => {
           display: 'flex',
           flexDirection: 'column',
           gap: 3,
-          mt: 5,
-          mb: 10,
+          my: 5,
         })}
       >
-        {data.sections.map((section, index) => (
-          <Box key={index}>
-            <Typography
-              sx={{
-                fontSize: '18px',
-                fontWeight: 700,
-                mb: 1,
-              }}
-            >
-              {section.heading}
-            </Typography>
-            <Typography sx={{ fontSize: '14px' }}>{section.content}</Typography>
-          </Box>
-        ))}
+        {data.sections.length > 0 ? (
+          data.sections.map((section, index) => (
+            <Box key={index}>
+              <Typography
+                sx={{
+                  fontSize: '18px',
+                  fontWeight: 700,
+                  mb: 1,
+                }}
+              >
+                {section.heading}
+              </Typography>
+              <Typography sx={{ fontSize: '14px' }}>
+                {section.content}
+              </Typography>
+            </Box>
+          ))
+        ) : (
+          <Typography sx={{ fontSize: '14px', textAlign: 'center' }}>
+            No content available for this lesson.
+          </Typography>
+        )}
+      </Box>
+
+      <Box
+        sx={{
+          display: 'flex',
+          justifyContent: 'end',
+          gap: 2,
+          mb: 3,
+
+          '@media (max-width: 1280px)': {
+            gap: 1,
+          },
+          '@media (max-width: 768px)': {
+            justifyContent: 'center',
+          },
+        }}
+      >
+        <CustomButton
+          onClick={handleUnapprove}
+          sx={{
+            border: '1px solid black',
+            width: '100%',
+            maxWidth: '164px',
+            '@media (max-width: 768px)': {
+              maxWidth: '100%',
+            },
+          }}
+        >
+          Un-approve topic
+        </CustomButton>
+        <CustomButton
+          buttonType='text'
+          onClick={handleApprove}
+          sx={{
+            backgroundColor: 'black',
+            width: '100%',
+            maxWidth: '164px',
+            '@media (max-width: 768px)': {
+              maxWidth: '100%',
+            },
+          }}
+        >
+          Approve
+        </CustomButton>
       </Box>
     </Box>
   );

@@ -1,8 +1,17 @@
 import { Box, Typography } from '@mui/material';
 import BackCircle from '../components/common/BackCircle';
 import lessonPlaceholder from '../assets/images/lesson-placeholder.png';
+import CustomButton from '../components/common/CustomButton';
 
 const LessonDisplay = () => {
+  const handleLessonSummary = () => {
+    console.log('lesson summary clicked');
+  };
+
+  const handleQuiz = () => {
+    console.log('quiz clicked');
+  };
+
   return (
     <Box
       sx={{
@@ -163,6 +172,47 @@ const LessonDisplay = () => {
             accumsan.
           </Typography>
         </Box>
+      </Box>
+
+      <Box
+        sx={{
+          display: 'flex',
+          gap: 1,
+          justifyContent: 'end',
+          mb: 2,
+          mt: 4,
+          '@media (max-width: 640px)': {
+            justifyContent: 'center',
+          },
+        }}
+      >
+        <CustomButton
+          onClick={handleLessonSummary}
+          sx={{
+            border: '1px solid black',
+            width: '100%',
+            maxWidth: '180px',
+            lineHeight: 1.1,
+            height: '48px',
+            '@media (max-width: 640px)': { maxWidth: '100%' },
+          }}
+        >
+          Lesson Summary
+        </CustomButton>
+        <CustomButton
+          buttonType='text'
+          onClick={handleQuiz}
+          sx={{
+            backgroundColor: 'black',
+            width: '100%',
+            maxWidth: '180px',
+            lineHeight: 1.1,
+            height: '48px',
+            '@media (max-width: 640px)': { maxWidth: '100%' },
+          }}
+        >
+          Quiz
+        </CustomButton>
       </Box>
     </Box>
   );

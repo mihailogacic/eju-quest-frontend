@@ -11,6 +11,8 @@ const AddTopic = () => {
     LessonQuestion[]
   >([]);
 
+  const [uploadedImage, setUploadedImage] = useState<File | null>(null);
+
   const [generatedContent, setGeneratedContent] = useState<
     { heading: string; text: string }[]
   >([]);
@@ -55,6 +57,7 @@ const AddTopic = () => {
           });
         }}
         clearTrigger={clearTrigger}
+        onImageChange={(file) => setUploadedImage(file)}
       />
       <Box
         sx={{
@@ -83,6 +86,8 @@ const AddTopic = () => {
           lessonInfo={lessonInfo}
           isGenerated={isGenerated}
           onClearAll={handleClearAll}
+          image={uploadedImage}
+          content={generatedContent}
         />
       </Box>
     </Box>
