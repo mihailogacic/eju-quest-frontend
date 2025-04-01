@@ -38,7 +38,7 @@ const EditUserProfile = () => {
       first_name: '',
       last_name: '',
       email: '',
-      profile_picture: '',
+      profile_image: null,
     },
   });
 
@@ -47,8 +47,7 @@ const EditUserProfile = () => {
       setValue('first_name', data.first_name);
       setValue('last_name', data.last_name);
       setValue('email', data.email);
-      setValue('profile_picture', data.profile_picture || profilePlaceholder);
-      setProfileImage(data.profile_picture || profilePlaceholder);
+      setProfileImage(data.profile_image || profilePlaceholder);
     }
   }, [data, setValue]);
 
@@ -60,18 +59,16 @@ const EditUserProfile = () => {
         if (reader.result) {
           const base64 = reader.result.toString();
           setProfileImage(base64);
-          setValue('profile_picture', base64);
         }
       };
       reader.readAsDataURL(file);
+      setValue('profile_image', file);
+      setProfileImage(URL.createObjectURL(file));
     }
   };
 
   const onSubmit = (formData: UpdateProfileInputs) => {
-    mutate({
-      ...formData,
-      profile_picture: profileImage,
-    });
+    mutate(formData);
   };
 
   if (loadingData) {

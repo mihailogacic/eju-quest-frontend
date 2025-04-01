@@ -144,6 +144,7 @@ const AdminParent = () => {
               description={review.description}
               status={review.status}
               role={review.role}
+              id={review.id}
             />
           ))}
         </Box>

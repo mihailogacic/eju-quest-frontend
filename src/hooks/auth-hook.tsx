@@ -8,6 +8,7 @@ import {
   confirmResetPassword,
   fetchUserProfile,
   updateUserProfile,
+  deleteChild
 } from '../services/auth-api';
 import useAuthStore from '../store/auth-store';
 import {
@@ -114,6 +115,25 @@ export const useUpdateUserProfile = () => {
     },
     onError: () => {
       toast.error('Failed to update profile.');
+    },
+  });
+};
+
+export const useDeleteChild = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (uid: number) => deleteChild(uid),
+    onSuccess: () => {
+      toast.success('Child deactivated successfully!');
+      queryClient.invalidateQueries({ queryKey: ['users'] });
+    },
+    onError: (error: any) => {
+      const message =
+        error?.response?.data?.detail ||
+        error?.detail ||
+        'Failed to deactivate child account.';
+      toast.error(message);
     },
   });
 };

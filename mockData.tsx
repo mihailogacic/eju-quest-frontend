@@ -28,6 +28,7 @@ export const recentUsersData = [
 
 export const sessionReviewsData = [
   {
+    id: 1,
     image: sessionPlaceholder,
     title: 'Great Session',
     description: 'Awesome user engagement',
@@ -35,6 +36,7 @@ export const sessionReviewsData = [
     role: 'Admin',
   },
   {
+    id: 2,
     image: sessionPlaceholder,
     title: 'Feedback Needed',
     description: 'Interaction improvements suggested',

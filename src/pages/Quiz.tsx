@@ -221,7 +221,7 @@ const Quiz = () => {
         </Box>
       </Box>
 
-      <Timeout />
+      <Timeout duration={30} />
     </>
   );
 };

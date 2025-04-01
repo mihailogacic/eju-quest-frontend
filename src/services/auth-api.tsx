@@ -89,11 +89,36 @@ export const fetchUserProfile = async (): Promise<UserDetailsTypes> => {
 };
 
 export const updateUserProfile = async (data: {
-  profile_picture: string;
   first_name: string;
   last_name: string;
   email: string;
+  profile_image: File | null;
 }) => {
-  const response = await axiosInstance.patch('/users/profile/', data);
+  const formData = new FormData();
+  formData.append('first_name', data.first_name);
+  formData.append('last_name', data.last_name);
+  formData.append('email', data.email);
+
+  if (data.profile_image) {
+    formData.append('profile_image', data.profile_image);
+  }
+
+  const response = await axiosInstance.patch('/users/profile/', formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  });
+
   return response.data;
+};
+
+export const deleteChild = async (uid: number) => {
+  try {
+    const response = await axiosInstance.delete(`/users/deactivate_child/${uid}/`);
+    return response.data;
+  } catch (error: any) {
+    throw (
+      error.response?.data || 'An error occurred while deactivating the child.'
+    );
+  }
 };

@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Box, Typography } from '@mui/material';
 import CustomInput from '../common/CustomInput';
 import CustomButton from '../common/CustomButton';
@@ -7,18 +7,23 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { topicDetailsSchema, TopicDetailsInputs } from '../../utils/validation';
 import { useGenerateLesson } from '../../hooks/lessons-hook';
 import { GenerateLessonResponse } from '../../types/lessons-types';
+import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 
 type TopicHeaderProps = {
   onGenerate: (res: GenerateLessonResponse) => void;
   onFormChange: (data: TopicDetailsInputs) => void;
   clearTrigger: number;
+  onImageChange: (file: File | null) => void;
 };
 
 const TopicHeader = ({
   onGenerate,
   onFormChange,
   clearTrigger,
+  onImageChange,
 }: TopicHeaderProps) => {
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const [fileName, setFileName] = useState<string | null>(null);
   const { mutate, isPending } = useGenerateLesson();
 
   const {
@@ -30,6 +35,20 @@ const TopicHeader = ({
   } = useForm<TopicDetailsInputs>({
     resolver: zodResolver(topicDetailsSchema),
   });
+
+  const handleChangeImage = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0] || null;
+    onImageChange(file);
+
+    if (file) {
+      const imageUrl = URL.createObjectURL(file);
+      setImagePreview(imageUrl);
+      setFileName(file.name);
+    } else {
+      setImagePreview(null);
+      setFileName(null);
+    }
+  };
 
   const onSubmit = (data: TopicDetailsInputs) => {
     mutate(
@@ -179,6 +198,68 @@ const TopicHeader = ({
               {errors.lesson_length.message}
             </Typography>
           )}
+        </Box>
+        <Box sx={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+          <label
+            htmlFor='upload-image'
+            style={{
+              border: '2px dashed hsla(0, 0%, 100%, 0.4)',
+              padding: '24px',
+              textAlign: 'center',
+              borderRadius: '8px',
+              cursor: 'pointer',
+              color: 'hsla(0, 0%, 100%, 0.6)',
+              fontSize: '14px',
+              minHeight: '160px',
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'center',
+              alignItems: 'center',
+              gap: 1,
+            }}
+          >
+            {imagePreview ? (
+              <>
+                <Box
+                  component='img'
+                  src={imagePreview}
+                  alt='Preview'
+                  sx={{
+                    maxHeight: '140px',
+                    maxWidth: '100%',
+                    objectFit: 'contain',
+                    borderRadius: '6px',
+                  }}
+                />
+                {fileName && (
+                  <Typography
+                    sx={{
+                      mt: 2,
+                      fontSize: '12px',
+                      color: 'hsla(0, 0%, 100%, 0.6)',
+                      wordBreak: 'break-all',
+                    }}
+                  >
+                    {fileName}
+                  </Typography>
+                )}
+              </>
+            ) : (
+              <>
+                <CloudUploadIcon
+                  sx={{ color: 'white', fontSize: 30, opacity: 0.6 }}
+                />
+                <Typography>Click to upload or drag and drop</Typography>
+              </>
+            )}
+            <input
+              id='upload-image'
+              type='file'
+              accept='image/*'
+              onChange={handleChangeImage}
+              style={{ display: 'none' }}
+            />
+          </label>
         </Box>
         <Box sx={{ display: 'flex', justifyContent: 'end' }}>
           <CustomButton

@@ -14,13 +14,14 @@ import {
 import DeleteIcon from '@mui/icons-material/Delete';
 import { useGetUsers } from '../hooks/users-hook';
 import { SingleUser } from '../types/users-types';
+import { useDeleteChild } from '../hooks/auth-hook';
 
 const UserManagement = () => {
   const { data, isPending, error } = useGetUsers();
-  console.log(data);
+  const { mutate: deleteChild} = useDeleteChild();
 
   const handleDelete = (id: number) => {
-    console.log('Delete child with ID:', id);
+    deleteChild(id);
   };
 
   if (isPending) {

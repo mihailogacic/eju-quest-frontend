@@ -85,7 +85,7 @@ export const updateProfileSchema = z.object({
   first_name: z.string().min(1, 'First name is required'),
   last_name: z.string().min(1, 'Last name is required'),
   email: z.string().email('Invalid email format'),
-  profile_picture: z.string().optional(),
+  profile_image: z.instanceof(File).nullable().default(null),
 });
 
 export type LoginFormInputs = z.infer<typeof loginSchema>;

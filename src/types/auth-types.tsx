@@ -37,6 +37,6 @@ export type UserDetailsTypes = {
   last_name: string;
   email: string;
   role: string;
-  profile_picture: string;
+  profile_image: string;
   created_at: string;
 };

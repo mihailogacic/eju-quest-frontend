@@ -38,6 +38,7 @@ const ContentReviewHeader = ({
           objectFit: 'cover',
           width: '100%',
           maxWidth: '556px',
+          maxHeight: '308px',
           '@media (max-width: 1280px)': {
             maxWidth: '100%',
           },
