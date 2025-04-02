@@ -125,7 +125,7 @@ const AdminHeader = () => {
             gap: 3,
 
             '@media (max-width: 900px)': {
-              flexDirection: 'column',
+              flexDirection: 'column-reverse',
               gap: 2,
             },
           }}

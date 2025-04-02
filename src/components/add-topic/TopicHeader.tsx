@@ -50,6 +50,21 @@ const TopicHeader = ({
     }
   };
 
+  const handleDragOver = (e: React.DragEvent<HTMLLabelElement>) => {
+    e.preventDefault();
+  };
+
+  const handleDrop = (e: React.DragEvent<HTMLLabelElement>) => {
+    e.preventDefault();
+    const file = e.dataTransfer.files[0];
+    if (file && file.type.startsWith('image/')) {
+      onImageChange(file);
+      const imageUrl = URL.createObjectURL(file);
+      setImagePreview(imageUrl);
+      setFileName(file.name);
+    }
+  };
+
   const onSubmit = (data: TopicDetailsInputs) => {
     mutate(
       {
@@ -202,6 +217,8 @@ const TopicHeader = ({
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
           <label
             htmlFor='upload-image'
+            onDragOver={handleDragOver}
+            onDrop={handleDrop}
             style={{
               border: '2px dashed hsla(0, 0%, 100%, 0.4)',
               padding: '24px',

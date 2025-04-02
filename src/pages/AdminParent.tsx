@@ -71,7 +71,7 @@ const AdminParent = () => {
             justifyContent: 'center',
             justifyItems: 'center',
             mx: 'auto',
-            maxWidth: '1620px',
+            maxWidth: '1380px',
 
             '@media (max-width: 1440px)': {
               width: '90%',
