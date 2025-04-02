@@ -1,4 +1,6 @@
 import { Box, Typography } from '@mui/material';
+import { capitalize } from '../../utils/helper-functions';
+import profilePlaceholder from '../../assets/images/profile-placeholder.jpg';
 
 type RecentUserItemProps = {
   image: string;
@@ -30,6 +32,16 @@ const RecentUserItem = ({
           width: '280px',
           height: '260px',
         },
+
+        '@media (max-width: 680px)': {
+          width: '320px',
+          height: '280px',
+        },
+
+        '@media (max-width: 380px)': {
+          width: '280px',
+          height: '260px',
+        },
       }}
     >
       <Box
@@ -46,9 +58,14 @@ const RecentUserItem = ({
       >
         <Box
           component='img'
-          src={image}
+          src={image || profilePlaceholder}
           alt={`${first_name} ${last_name} Profile Picture`}
-          sx={{ width: '60px', height: '60px' }}
+          sx={{
+            width: '96px',
+            height: '96px',
+            objectFit: 'cover',
+            borderRadius: '50%',
+          }}
         />
       </Box>
       <Typography sx={{ fontWeight: 400, fontSize: '20px', mb: '4px' }}>
@@ -61,7 +78,7 @@ const RecentUserItem = ({
           color: 'hsla(0, 0%, 100%, 0.5)',
         }}
       >
-        {role}
+        {capitalize(role)}
       </Typography>
     </Box>
   );

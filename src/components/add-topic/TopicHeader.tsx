@@ -1,16 +1,19 @@
 import { useEffect, useState } from 'react';
 import { Box, Typography } from '@mui/material';
+import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import CustomInput from '../common/CustomInput';
 import CustomButton from '../common/CustomButton';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { topicDetailsSchema, TopicDetailsInputs } from '../../utils/validation';
-import { useGenerateLesson } from '../../hooks/lessons-hook';
-import { GenerateLessonResponse } from '../../types/lessons-types';
-import CloudUploadIcon from '@mui/icons-material/CloudUpload';
+import {
+  useGenerateLesson,
+  useGetGeneratedContent,
+} from '../../hooks/lessons-hook';
+import { GeneratedLessonResults } from '../../types/lessons-types';
 
 type TopicHeaderProps = {
-  onGenerate: (res: GenerateLessonResponse) => void;
+  onGenerate: (res: GeneratedLessonResults) => void;
   onFormChange: (data: TopicDetailsInputs) => void;
   clearTrigger: number;
   onImageChange: (file: File | null) => void;
@@ -25,6 +28,17 @@ const TopicHeader = ({
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [fileName, setFileName] = useState<string | null>(null);
   const { mutate, isPending } = useGenerateLesson();
+
+  const [taskId, setTaskId] = useState<string | null>(null);
+
+  const [pollingEnabled, setPollingEnabled] = useState(true);
+  const { data: generatedLesson } = useGetGeneratedContent(
+    taskId,
+    pollingEnabled
+  );
+
+  const isGenerating =
+    taskId !== null && generatedLesson?.status !== 'completed';
 
   const {
     register,
@@ -74,11 +88,19 @@ const TopicHeader = ({
       },
       {
         onSuccess: (res) => {
-          onGenerate(res);
+          setTaskId(res.task_id ?? null);
         },
       }
     );
   };
+
+  useEffect(() => {
+    if (generatedLesson?.status === 'completed' && generatedLesson.result) {
+      onGenerate(generatedLesson.result);
+      setPollingEnabled(false);
+      setTaskId(null);
+    }
+  }, [generatedLesson, onGenerate]);
 
   useEffect(() => {
     reset({
@@ -281,7 +303,7 @@ const TopicHeader = ({
         <Box sx={{ display: 'flex', justifyContent: 'end' }}>
           <CustomButton
             type='submit'
-            disabled={isPending}
+            disabled={isPending || isGenerating}
             sx={{
               maxWidth: '220px',
               width: '100%',
@@ -290,7 +312,7 @@ const TopicHeader = ({
               },
             }}
           >
-            {isPending ? 'Generating...' : 'Generate Content'}
+            {isPending || isGenerating ? 'Generating...' : 'Generate Content'}
           </CustomButton>
         </Box>
       </Box>

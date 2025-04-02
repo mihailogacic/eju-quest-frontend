@@ -1,21 +1,27 @@
 import { useState } from 'react';
-import { Box, Typography } from '@mui/material';
+import { Box, Typography, CircularProgress } from '@mui/material';
 import AdminHeader from '../components/admin-parent/AdminHeader';
 import UserDashboard from '../components/admin-parent/UserDashboard';
 import RecentUserItem from '../components/admin-parent/RecentUserItem';
 import SessionReviewsItem from '../components/admin-parent/SessionReviewsItem';
-import { useDashboardUsers } from '../hooks/users-hook';
-import { recentUsersData, sessionReviewsData } from '../../mockData';
+import { useDashboardUsers, useGetUsers } from '../hooks/users-hook';
+import { sessionReviewsData } from '../../mockData';
 
 const AdminParent = () => {
   const [search, setSearch] = useState('');
   const [submittedSearch, setSubmittedSearch] = useState('');
+
+  const { data: users, isPending: isUserPending } = useGetUsers();
 
   const { data: searchUsers, isPending } = useDashboardUsers(submittedSearch);
 
   const handleSearchTrigger = (value: string) => {
     setSubmittedSearch(value);
   };
+
+  const filteredUsers = Array.isArray(users?.users)
+    ? users.users.filter((user) => user.role === 'child')
+    : [];
 
   return (
     <Box>
@@ -63,45 +69,46 @@ const AdminParent = () => {
         >
           Recent Users
         </Typography>
-        <Box
-          sx={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(3, 1fr)',
-            gap: 3,
-            justifyContent: 'center',
-            justifyItems: 'center',
-            mx: 'auto',
-            maxWidth: '1380px',
 
-            '@media (max-width: 1440px)': {
-              width: '90%',
-              mx: 'auto',
-            },
+        {isUserPending ? (
+          <Box display='flex' justifyContent='center' py={4}>
+            <CircularProgress size={32} />
+          </Box>
+        ) : filteredUsers.length === 0 ? (
+          <Typography textAlign='center' py={4} fontSize={18}>
+            No child users found.
+          </Typography>
+        ) : (
+          <Box
+            sx={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(3, 1fr)',
+              gap: 4,
+              justifySelf: 'center',
 
-            '@media (max-width: 900px)': {
-              justifyContent: 'center',
-              justifyItems: 'center',
-              gridTemplateColumns: 'repeat(2, 1fr)',
-              mx: 'auto',
-              width: '600px',
-            },
+              '@media (max-width: 1440px)': {},
 
-            '@media (max-width: 680px)': {
-              gridTemplateColumns: 'repeat(1, 1fr)',
-              width: '100%',
-            },
-          }}
-        >
-          {recentUsersData.map((user, index) => (
-            <RecentUserItem
-              key={index}
-              image={user.image}
-              first_name={user.first_name}
-              last_name={user.last_name}
-              role={user.role}
-            />
-          ))}
-        </Box>
+              '@media (max-width: 900px)': {
+                gridTemplateColumns: 'repeat(2, 1fr)',
+              },
+
+              '@media (max-width: 680px)': {
+                gridTemplateColumns: 'repeat(1, 1fr)',
+                gap: 3,
+              },
+            }}
+          >
+            {filteredUsers.map((user, index) => (
+              <RecentUserItem
+                key={index}
+                image={user.profile_image}
+                first_name={user.first_name}
+                last_name={user.last_name}
+                role={user.role}
+              />
+            ))}
+          </Box>
+        )}
       </Box>
 
       <Box

@@ -24,6 +24,18 @@ export const recentUsersData = [
     last_name: 'Brown',
     role: 'Editor',
   },
+  {
+    image: profileIcon,
+    first_name: 'Michael',
+    last_name: 'Brown',
+    role: 'Editor',
+  },
+  {
+    image: profileIcon,
+    first_name: 'Michael',
+    last_name: 'Brown',
+    role: 'Editor',
+  },
 ];
 
 export const sessionReviewsData = [
