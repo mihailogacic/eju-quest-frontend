@@ -5,10 +5,16 @@ import { Box } from '@mui/material';
 type CustomModalProps = {
   isOpen: boolean;
   onClose: () => void;
+  overlayClose?: boolean;
   children: ReactNode;
 };
 
-const CustomModal = ({ isOpen, onClose, children }: CustomModalProps) => {
+const CustomModal = ({
+  isOpen,
+  onClose,
+  children,
+  overlayClose = true,
+}: CustomModalProps) => {
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
       if (e.key === 'Escape') onClose();
@@ -37,7 +43,7 @@ const CustomModal = ({ isOpen, onClose, children }: CustomModalProps) => {
         justifyContent: 'center',
         alignItems: 'center',
       }}
-      onClick={onClose}
+      onClick={overlayClose ? () => onClose() : () => {}}
     >
       <Box
         sx={{

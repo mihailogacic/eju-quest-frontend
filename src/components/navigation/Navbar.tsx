@@ -24,8 +24,7 @@ const Navbar = () => {
 
   const queryClient = useQueryClient();
   const childLinks = [
-    { label: 'Home', onClick: () => navigate('') },
-    { label: 'Topics', onClick: () => navigate('/explore-topics') },
+    { label: 'Home', onClick: () => navigate('/explore-topics') },
     { label: 'Edit Profile', onClick: () => navigate('/user-profile') },
     {
       label: 'Logout',
@@ -39,9 +38,23 @@ const Navbar = () => {
 
   const parentLinks = [
     {
+      label: 'Home',
+      onClick: () => {
+        navigate('/admin');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      },
+    },
+    {
       label: 'User Management',
       onClick: () => {
         navigate('/user-management');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      },
+    },
+    {
+      label: 'Pending Content',
+      onClick: () => {
+        navigate('/pending-content');
         window.scrollTo({ top: 0, behavior: 'smooth' });
       },
     },
