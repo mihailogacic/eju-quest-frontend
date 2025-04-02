@@ -24,7 +24,7 @@ const SessionReviewsItem = ({
 
   return (
     <Box
-      onClick={() => navigate(`/reviews/${id}`)}
+      onClick={() => navigate(`/pending-content/${id}`)}
       sx={{
         backgroundColor: 'black',
         color: 'white',

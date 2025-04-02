@@ -11,10 +11,20 @@ import {
 import CustomRadio from '../components/common/CustomRadio';
 import CustomButton from '../components/common/CustomButton';
 import CustomAccordion from '../components/common/CustomAccordion';
+import CustomModal from '../components/common/CustomModal';
+import QuizFinished from '../components/quiz/QuizFinished';
 import Timeout from '../components/quiz/Timeout';
 import { useLessonQuiz, useSubmitQuiz } from '../hooks/lessons-hook';
 
 const Quiz = () => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [quizResult, setQuizResult] = useState<null | {
+    score: number;
+    correct_answers: number;
+    total_questions: number;
+    passed: boolean;
+  }>(null);
+
   // const [selected, setSelected] = useState<string | null>(null);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [answers, setAnswers] = useState<Record<number, number>>({});
@@ -51,19 +61,59 @@ const Quiz = () => {
   // const selectedAnswer = answers[currentQuestion.id] ?? '';
 
   const handleSubmit = () => {
-    {
-      const payload = {
-        lesson_id: Number(id),
-        answers: questions.map((q) => ({
-          question_id: q.id,
-          selected_option:
-            q.options.find((opt) => opt.id === answers[q.id])?.option ?? '',
-        })),
-      };
+    const payload = {
+      lesson_id: Number(id),
+      answers: questions.map((q) => ({
+        question_id: q.id,
+        selected_option:
+          q.options.find((opt) => opt.id === answers[q.id])?.option ?? '',
+      })),
+    };
 
-      console.log('Submitting payload:', payload);
-      submitQuiz(payload);
-    }
+    submitQuiz(payload, {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      onSuccess: (result: any) => {
+        setQuizResult({
+          score: result.score,
+          correct_answers: result.correct_answers,
+          total_questions: result.total_questions,
+          passed: result.passed,
+        });
+        setIsModalOpen(true);
+      },
+    });
+  };
+
+  const handleAutoSubmit = () => {
+    const filledAnswers = questions.reduce((acc, q) => {
+      const selectedId = answers[q.id];
+      const selectedOption = q.options.find((opt) => opt.id === selectedId);
+
+      acc[q.id] = selectedOption?.option ? selectedOption.option : 'Z';
+
+      return acc;
+    }, {} as Record<number, string>);
+
+    const payload = {
+      lesson_id: Number(id),
+      answers: questions.map((q) => ({
+        question_id: q.id,
+        selected_option: filledAnswers[q.id],
+      })),
+    };
+
+    submitQuiz(payload, {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      onSuccess: (result: any) => {
+        setQuizResult({
+          score: result.score,
+          correct_answers: result.correct_answers,
+          total_questions: result.total_questions,
+          passed: result.passed,
+        });
+        setIsModalOpen(true);
+      },
+    });
   };
 
   return (
@@ -254,29 +304,50 @@ const Quiz = () => {
               },
             }}
           >
-            <CustomAccordion title='Question 1'>
-              Lorem ipsum dolor, sit amet consectetur adipisicing elit.
-              Blanditiis, fugit! Illo, tempore aperiam commodi itaque voluptatum
-              aliquid, a unde aut molestiae accusantium voluptatem officia
-              laborum placeat rerum praesentium mollitia repellat?
-            </CustomAccordion>
-            <CustomAccordion title='Question 2'>
-              Lorem ipsum dolor, sit amet consectetur adipisicing elit.
-              Blanditiis, fugit! Illo, tempore aperiam commodi itaque voluptatum
-              aliquid, a unde aut molestiae accusantium voluptatem officia
-              laborum placeat rerum praesentium mollitia repellat?
-            </CustomAccordion>
-            <CustomAccordion title='Question 3'>
-              Lorem ipsum dolor, sit amet consectetur adipisicing elit.
-              Blanditiis, fugit! Illo, tempore aperiam commodi itaque voluptatum
-              aliquid, a unde aut molestiae accusantium voluptatem officia
-              laborum placeat rerum praesentium mollitia repellat?
-            </CustomAccordion>
+            {questions.map((question, index) => {
+              const selectedOptionId = answers[question.id];
+              const selectedOption = question.options.find(
+                (opt) => opt.id === selectedOptionId
+              );
+
+              return (
+                <CustomAccordion
+                  key={question.id}
+                  title={`Question ${index + 1}`}
+                >
+                  <Typography sx={{ mb: 1 }}>
+                    {question.question_text}
+                  </Typography>
+                  <Typography sx={{ fontWeight: 500 }}>
+                    Your Answer:{' '}
+                    {selectedOption
+                      ? selectedOption.option_text
+                      : 'No answer yet.'}
+                  </Typography>
+                </CustomAccordion>
+              );
+            })}
           </Box>
         </Box>
       </Box>
 
-      <Timeout duration={30} />
+      {/* TODO: the parent should set the quiz duration (need to change) */}
+      <Timeout duration={60} onTimeout={handleAutoSubmit} />
+
+      <CustomModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        overlayClose={false}
+      >
+        {quizResult && (
+          <QuizFinished
+            score={quizResult.score}
+            correctAnswers={quizResult.correct_answers}
+            totalQuestions={quizResult.total_questions}
+            passed={quizResult.passed}
+          />
+        )}
+      </CustomModal>
     </>
   );
 };

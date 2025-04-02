@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { Box, Typography } from '@mui/material';
 
 interface TimeoutProps {
@@ -6,20 +6,26 @@ interface TimeoutProps {
   onTimeout?: () => void;
 }
 
-const Timeout = ({duration, onTimeout}: TimeoutProps) => {
+const Timeout = ({ duration, onTimeout }: TimeoutProps) => {
   const [timeLeft, setTimeLeft] = useState(duration);
+  const hasFired = useRef(false);
 
   useEffect(() => {
-    if (timeLeft <= 0) {
-      onTimeout?.();
-      return;
-    }
-
     const timer = setInterval(() => {
-      setTimeLeft((prev) => prev - 1);
+      setTimeLeft((prev) => {
+        if (prev <= 0) return 0;
+        return prev - 1;
+      });
     }, 1000);
 
     return () => clearInterval(timer);
+  }, []);
+
+  useEffect(() => {
+    if (timeLeft <= 0 && !hasFired.current) {
+      hasFired.current = true;
+      onTimeout?.();
+    }
   }, [timeLeft, onTimeout]);
 
   const formatTime = (seconds: number) => {

@@ -12,7 +12,7 @@ const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
 
   const parentRoutes = [
     '/admin',
-    '/reviews',
+    '/pending-content',
     '/add-topic',
     '/user-management',
     '/add-children',
@@ -33,7 +33,10 @@ const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
 
   if (
     user?.role === 'parent' &&
-    !(parentRoutes.includes(currentPath) || currentPath.startsWith('/reviews/'))
+    !(
+      parentRoutes.includes(currentPath) ||
+      currentPath.startsWith('/pending-content/')
+    )
   ) {
     return <Navigate to='/' replace />;
   }

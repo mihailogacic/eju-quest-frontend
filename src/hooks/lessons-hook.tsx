@@ -46,7 +46,7 @@ export const useSubmitLesson = () => {
     mutationFn: submitNewLesson,
     onSuccess: () => {
       toast.success('Lesson successfully added!');
-      navigate('/reviews');
+      navigate('/pending-content');
     },
     onError: (error: any) => {
       const message =
@@ -80,7 +80,7 @@ export const useApproveLesson = () => {
     mutationFn: approveLesson,
     onSuccess: () => {
       toast.success('Lesson approved successfully!');
-      navigate('/reviews');
+      navigate('/pending-content');
     },
     onError: (error: any) => {
       const message =
@@ -99,7 +99,7 @@ export const useUnapproveLesson = () => {
     mutationFn: unapproveLesson,
     onSuccess: () => {
       toast.success('Lesson unapproved successfully!');
-      navigate('/reviews');
+      navigate('/pending-content');
     },
     onError: (error: any) => {
       const message =
@@ -138,9 +138,7 @@ export const useSubmitLessonSummary = () => {
 export const useSubmitQuiz = () => {
   return useMutation({
     mutationFn: submitQuizAnswers,
-    onSuccess: () => {
-      toast.success('Quiz submitted successfully!');
-    },
+    onSuccess: () => {},
     onError: (error: any) => {
       toast.error(
         error?.detail || 'An error occurred while submitting the quiz.'

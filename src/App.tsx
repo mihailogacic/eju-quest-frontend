@@ -127,7 +127,7 @@ const App = () => {
             }
           />
           <Route
-            path='/reviews/:id'
+            path='/pending-content/:id'
             element={
               <ProtectedRoute>
                 <Layout>
@@ -137,7 +137,7 @@ const App = () => {
             }
           />
           <Route
-            path='/reviews'
+            path='/pending-content'
             element={
               <ProtectedRoute>
                 <Layout>
