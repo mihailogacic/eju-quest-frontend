@@ -119,6 +119,7 @@ const Choices = ({
   };
 
   const handleSubmit = () => {
+    console.log('lessonInfo', lessonInfo);
     const isFormValid = formData.every((q) => {
       const hasQuestion = q.question.trim() !== '';
       const allOptionsFilled = q.options.every((opt) => opt.trim() !== '');
@@ -127,6 +128,7 @@ const Choices = ({
     });
 
     const isHeaderValid =
+      typeof lessonInfo.title === 'string' &&
       lessonInfo.title.trim() !== '' &&
       lessonInfo.age_level >= 4 &&
       lessonInfo.age_level <= 18 &&

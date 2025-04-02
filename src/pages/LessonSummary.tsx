@@ -1,4 +1,4 @@
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { Box, Typography } from '@mui/material';
 import CustomTextArea from '../components/common/CustomTextArea';
 import CustomButton from '../components/common/CustomButton';
@@ -10,7 +10,10 @@ import { useSubmitLessonSummary } from '../hooks/lessons-hook';
 const LessonSummary = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const location = useLocation();
   const { mutate: submitSummary } = useSubmitLessonSummary();
+
+  const { title } = location.state || {};
 
   const {
     register,
@@ -81,7 +84,7 @@ const LessonSummary = () => {
         onSubmit={handleSubmit(onSubmit)}
       >
         <Typography sx={{ fontSize: '20px', fontWeight: 500, mb: 2 }}>
-          Topic Name
+          {title || 'Topic Name'}
         </Typography>
         <CustomTextArea
           placeholder='Enter your summary here'

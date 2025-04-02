@@ -48,6 +48,27 @@ export const generateNewLesson = async (
   }
 };
 
+export const getGeneratedContent = async (
+  taskId: string | null
+): Promise<GenerateLessonResponse> => {
+  try {
+    const response = await axiosInstance.get<GenerateLessonResponse>(
+      `/lessons/tasks/${taskId}/status/`,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }
+    );
+    return response.data;
+  } catch (error: any) {
+    throw (
+      error.response?.data ||
+      'An error occurred while fetching pending lessons.'
+    );
+  }
+};
+
 export const submitNewLesson = async (
   data: SubmitLessonPayload & { image?: File | null }
 ): Promise<any> => {

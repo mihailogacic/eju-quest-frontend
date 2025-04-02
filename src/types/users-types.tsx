@@ -13,6 +13,7 @@ export type SingleUser = {
   last_name: string;
   email: string;
   role: string;
+  profile_image: string;
 };
 
 export type ChildTypes = {

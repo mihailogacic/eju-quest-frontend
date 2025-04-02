@@ -43,12 +43,17 @@ export type LessonQuestion = {
   answer: string;
 };
 
+export type GeneratedLessonResults = {
+  title: string;
+  content: LessonContent[];
+  questions: LessonQuestion[];
+};
+
 export type GenerateLessonResponse = {
-  lesson: {
-    content: LessonContent[];
-    questions: LessonQuestion[];
-  };
-  prompt_input: GenerateLessonInput;
+  status: 'processing' | 'completed';
+  result?: GeneratedLessonResults;
+  task_id?: string;
+  prompt_input?: GenerateLessonInput;
 };
 
 export type SubmitLessonPayload = {

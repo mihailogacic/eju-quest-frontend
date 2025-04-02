@@ -40,13 +40,11 @@ const AddTopic = () => {
     <Box>
       <TopicHeader
         onGenerate={(res) => {
-          setGeneratedQuestions(res.lesson.questions);
-          setGeneratedContent(res.lesson.content);
-          setLessonInfo({
-            title: res.prompt_input.title,
-            age_level: res.prompt_input.age_level,
-            lesson_length: res.prompt_input.lesson_length,
-          });
+          setGeneratedQuestions(res.questions);
+          setGeneratedContent(res.content);
+          setLessonInfo((prev) => ({
+            ...prev,
+          }));
           setIsGenerated(true);
         }}
         onFormChange={(data) => {

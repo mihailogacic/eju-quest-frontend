@@ -81,17 +81,14 @@ const ExploreTopics = () => {
             mt: 5,
             display: 'grid',
             gridTemplateColumns: 'repeat(4, 1fr)',
-            justifyContent: 'center',
-            justifyItems: 'center',
-            columnGap: 2,
-            rowGap: 2,
+            justifySelf: 'center',
+            gap: 2,
 
             '@media (max-width: 1200px)': {
               gridTemplateColumns: 'repeat(3, 1fr)',
             },
             '@media (max-width: 900px)': {
               gridTemplateColumns: 'repeat(2, 1fr)',
-              rowGap: 4,
             },
             '@media (max-width: 640px)': {
               gridTemplateColumns: 'repeat(1, 1fr)',

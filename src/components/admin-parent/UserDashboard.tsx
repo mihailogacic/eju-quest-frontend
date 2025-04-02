@@ -50,6 +50,8 @@ const UserDashboard = ({
           py: 5,
           px: 2,
         },
+        maxWidth: '1280px',
+        mx: 'auto',
       }}
     >
       <Typography

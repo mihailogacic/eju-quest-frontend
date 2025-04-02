@@ -12,7 +12,7 @@ const LessonDisplay = () => {
   const { data, isPending, isError } = useLessonDetail(id as string);
 
   const handleLessonSummary = () => {
-    navigate(`/lesson-summary/${id}`);
+    navigate(`/lesson-summary/${id}`, { state: { title: data?.title } });
   };
 
   const handleQuiz = () => {

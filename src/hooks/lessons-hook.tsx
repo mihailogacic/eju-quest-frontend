@@ -12,6 +12,7 @@ import {
   getLessonQuiz,
   submitLessonSummary,
   submitQuizAnswers,
+  getGeneratedContent,
 } from '../services/lessons-api';
 import { PendingLessonsTypes, LessonDetail } from '../types/lessons-types';
 import { toast } from 'react-toastify';
@@ -26,9 +27,7 @@ export const usePendingLessons = () => {
 export const useGenerateLesson = () => {
   return useMutation({
     mutationFn: generateNewLesson,
-    onSuccess: () => {
-      toast.success('Lesson was generated successfully!');
-    },
+    onSuccess: () => {},
     onError: (error: any) => {
       const message =
         error?.response?.data?.detail ||
@@ -36,6 +35,22 @@ export const useGenerateLesson = () => {
         'Something went wrong while submitting the lesson.';
       toast.error(message);
     },
+  });
+};
+
+export const useGetGeneratedContent = (
+  taskId: string | null,
+  enabledOverride = true
+) => {
+  return useQuery({
+    queryKey: ['generated-content', taskId],
+    queryFn: () => {
+      if (!taskId) throw new Error('Task ID is required');
+      return getGeneratedContent(taskId);
+    },
+    enabled: !!taskId && enabledOverride,
+    refetchInterval: 5000,
+    refetchIntervalInBackground: true,
   });
 };
 
