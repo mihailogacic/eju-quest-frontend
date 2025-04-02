@@ -32,10 +32,16 @@ const RecentActivity = ({
         },
         '@media (max-width: 640px)': {
           p: 2,
+          py: 5,
         },
       }}
     >
-      <Box sx={{ textAlign: 'center', mb: 4 }}>
+      <Box
+        sx={{
+          textAlign: 'center',
+          mb: 4,
+        }}
+      >
         <Typography sx={{ fontWeight: 700, fontSize: '40px', mb: 1 }}>
           Recent Activity
         </Typography>
@@ -57,6 +63,7 @@ const RecentActivity = ({
           justifySelf: 'center',
           columnGap: 3,
           rowGap: 3,
+          mb: 2,
 
           '@media (max-width: 768px)': {
             gridTemplateColumns: 'repeat(1, 1fr)',
@@ -85,12 +92,13 @@ const RecentActivity = ({
           cardData.map((card, index) => (
             <RecentActivityCard
               key={index}
-              profile_picture=''
-              first_name='NaN'
-              last_name='NaN'
+              // profile_picture=''
+              // first_name='NaN'
+              // last_name='NaN'
               image={card.image}
               title={card.title}
-              hashtags={['learning']}
+              // hashtags={['learning']}
+              id={card.id}
             />
           ))
         ) : (

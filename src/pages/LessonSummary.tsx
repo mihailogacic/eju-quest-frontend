@@ -24,7 +24,7 @@ const LessonSummary = () => {
   });
 
   const handleCancel = () => {
-    console.log('cancel');
+    navigate(-1);
   };
 
   const onSubmit = (data: LessonSummaryInputs) => {
