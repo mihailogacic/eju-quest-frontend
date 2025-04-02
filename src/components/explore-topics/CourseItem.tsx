@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import { Box, Typography } from '@mui/material';
+import imagePlaceholder from '../../assets/images/no-image.webp';
 
 type CourseItemProps = {
   id: number | string;
@@ -15,6 +16,7 @@ const CourseItem = ({ id, image, name, description }: CourseItemProps) => {
     navigate(`/lesson/${id}`);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
+
   return (
     <Box
       onClick={handleClick}
@@ -31,7 +33,7 @@ const CourseItem = ({ id, image, name, description }: CourseItemProps) => {
     >
       <Box
         component='img'
-        src={image}
+        src={image || imagePlaceholder}
         alt='course image'
         sx={{
           height: '282px',

@@ -5,13 +5,19 @@ import UserDashboard from '../components/admin-parent/UserDashboard';
 import RecentUserItem from '../components/admin-parent/RecentUserItem';
 import SessionReviewsItem from '../components/admin-parent/SessionReviewsItem';
 import { useDashboardUsers, useGetUsers } from '../hooks/users-hook';
-import { sessionReviewsData } from '../../mockData';
+import { usePendingLessons } from '../hooks/lessons-hook';
+import { capitalize } from '../utils/helper-functions';
 
 const AdminParent = () => {
   const [search, setSearch] = useState('');
   const [submittedSearch, setSubmittedSearch] = useState('');
 
   const { data: users, isPending: isUserPending } = useGetUsers();
+  const {
+    data: lessons,
+    isPending: isLessonsPending,
+    isError,
+  } = usePendingLessons();
 
   const { data: searchUsers, isPending } = useDashboardUsers(submittedSearch);
 
@@ -125,36 +131,65 @@ const AdminParent = () => {
           Session Reviews
         </Typography>
 
-        <Box
-          sx={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(2, 1fr)',
-            justifyContent: 'center',
-            justifyItems: 'center',
-            maxWidth: '1120px',
-            width: '100%',
-            mx: 'auto',
-            px: 2,
-            columnGap: 3,
-            rowGap: '24px',
+        {isLessonsPending ? (
+          <Box display='flex' justifyContent='center' mt={6}>
+            <CircularProgress />
+          </Box>
+        ) : isError ? (
+          <Typography color='error' textAlign='center' mt={4}>
+            Failed to load pending lessons.
+          </Typography>
+        ) : (
+          <Box
+            sx={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(2, 1fr)',
+              justifyContent: 'center',
+              justifyItems: 'center',
+              maxWidth: '1120px',
+              width: '100%',
+              mx: 'auto',
+              px: 2,
+              columnGap: 3,
+              rowGap: '24px',
 
-            '@media (max-width: 900px)': {
-              gridTemplateColumns: 'repeat(1, 1fr)',
-            },
-          }}
-        >
-          {sessionReviewsData.map((review, index) => (
-            <SessionReviewsItem
-              key={index}
-              image={review.image}
-              title={review.title}
-              description={review.description}
-              status={review.status}
-              role={review.role}
-              id={review.id}
-            />
-          ))}
-        </Box>
+              '@media (max-width: 900px)': {
+                gridTemplateColumns: 'repeat(1, 1fr)',
+              },
+            }}
+          >
+            {lessons.length > 0 ? (
+              lessons.map((lesson) => (
+                <SessionReviewsItem
+                  key={lesson.id}
+                  image={lesson.image}
+                  title={lesson.title}
+                  description='Description'
+                  status={capitalize(lesson.status)}
+                  role='Admin'
+                  id={lesson.id}
+                />
+              ))
+            ) : (
+              <Box
+                sx={{
+                  gridColumn: '1 / -1',
+                  display: 'flex',
+                  justifyContent: 'center',
+                }}
+              >
+                <Typography
+                  sx={(theme) => ({
+                    fontSize: '14px',
+                    color: theme.palette.text.noData,
+                  })}
+                >
+                  No session reviews found.
+                </Typography>
+              </Box>
+            )}
+          </Box>
+        )}
       </Box>
     </Box>
   );
