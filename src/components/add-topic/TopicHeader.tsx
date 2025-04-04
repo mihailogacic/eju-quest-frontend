@@ -46,6 +46,7 @@ const TopicHeader = ({
     formState: { errors },
     watch,
     reset,
+    setValue,
   } = useForm<TopicDetailsInputs>({
     resolver: zodResolver(topicDetailsSchema),
   });
@@ -105,10 +106,14 @@ const TopicHeader = ({
   useEffect(() => {
     reset({
       topic_name: '',
-      age_level: '',
+      age_level: 0,
       lesson_length: '',
     });
-  }, [clearTrigger, reset]);
+    setTimeout(() => {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      setValue('age_level', '' as any);
+    }, 0);
+  }, [clearTrigger, reset, setValue]);
 
   return (
     <Box
