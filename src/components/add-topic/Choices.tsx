@@ -119,7 +119,6 @@ const Choices = ({
   };
 
   const handleSubmit = () => {
-    console.log('Choices (lessonInfo): ', lessonInfo);
     const isFormValid = formData.every((q) => {
       const hasQuestion = q.question.trim() !== '';
       const allOptionsFilled = q.options.every((opt) => opt.trim() !== '');

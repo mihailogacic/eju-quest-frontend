@@ -23,8 +23,6 @@ const AddTopic = () => {
     lesson_length: '' as 'short' | 'medium' | 'long',
   });
 
-  console.log('AddTopic (lessonInfo): ', lessonInfo);
-
   const [clearTrigger, setClearTrigger] = useState(0);
 
   const handleClearAll = () => {
