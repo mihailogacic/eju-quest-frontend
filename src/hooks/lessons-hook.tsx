@@ -13,6 +13,7 @@ import {
   submitLessonSummary,
   submitQuizAnswers,
   getGeneratedContent,
+  deleteLesson,
 } from '../services/lessons-api';
 import { PendingLessonsTypes, LessonDetail } from '../types/lessons-types';
 import { toast } from 'react-toastify';
@@ -121,6 +122,25 @@ export const useUnapproveLesson = () => {
         error?.response?.data?.detail ||
         error?.detail ||
         'Something went wrong while unapproving the lesson.';
+      toast.error(message);
+    },
+  });
+};
+
+export const useDeleteLesson = () => {
+  const navigate = useNavigate();
+
+  return useMutation({
+    mutationFn: deleteLesson,
+    onSuccess: () => {
+      toast.success('Lesson deleted successfully!');
+      navigate('/pending-content');
+    },
+    onError: (error: any) => {
+      const message =
+        error?.response?.data?.detail ||
+        error?.detail ||
+        'Something went wrong while deleting the lesson.';
       toast.error(message);
     },
   });

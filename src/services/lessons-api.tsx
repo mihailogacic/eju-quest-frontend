@@ -168,6 +168,20 @@ export const unapproveLesson = async (lesson_id: number) => {
   }
 };
 
+export const deleteLesson = async (lesson_id: number): Promise<void> => {
+  try {
+    await axiosInstance.delete(`/lessons/${lesson_id}/delete/`, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+  } catch (error: any) {
+    throw (
+      error?.response?.data || 'An error occurred while deleting the lesson.'
+    );
+  }
+};
+
 export const getLessonQuiz = async (
   id: string | number
 ): Promise<QuestionResponseTypes> => {
