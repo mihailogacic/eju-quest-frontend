@@ -1,13 +1,13 @@
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { Box, Typography } from '@mui/material';
 
 interface TimeoutProps {
-  duration: number;
   onTimeout?: () => void;
+  timeLeft: number;
+  setTimeLeft: React.Dispatch<React.SetStateAction<number>>;
 }
 
-const Timeout = ({ duration, onTimeout }: TimeoutProps) => {
-  const [timeLeft, setTimeLeft] = useState(duration);
+const Timeout = ({ onTimeout, timeLeft, setTimeLeft }: TimeoutProps) => {
   const hasFired = useRef(false);
 
   useEffect(() => {
@@ -19,7 +19,7 @@ const Timeout = ({ duration, onTimeout }: TimeoutProps) => {
     }, 1000);
 
     return () => clearInterval(timer);
-  }, []);
+  }, [setTimeLeft]);
 
   useEffect(() => {
     if (timeLeft <= 0 && !hasFired.current) {

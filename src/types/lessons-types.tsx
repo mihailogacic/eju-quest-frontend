@@ -89,6 +89,53 @@ export type LessonDetail = {
   sections: LessonSection[];
 };
 
+export type FinishedTopicCard = {
+  id: number | string;
+  child_id: number | string;
+  title: string;
+  lesson_image: string;
+  child_username: string;
+  completed_at?: string;
+  passed: boolean;
+};
+
+type OptionKeys = 'A' | 'B' | 'C' | 'D';
+
+type Answers = {
+  correct: 'true' | 'false';
+  options: Record<OptionKeys, string>;
+  question_text: string;
+  correct_option: OptionKeys;
+  selected_option: OptionKeys;
+};
+
+type QuizResults = {
+  answers: Answers[];
+  child_username: string;
+  correct_answers: number;
+  created_at: string;
+  id: number | string;
+  lesson_image: string;
+  passed: boolean;
+  remaining_time: number;
+  score: number;
+  total_questions: number;
+};
+
+type FinishedSummary = {
+  id: number | string;
+  description: string;
+  created_at: string;
+  remaining_time: number;
+};
+
+export type TopicResultsTypes = {
+  child_username: string;
+  lesson_title: string;
+  quiz_results: QuizResults;
+  summary: FinishedSummary | null;
+};
+
 type QuizOption = {
   id: number;
   option: string;

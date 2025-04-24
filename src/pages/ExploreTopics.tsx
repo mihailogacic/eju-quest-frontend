@@ -120,7 +120,6 @@ const ExploreTopics = () => {
                 id={course.id}
                 image={course.image}
                 name={course.title}
-                description=''
               />
             ))
           ) : (

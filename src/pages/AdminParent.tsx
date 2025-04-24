@@ -164,7 +164,6 @@ const AdminParent = () => {
                   key={lesson.id}
                   image={lesson.image}
                   title={lesson.title}
-                  description='Description'
                   status={capitalize(lesson.status)}
                   role='Admin'
                   id={lesson.id}

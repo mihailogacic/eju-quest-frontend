@@ -1,10 +1,10 @@
 import { Box, Typography, CircularProgress } from '@mui/material';
 import SessionReviewsItem from '../components/admin-parent/SessionReviewsItem';
-import { usePendingLessons } from '../hooks/lessons-hook';
-import { capitalize } from '../utils/helper-functions';
+import { useFinishedTopics } from '../hooks/lessons-hook';
 
-const ContentReviews = () => {
-  const { data: lessons, isPending, isError } = usePendingLessons();
+const FinishedTopics = () => {
+  const { data: lessons, isPending, isError } = useFinishedTopics();
+  console.log(lessons);
 
   return (
     <Box
@@ -27,10 +27,10 @@ const ContentReviews = () => {
       <Typography
         sx={{ fontSize: '40px', fontWeight: 700, textAlign: 'center', mb: 2 }}
       >
-        Pending Content
+        Finished Topics
       </Typography>
       <Typography sx={{ fontWeight: 400, textAlign: 'center' }}>
-        Review and take action on pending content items.
+        Review and take action on finished topics items.
       </Typography>
 
       {isPending ? (
@@ -66,12 +66,14 @@ const ContentReviews = () => {
             lessons.map((lesson) => (
               <SessionReviewsItem
                 key={lesson.id}
-                image={lesson.image}
+                image={lesson.lesson_image}
                 title={lesson.title}
                 // description='Description'
-                status={capitalize(lesson.status)}
-                role='Admin'
+                passed={lesson.passed}
+                role={lesson.child_username}
                 id={lesson.id}
+                isFinished
+                childId={lesson.child_id}
               />
             ))
           ) : (
@@ -81,7 +83,7 @@ const ContentReviews = () => {
                 color: theme.palette.text.noData,
               })}
             >
-              No pending lessons found.
+              No finished topics found.
             </Typography>
           )}
         </Box>
@@ -90,4 +92,4 @@ const ContentReviews = () => {
   );
 };
 
-export default ContentReviews;
+export default FinishedTopics;

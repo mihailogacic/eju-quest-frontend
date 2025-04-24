@@ -6,25 +6,41 @@ type SessionReviewsItemProps = {
   id: string | number;
   image: string;
   title: string;
-  description: string;
-  status: string;
+  // description: string;
+  status?: string;
   role: string;
   hasEdit?: boolean;
+  isFinished?: boolean;
+  passed?: boolean;
+  childId?: number | string;
 };
 
 const SessionReviewsItem = ({
   image,
   title,
-  description,
+  // description,
   status,
   role,
   id,
+  isFinished = false,
+  passed,
+  childId,
 }: SessionReviewsItemProps) => {
   const navigate = useNavigate();
 
+  const handleCardClick = () => {
+    if (isFinished) {
+      navigate(`/finished-topics/${id}`, {
+        state: { childId },
+      });
+    } else {
+      navigate(`/pending-content/${id}`);
+    }
+  };
+
   return (
     <Box
-      onClick={() => navigate(`/pending-content/${id}`)}
+      onClick={handleCardClick}
       sx={{
         backgroundColor: 'black',
         color: 'white',
@@ -62,9 +78,10 @@ const SessionReviewsItem = ({
         <Typography sx={{ fontSize: '20px', fontWeight: 500, lineHeight: 1.2 }}>
           {title}
         </Typography>
-        <Typography sx={{ fontSize: '16px', fontWeight: 400, lineHeight: 1.2 }}>
+        {/* <Typography sx={{ fontSize: '16px', fontWeight: 400, lineHeight: 1.2 }}>
           {description}
-        </Typography>
+        </Typography> */}
+        <div></div>
         <Typography
           sx={{
             backgroundColor: 'white',
@@ -79,7 +96,7 @@ const SessionReviewsItem = ({
             borderRadius: '100px',
           }}
         >
-          {status}
+          {isFinished ? (passed ? 'Passed' : 'Failed') : status}
         </Typography>
         <Box sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
           <Box

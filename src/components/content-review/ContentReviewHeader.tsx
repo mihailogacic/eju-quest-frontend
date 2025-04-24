@@ -4,8 +4,16 @@ import imagePlaceholder from '../../assets/images/no-image.webp';
 type ContentReviewHeaderProps = {
   image: string;
   title: string;
-  age_level: number | string;
-  lesson_length: string;
+  age_level?: number | string;
+  lesson_length?: string;
+  isFinishedDetail?: boolean;
+  isPassed?: boolean;
+  score?: number;
+  totalQuestions?: number;
+  correctAnswers?: number;
+  quizTime?: number;
+  childName?: string;
+  summaryTime?: number | string;
 };
 
 const ContentReviewHeader = ({
@@ -13,6 +21,14 @@ const ContentReviewHeader = ({
   title,
   age_level,
   lesson_length,
+  isFinishedDetail = false,
+  isPassed,
+  score,
+  totalQuestions,
+  correctAnswers,
+  quizTime,
+  childName,
+  summaryTime,
 }: ContentReviewHeaderProps) => {
   return (
     <Box
@@ -66,18 +82,76 @@ const ContentReviewHeader = ({
         >
           {title}
         </Typography>
-        <Typography>
-          Age level:{' '}
-          <Typography component='span' sx={{ fontWeight: 700 }}>
-            {age_level}
-          </Typography>
-        </Typography>
-        <Typography>
-          Lesson length:{' '}
-          <Typography component='span' sx={{ fontWeight: 700 }}>
-            {lesson_length}
-          </Typography>
-        </Typography>
+        {!isFinishedDetail ? (
+          <>
+            <Typography>
+              Age level:{' '}
+              <Typography component='span' sx={{ fontWeight: 700 }}>
+                {age_level}
+              </Typography>
+            </Typography>
+            <Typography>
+              Lesson length:{' '}
+              <Typography component='span' sx={{ fontWeight: 700 }}>
+                {lesson_length}
+              </Typography>
+            </Typography>
+          </>
+        ) : (
+          <>
+            <Typography>
+              Child:{' '}
+              <Typography component='span' sx={{ fontWeight: 700 }}>
+                {childName}
+              </Typography>
+            </Typography>
+            <Typography>
+              Quiz Score:{' '}
+              <Typography component='span' sx={{ fontWeight: 700 }}>
+                {correctAnswers}/{totalQuestions} ({score}%)
+              </Typography>
+            </Typography>
+
+            <Typography
+              component='span'
+              sx={{
+                fontWeight: 700,
+                border: '1px solid green',
+                backgroundColor: 'hsla(120, 100%, 30%, 0.25)',
+                color: 'white',
+                py: 0.8,
+                borderRadius: '6px',
+                fontSize: '14px',
+                textAlign: 'center',
+              }}
+            >
+              {isPassed ? 'PASSED' : 'FAILED'}
+            </Typography>
+
+            <Typography>
+              Quiz Time:{' '}
+              <Typography component='span' sx={{ fontWeight: 700 }}>
+                {quizTime === 0
+                  ? 'Expired'
+                  : `${Math.floor((quizTime || 0) / 60)}m ${
+                      (quizTime || 0) % 60
+                    }s`}
+              </Typography>
+            </Typography>
+            <Typography>
+              Lesson Summary Time:{' '}
+              <Typography component='span' sx={{ fontWeight: 700 }}>
+                {summaryTime === 'Not done yet'
+                  ? 'Not done yet'
+                  : summaryTime === 0
+                  ? 'Expired'
+                  : `${Math.floor((Number(summaryTime) || 0) / 60)}m ${
+                      Number(summaryTime) % 60
+                    }s`}
+              </Typography>
+            </Typography>
+          </>
+        )}
       </Box>
     </Box>
   );

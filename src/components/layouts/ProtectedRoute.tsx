@@ -13,6 +13,7 @@ const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
   const parentRoutes = [
     '/admin',
     '/pending-content',
+    '/finished-topics',
     '/add-topic',
     '/user-management',
     '/add-children',
@@ -34,7 +35,7 @@ const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
   if (
     user?.role === 'parent' &&
     !(
-      parentRoutes.includes(currentPath) ||
+      parentRoutes.some((route) => currentPath.startsWith(route)) ||
       currentPath.startsWith('/pending-content/')
     )
   ) {

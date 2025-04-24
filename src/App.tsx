@@ -18,6 +18,9 @@ import UserProfile from './pages/UserProfile';
 import AdminParent from './pages/AdminParent';
 import ContentReviewDetail from './pages/ContentReviewDetail';
 import ContentReviews from './pages/ContentReviews';
+import UserManagement from './pages/UserManagement';
+import FinishedTopics from './pages/FinishedTopics';
+import FinishedTopicDetail from './pages/FinishedTopicDetail';
 import ExploreTopics from './pages/ExploreTopics';
 import LessonDisplay from './pages/LessonDisplay';
 import LessonSummary from './pages/LessonSummary';
@@ -26,7 +29,6 @@ import Quiz from './pages/Quiz';
 import Terms from './pages/Terms';
 import PrivacyPolicy from './pages/PrivacyPolicy';
 import NotFound from './pages/NotFound';
-import UserManagement from './pages/UserManagement';
 
 const App = () => {
   return (
@@ -137,11 +139,31 @@ const App = () => {
             }
           />
           <Route
+            path='/finished-topics/:id'
+            element={
+              <ProtectedRoute>
+                <Layout>
+                  <FinishedTopicDetail />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
             path='/pending-content'
             element={
               <ProtectedRoute>
                 <Layout>
                   <ContentReviews />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path='/finished-topics'
+            element={
+              <ProtectedRoute>
+                <Layout>
+                  <FinishedTopics />
                 </Layout>
               </ProtectedRoute>
             }

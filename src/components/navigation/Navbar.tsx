@@ -59,6 +59,13 @@ const Navbar = () => {
       },
     },
     {
+      label: 'Finished Topics',
+      onClick: () => {
+        navigate('/finished-topics');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      },
+    },
+    {
       label: 'Content Generation',
       onClick: () => {
         navigate('/add-topic');
