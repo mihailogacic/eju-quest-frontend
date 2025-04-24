@@ -14,8 +14,15 @@ import {
   submitQuizAnswers,
   getGeneratedContent,
   deleteLesson,
+  getFinishedTopics,
+  getTopicResults,
 } from '../services/lessons-api';
-import { PendingLessonsTypes, LessonDetail } from '../types/lessons-types';
+import {
+  PendingLessonsTypes,
+  LessonDetail,
+  FinishedTopicCard,
+  TopicResultsTypes,
+} from '../types/lessons-types';
 import { toast } from 'react-toastify';
 
 export const usePendingLessons = () => {
@@ -179,5 +186,23 @@ export const useSubmitQuiz = () => {
         error?.detail || 'An error occurred while submitting the quiz.'
       );
     },
+  });
+};
+
+export const useFinishedTopics = () => {
+  return useQuery<FinishedTopicCard[]>({
+    queryKey: ['completed-lessons'],
+    queryFn: () => getFinishedTopics(),
+  });
+};
+
+export const useTopicResults = (
+  lessonId: string | number,
+  childId: string | number
+) => {
+  return useQuery<TopicResultsTypes>({
+    queryKey: ['lesson-results', lessonId, childId],
+    queryFn: () => getTopicResults(lessonId, childId),
+    enabled: !!lessonId && !!childId,
   });
 };

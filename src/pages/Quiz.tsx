@@ -28,6 +28,7 @@ const Quiz = () => {
   // const [selected, setSelected] = useState<string | null>(null);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [answers, setAnswers] = useState<Record<number, number>>({});
+  const [timeLeft, setTimeLeft] = useState(300);
   const { mutate: submitQuiz } = useSubmitQuiz();
 
   const { id } = useParams();
@@ -68,6 +69,7 @@ const Quiz = () => {
         selected_option:
           q.options.find((opt) => opt.id === answers[q.id])?.option ?? '',
       })),
+      remaining_time: timeLeft,
     };
 
     submitQuiz(payload, {
@@ -100,6 +102,7 @@ const Quiz = () => {
         question_id: q.id,
         selected_option: filledAnswers[q.id],
       })),
+      remaining_time: timeLeft,
     };
 
     submitQuiz(payload, {
@@ -332,7 +335,11 @@ const Quiz = () => {
       </Box>
 
       {/* TODO: the parent should set the quiz duration (need to change) */}
-      <Timeout duration={60} onTimeout={handleAutoSubmit} />
+      <Timeout
+        onTimeout={handleAutoSubmit}
+        timeLeft={timeLeft}
+        setTimeLeft={setTimeLeft}
+      />
 
       <CustomModal
         isOpen={isModalOpen}

@@ -6,10 +6,9 @@ type CourseItemProps = {
   id: number | string;
   image: string;
   name: string;
-  description: string;
 };
 
-const CourseItem = ({ id, image, name, description }: CourseItemProps) => {
+const CourseItem = ({ id, image, name }: CourseItemProps) => {
   const navigate = useNavigate();
 
   const handleClick = () => {
@@ -52,19 +51,21 @@ const CourseItem = ({ id, image, name, description }: CourseItemProps) => {
           borderRadius: '0 0 8px 8px',
         }}
       >
-        <Typography sx={{ fontSize: '24px', fontWeight: 600, mb: '4px' }}>
-          {name}
-        </Typography>
         <Typography
           sx={{
-            fontWeight: 400,
-            color: 'hsla(0, 0%, 100%, 0.8)',
-            fontSize: '16px',
+            fontSize: '24px',
+            fontWeight: 600,
+            mb: '4px',
+            display: '-webkit-box',
+            WebkitBoxOrient: 'vertical',
+            WebkitLineClamp: 2,
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
             lineHeight: 1.3,
-            mb: '6px',
+            height: 'calc(1.3em * 2)',
           }}
         >
-          {description}
+          {name}
         </Typography>
       </Box>
     </Box>

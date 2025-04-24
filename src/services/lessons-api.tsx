@@ -8,6 +8,8 @@ import {
   LessonDetail,
   QuestionResponseTypes,
   SubmitQuizPayload,
+  FinishedTopicCard,
+  TopicResultsTypes,
 } from '../types/lessons-types';
 
 export const getPendingLessons = async (): Promise<LessonDetail[]> => {
@@ -194,6 +196,7 @@ export const getLessonQuiz = async (
 export const submitLessonSummary = async (data: {
   lesson_id: number;
   description: string;
+  remaining_time: number;
 }) => {
   const response = await axiosInstance.post('/lessons/summary/', data);
   return response.data;
@@ -210,6 +213,47 @@ export const submitQuizAnswers = async (data: SubmitQuizPayload) => {
   } catch (error: any) {
     throw (
       error.response?.data || 'An error occurred while submitting the quiz.'
+    );
+  }
+};
+
+export const getFinishedTopics = async (): Promise<FinishedTopicCard[]> => {
+  try {
+    const response = await axiosInstance.get<FinishedTopicCard[]>(
+      `/lessons/completed-lessons/`,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }
+    );
+    return response.data;
+  } catch (error: any) {
+    throw (
+      error.response?.data ||
+      'An error occurred while fetching finished topics.'
+    );
+  }
+};
+
+export const getTopicResults = async (
+  lessonId: string | number,
+  childId: string | number
+): Promise<TopicResultsTypes> => {
+  try {
+    const response = await axiosInstance.get<TopicResultsTypes>(
+      `/lessons/${lessonId}/results/`,
+      {
+        params: { child_id: childId },
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }
+    );
+    return response.data;
+  } catch (error: any) {
+    throw (
+      error.response?.data || 'An error occurred while fetching topic results.'
     );
   }
 };
