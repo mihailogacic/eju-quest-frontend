@@ -114,11 +114,31 @@ export const updateUserProfile = async (data: {
 
 export const deleteChild = async (uid: number) => {
   try {
-    const response = await axiosInstance.delete(`/users/deactivate_child/${uid}/`);
+    const response = await axiosInstance.delete(
+      `/users/deactivate_child/${uid}/`
+    );
     return response.data;
   } catch (error: any) {
     throw (
       error.response?.data || 'An error occurred while deactivating the child.'
+    );
+  }
+};
+
+export const verifyEmail = async (uid: string, token: string) => {
+  try {
+    const response = await axiosInstance.post(
+      `/auth/verify-email/${uid}/${token}/`,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }
+    );
+    return response.data;
+  } catch (error: any) {
+    throw (
+      error.response?.data || 'An error occurred while verifying the email.'
     );
   }
 };
