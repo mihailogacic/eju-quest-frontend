@@ -8,7 +8,8 @@ import {
   confirmResetPassword,
   fetchUserProfile,
   updateUserProfile,
-  deleteChild
+  deleteChild,
+  verifyEmail,
 } from '../services/auth-api';
 import useAuthStore from '../store/auth-store';
 import {
@@ -133,6 +134,23 @@ export const useDeleteChild = () => {
         error?.response?.data?.detail ||
         error?.detail ||
         'Failed to deactivate child account.';
+      toast.error(message);
+    },
+  });
+};
+
+export const useVerifyEmail = (uid: string, token: string) => {
+  return useMutation({
+    mutationFn: () => verifyEmail(uid, token),
+    onSuccess: () => {
+      toast.success('Email successfully verified!');
+    },
+    onError: (error: any) => {
+      const data = error?.response?.data || error;
+      const message =
+        typeof data === 'object'
+          ? Object.values(data).flat().join('\n')
+          : 'Email verification failed.';
       toast.error(message);
     },
   });
