@@ -101,7 +101,9 @@ export const useUserProfile = () => {
   return useQuery({
     queryKey: ['user-profile'],
     queryFn: fetchUserProfile,
-    staleTime: 1000 * 60 * 5,
+    staleTime: 0,
+    refetchOnMount: 'always',
+    refetchOnWindowFocus: true,
   });
 };
 

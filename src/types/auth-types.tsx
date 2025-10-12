@@ -39,4 +39,5 @@ export type UserDetailsTypes = {
   role: string;
   profile_image: string;
   created_at: string;
+  reward_points: number;
 };

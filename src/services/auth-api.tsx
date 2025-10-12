@@ -84,7 +84,7 @@ export const confirmResetPassword = async (
 };
 
 export const fetchUserProfile = async (): Promise<UserDetailsTypes> => {
-  const response = await axiosInstance.get<UserDetailsTypes>('/users/profile/');
+  const response = await axiosInstance.get<UserDetailsTypes>('/user/profile/');
   return response.data;
 };
 
@@ -126,19 +126,7 @@ export const deleteChild = async (uid: number) => {
 };
 
 export const verifyEmail = async (uid: string, token: string) => {
-  try {
-    const response = await axiosInstance.post(
-      `/auth/verify-email/${uid}/${token}/`,
-      {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      }
-    );
-    return response.data;
-  } catch (error: any) {
-    throw (
-      error.response?.data || 'An error occurred while verifying the email.'
-    );
-  }
+  const url = `/auth/verify-email/${encodeURIComponent(uid)}/${encodeURIComponent(token)}/`;
+  const response = await axiosInstance.get(url);
+  return response.data;
 };

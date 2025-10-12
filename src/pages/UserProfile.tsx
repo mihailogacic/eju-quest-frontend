@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useEffect } from 'react';
 import { Box, CircularProgress, Typography } from '@mui/material';
 import CustomButton from '../components/common/CustomButton';
 import CustomModal from '../components/common/CustomModal';
@@ -12,7 +13,11 @@ import hourglassImg from '../assets/images/hourglass.png';
 
 const UserProfile = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const { data, isPending } = useUserProfile();
+  const { data, isPending, refetch } = useUserProfile();
+
+  useEffect(() => {
+    refetch();
+  }, [refetch]);
 
   const handleCloseModal = () => {
     setIsModalOpen(false);
@@ -257,14 +262,9 @@ const UserProfile = () => {
                   Reward Balance
                 </Typography>
                 <Typography
-                  sx={{
-                    fontSize: '16px',
-                    fontWeight: 400,
-                    textAlign: 'center',
-                    opacity: 0.5,
-                  }}
+                  sx={{ fontSize: '16px', fontWeight: 400, textAlign: 'center', opacity: 0.5 }}
                 >
-                  100 points
+                  {data?.reward_points ?? 0} points
                 </Typography>
               </Box>
 

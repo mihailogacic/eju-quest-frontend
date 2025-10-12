@@ -10,6 +10,7 @@ import PublicRoute from './components/layouts/PublicRoute';
 import LandingPage from './pages/LandingPage';
 import Login from './pages/Login';
 import Register from './pages/Register';
+import VerifyEmail from './pages/VerifyEmail';
 import ResetPassword from './pages/ResetPassword';
 import ChangePassword from './pages/ChangePassword';
 import PasswordChanged from './pages/PasswordChanged';
@@ -61,6 +62,14 @@ const App = () => {
             element={
               <PublicRoute>
                 <Register />
+              </PublicRoute>
+            }
+          />
+          <Route
+            path='/verify-email/:uid/:token'
+            element={
+              <PublicRoute>
+                <VerifyEmail />
               </PublicRoute>
             }
           />
