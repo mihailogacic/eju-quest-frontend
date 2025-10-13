@@ -3,11 +3,7 @@ import { useParams } from 'react-router-dom';
 import { Box, Typography, CircularProgress } from '@mui/material';
 import ContentReviewHeader from '../components/content-review/ContentReviewHeader';
 import CustomButton from '../components/common/CustomButton';
-import {
-  useLessonDetail,
-  useApproveLesson,
-  useDeleteLesson,
-} from '../hooks/lessons-hook';
+import { useLessonDetail, useApproveLesson } from '../hooks/lessons-hook';
 import CustomModal from '../components/common/CustomModal';
 import DeleteTopic from '../components/modals/DeleteTopic';
 
@@ -17,11 +13,6 @@ const ContentReviewDetail = () => {
 
   const { data, isPending, isError } = useLessonDetail(id as string);
   const { mutate: approve } = useApproveLesson();
-  const { mutate: deleteLesson } = useDeleteLesson();
-
-  const handleUnapprove = (lessonId: number) => {
-    deleteLesson(lessonId);
-  };
 
   const handleApprove = (lessonId: number) => {
     approve(lessonId);
@@ -128,19 +119,7 @@ const ContentReviewDetail = () => {
           >
             Delete topic
           </CustomButton>
-          <CustomButton
-            onClick={() => handleUnapprove(Number(data.id))}
-            sx={{
-              border: '1px solid black',
-              width: '100%',
-              maxWidth: '164px',
-              '@media (max-width: 640px)': {
-                maxWidth: '100%',
-              },
-            }}
-          >
-            Un-approve topic
-          </CustomButton>
+
           <CustomButton
             buttonType='text'
             onClick={() => handleApprove(Number(data.id))}
