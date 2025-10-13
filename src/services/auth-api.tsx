@@ -84,7 +84,7 @@ export const confirmResetPassword = async (
 };
 
 export const fetchUserProfile = async (): Promise<UserDetailsTypes> => {
-  const response = await axiosInstance.get<UserDetailsTypes>('/user/profile/');
+  const response = await axiosInstance.get<UserDetailsTypes>('/users/profile/');
   return response.data;
 };
 
