@@ -151,25 +151,6 @@ export const approveLesson = async (lesson_id: number) => {
   }
 };
 
-export const unapproveLesson = async (lesson_id: number) => {
-  try {
-    const response = await axiosInstance.post(
-      '/lessons/unapprove/',
-      { lesson_id },
-      {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      }
-    );
-    return response.data;
-  } catch (error: any) {
-    throw (
-      error.response?.data || 'An error occurred while unapproving the lesson.'
-    );
-  }
-};
-
 export const deleteLesson = async (lesson_id: number): Promise<void> => {
   try {
     await axiosInstance.delete(`/lessons/${lesson_id}/delete/`, {

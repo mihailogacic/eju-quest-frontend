@@ -6,7 +6,7 @@ import CustomButton from '../components/common/CustomButton';
 import {
   useLessonDetail,
   useApproveLesson,
-  useUnapproveLesson,
+  useDeleteLesson,
 } from '../hooks/lessons-hook';
 import CustomModal from '../components/common/CustomModal';
 import DeleteTopic from '../components/modals/DeleteTopic';
@@ -17,10 +17,10 @@ const ContentReviewDetail = () => {
 
   const { data, isPending, isError } = useLessonDetail(id as string);
   const { mutate: approve } = useApproveLesson();
-  const { mutate: unapprove } = useUnapproveLesson();
+  const { mutate: deleteLesson } = useDeleteLesson();
 
   const handleUnapprove = (lessonId: number) => {
-    unapprove(lessonId);
+    deleteLesson(lessonId);
   };
 
   const handleApprove = (lessonId: number) => {

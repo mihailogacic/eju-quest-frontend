@@ -8,7 +8,6 @@ import {
   getLessonDetail,
   getApprovedLessons,
   approveLesson,
-  unapproveLesson,
   getLessonQuiz,
   submitLessonSummary,
   submitQuizAnswers,
@@ -115,24 +114,6 @@ export const useApproveLesson = () => {
   });
 };
 
-export const useUnapproveLesson = () => {
-  const navigate = useNavigate();
-
-  return useMutation({
-    mutationFn: unapproveLesson,
-    onSuccess: () => {
-      toast.success('Lesson unapproved successfully!');
-      navigate('/pending-content');
-    },
-    onError: (error: any) => {
-      const message =
-        error?.response?.data?.detail ||
-        error?.detail ||
-        'Something went wrong while unapproving the lesson.';
-      toast.error(message);
-    },
-  });
-};
 
 export const useDeleteLesson = () => {
   const navigate = useNavigate();
