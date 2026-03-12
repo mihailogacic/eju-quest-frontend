@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Box, Typography } from '@mui/material';
+import { Box, Typography, MenuItem } from '@mui/material';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import CustomInput from '../common/CustomInput';
 import CustomButton from '../common/CustomButton';
@@ -121,7 +121,7 @@ const TopicHeader = ({
         backgroundColor: 'black',
         color: 'white',
         borderTop: '1px solid white',
-        py: 8,
+        py: 6,
       }}
     >
       <Box
@@ -135,7 +135,7 @@ const TopicHeader = ({
         <Typography sx={{ fontWeight: 700, fontSize: '40px' }}>
           Add Topic Details
         </Typography>
-        <Typography sx={{ mb: 5 }}>Enter the required information</Typography>
+        <Typography sx={{ mb: 3 }}>Enter the required information</Typography>
       </Box>
 
       <Box
@@ -148,7 +148,7 @@ const TopicHeader = ({
           px: 2,
           display: 'flex',
           flexDirection: 'column',
-          gap: 6,
+          gap: 4,
         }}
       >
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
@@ -219,7 +219,9 @@ const TopicHeader = ({
             Desired Lesson Length
           </Typography>
           <CustomInput
-            placeholder='Enter Lesson Length'
+            select
+            defaultValue=''
+            placeholder='Select Lesson Length'
             {...register('lesson_length', {
               onChange: (e) =>
                 onFormChange({
@@ -234,7 +236,11 @@ const TopicHeader = ({
                 color: 'hsla(0, 0%, 100%, 0.5)',
               },
             }}
-          />
+          >
+            <MenuItem value='short'>Short</MenuItem>
+            <MenuItem value='medium'>Medium</MenuItem>
+            <MenuItem value='long'>Long</MenuItem>
+          </CustomInput>
           {errors.lesson_length && (
             <Typography sx={{ color: 'red', fontSize: '12px' }}>
               {errors.lesson_length.message}
