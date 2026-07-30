@@ -7,6 +7,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import CustomButton from '../common/CustomButton';
 import useAuthStore from '../../store/auth-store';
 import logo from '../../assets/images/logo.png';
+import { logout } from '../../services/auth-api';
 
 const authLinks = {
   fontSize: '14px',
@@ -28,10 +29,14 @@ const Navbar = () => {
     { label: 'Edit Profile', onClick: () => navigate('/user-profile') },
     {
       label: 'Logout',
-      onClick: () => {
-        clearAuth();
-        queryClient.clear();
-        navigate('/sign-in');
+      onClick: async () => {
+        try {
+          await logout();
+        } finally {
+          clearAuth();
+          queryClient.clear();
+          navigate('/sign-in');
+        }
       },
     },
   ];

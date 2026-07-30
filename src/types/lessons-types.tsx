@@ -102,7 +102,7 @@ export type FinishedTopicCard = {
 type OptionKeys = 'A' | 'B' | 'C' | 'D';
 
 type Answers = {
-  correct: 'true' | 'false';
+  correct: boolean;
   options: Record<OptionKeys, string>;
   question_text: string;
   correct_option: OptionKeys;
@@ -140,7 +140,6 @@ type QuizOption = {
   id: number;
   option: string;
   option_text: string;
-  correct: boolean;
 };
 
 type QuizLessonDetail = {
@@ -158,7 +157,6 @@ export type QuizQuestion = {
   id: number;
   question_text: string;
   options: QuizOption[];
-  correct_option: string;
 };
 
 export type QuestionResponseTypes = {

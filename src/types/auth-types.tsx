@@ -22,7 +22,6 @@ export type User = {
 
 export type LoginResponseTypes = {
   access_token: string;
-  refresh_token: string;
   user: User;
 };
 

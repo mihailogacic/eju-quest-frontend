@@ -32,6 +32,8 @@ const AddTopic = () => {
       lesson_length: 'short',
     });
     setGeneratedQuestions([]);
+    setGeneratedContent([]);
+    setUploadedImage(null);
     setIsGenerated(false);
     setClearTrigger((prev) => prev + 1);
   };
@@ -76,7 +78,16 @@ const AddTopic = () => {
         }}
       >
         {isGenerated && generatedContent.length > 0 && (
-          <TopicContent content={generatedContent} />
+          <TopicContent
+            content={generatedContent}
+            onChange={(sectionIndex, text) => {
+              setGeneratedContent((current) =>
+                current.map((section, index) =>
+                  index === sectionIndex ? { ...section, text } : section
+                )
+              );
+            }}
+          />
         )}
 
         <Choices

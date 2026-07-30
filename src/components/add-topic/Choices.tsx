@@ -5,6 +5,12 @@ import CustomSwitch from '../common/CustomSwitch';
 import CustomButton from '../common/CustomButton';
 import { useSubmitLesson } from '../../hooks/lessons-hook';
 import { toast } from 'react-toastify';
+import {
+  createDefaultQuestionState,
+  formatQuestionsForApi,
+  isQuestionFormValid,
+  mergeGeneratedQuestions,
+} from './choices-logic';
 
 const questionWrapperStyle = {
   minWidth: '400px',
@@ -74,25 +80,13 @@ const Choices = ({
 }: ChoicesProps) => {
   const { mutate: submitLesson, isPending } = useSubmitLesson();
 
-  const defaultState = Array(4)
-    .fill(null)
-    .map(() => ({
-      question: '',
-      options: Array(4).fill(''),
-      answerIndex: null as number | null,
-    }));
-
-  const [formData, setFormData] = useState(defaultState);
+  const [formData, setFormData] = useState(createDefaultQuestionState);
 
   useEffect(() => {
     if (questions.length > 0) {
-      const updated = questions.map((q) => ({
-        question: q.question,
-        options: q.options.map((opt) => opt.text),
-        answerIndex: q.options.findIndex((opt) => opt.option === q.answer),
-      }));
-
-      setFormData((prev) => prev.map((_, i) => updated[i] || prev[i]));
+      setFormData((previous) =>
+        mergeGeneratedQuestions(previous, questions)
+      );
     }
   }, [questions]);
 
@@ -119,12 +113,7 @@ const Choices = ({
   };
 
   const handleSubmit = () => {
-    const isFormValid = formData.every((q) => {
-      const hasQuestion = q.question.trim() !== '';
-      const allOptionsFilled = q.options.every((opt) => opt.trim() !== '');
-      const hasAnswer = q.answerIndex !== null;
-      return hasQuestion && allOptionsFilled && hasAnswer;
-    });
+    const isFormValid = isQuestionFormValid(formData);
 
     const isHeaderValid =
       typeof lessonInfo.title === 'string' &&
@@ -149,14 +138,18 @@ const Choices = ({
       return;
     }
 
-    const formattedQuestions = formData.map((q) => ({
-      question: q.question,
-      options: q.options.map((text, i) => ({
-        option: String.fromCharCode(65 + i),
-        text,
-      })),
-      answer: String.fromCharCode(65 + (q.answerIndex ?? 0)),
-    }));
+    const isContentValid =
+      content.length > 0 &&
+      content.every(
+        (section) => section.heading.trim() !== '' && section.text.trim() !== ''
+      );
+
+    if (!isContentValid) {
+      toast.error('Please review all lesson sections before saving.');
+      return;
+    }
+
+    const formattedQuestions = formatQuestionsForApi(formData);
 
     const payload = {
       title: lessonInfo.title,
@@ -171,7 +164,7 @@ const Choices = ({
   };
 
   const handleClear = () => {
-    setFormData(defaultState);
+    setFormData(createDefaultQuestionState());
     onClearAll();
   };
 

@@ -166,12 +166,12 @@ const FinishedTopicDetail = () => {
                         fontSize: '14px',
                         color: 'white',
                         backgroundColor:
-                          answer.correct === 'true'
+                          answer.correct
                             ? 'hsla(120, 100%, 30%, 0.9)'
                             : 'hsla(0, 100%, 45%, 0.9)',
                         border: '1px solid',
                         borderColor:
-                          answer.correct === 'true'
+                          answer.correct
                             ? 'hsl(120, 100%, 30%)'
                             : 'hsl(0, 100%, 45%)',
                         borderRadius: '4px',
@@ -179,10 +179,10 @@ const FinishedTopicDetail = () => {
                         ml: 0.5,
                       }}
                     >
-                      {answer.correct === 'true' ? 'Correct' : 'Incorrect'}
+                      {answer.correct ? 'Correct' : 'Incorrect'}
                     </Typography>
                   </Typography>
-                  {answer.correct === 'false' && (
+                  {!answer.correct && (
                     <Typography sx={{ fontSize: '14px' }}>
                       Correct Answer:{' '}
                       <Typography

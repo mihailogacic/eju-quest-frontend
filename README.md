@@ -84,23 +84,24 @@ This runs a Vite server that serves the `dist/` output so you can test the produ
 
 ## 4. Authentication and API calls
 
-- JWT tokens (`access_token`, `refresh_token`) are returned by the backend at `/auth/login/`.
-- The frontend stores `access_token` in `localStorage` and adds `Authorization: Bearer <token>` to all requests via `axiosInstance`:
+- The backend returns a short-lived access token after login and sets the rotating
+  refresh token as an `HttpOnly` cookie.
+- Zustand keeps the access token only in memory; JWT values are not written to
+  `localStorage`.
+- `AuthBootstrap` restores the session when the application starts. If a protected
+  request returns HTTP 401, the Axios response interceptor refreshes the access
+  token and retries that request once.
+- Axios sends cookies on authentication requests and adds
+  `Authorization: Bearer <token>` to protected API requests:
 
 ```typescript
-axiosInstance.interceptors.request.use((config) => {
-  const token = localStorage.getItem('access_token');
-  if (token) {
-    config.headers = {
-      ...config.headers,
-      Authorization: `Bearer ${token}`,
-    };
-  }
-  return config;
-});
+const token = useAuthStore.getState().token;
+config.headers.Authorization = `Bearer ${token}`;
 ```
 
 - Server state is handled with `@tanstack/react-query` (hooks in `src/hooks/*`); forms and validation use `react-hook-form` + `zod` (`src/utils/validation.tsx`).
+- The lesson-generation form lets the parent edit generated section text, questions,
+  options, and the correct-answer marker before saving the lesson.
 
 ---
 
@@ -119,3 +120,16 @@ Key routes (defined in `src/App.tsx`):
 - `/lesson-summary/:id` – submit summary after lesson/quiz
 
 For a full description of user flows, see `info/info-detailed.txt` (section “Frontend – user flows”).
+
+---
+
+## 6. Quality checks
+
+Component and module tests are colocated with the source files they cover. Shared
+test setup is in `src/test/setup.ts`.
+
+```bash
+npm test
+npm run lint
+npm run build
+```

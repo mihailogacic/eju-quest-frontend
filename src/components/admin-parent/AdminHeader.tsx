@@ -9,6 +9,7 @@ import useAuthStore from '../../store/auth-store';
 import { useUserProfile } from '../../hooks/auth-hook';
 import profilePlaceholder from '../../assets/images/profile-placeholder.jpg';
 import editIcon from '../../assets/icons/edit-icon.png';
+import { logout } from '../../services/auth-api';
 
 const AdminHeader = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -22,10 +23,14 @@ const AdminHeader = () => {
   };
 
   const queryClient = useQueryClient();
-  const handleLogout = () => {
-    clearAuth();
-    queryClient.clear();
-    navigate('/sign-in');
+  const handleLogout = async () => {
+    try {
+      await logout();
+    } finally {
+      clearAuth();
+      queryClient.clear();
+      navigate('/sign-in');
+    }
   };
 
   const handleCloseModal = () => {

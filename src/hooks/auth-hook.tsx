@@ -41,13 +41,9 @@ export const useLogin = () => {
   return useMutation({
     mutationFn: (data: LoginTypes) => login(data),
     onSuccess: (data: LoginResponseTypes) => {
-      const { access_token, refresh_token, user } = data;
+      const { access_token, user } = data;
 
-      const { setUser, setToken, setRefreshToken } = useAuthStore.getState();
-
-      setUser(user);
-      setToken(access_token);
-      setRefreshToken(refresh_token);
+      useAuthStore.getState().setSession(user, access_token);
     },
     onError: (error: any) => {
       const message =

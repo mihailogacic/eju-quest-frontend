@@ -40,6 +40,10 @@ export const login = async (data: LoginTypes): Promise<LoginResponseTypes> => {
   }
 };
 
+export const logout = async (): Promise<void> => {
+  await axiosInstance.post('/auth/logout/');
+};
+
 export const resetPassword = async (data: { email: string }) => {
   try {
     const response = await axiosInstance.post(

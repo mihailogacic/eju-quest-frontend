@@ -1,5 +1,6 @@
 import { ReactNode } from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
+import { Box, CircularProgress } from '@mui/material';
 import useAuthStore from '../../store/auth-store';
 
 type ProtectedRouteProps = {
@@ -7,7 +8,7 @@ type ProtectedRouteProps = {
 };
 
 const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
-  const { isAuthenticated, user } = useAuthStore();
+  const { isAuthenticated, isSessionReady, user } = useAuthStore();
   const location = useLocation();
 
   const parentRoutes = [
@@ -27,6 +28,14 @@ const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
   ];
 
   const currentPath = location.pathname;
+
+  if (!isSessionReady) {
+    return (
+      <Box sx={{ display: 'flex', justifyContent: 'center', py: 8 }}>
+        <CircularProgress aria-label='Checking session' />
+      </Box>
+    );
+  }
 
   if (!isAuthenticated) {
     return <Navigate to='/sign-in' replace />;

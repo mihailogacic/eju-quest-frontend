@@ -30,12 +30,14 @@ import Quiz from './pages/Quiz';
 import Terms from './pages/Terms';
 import PrivacyPolicy from './pages/PrivacyPolicy';
 import NotFound from './pages/NotFound';
+import AuthBootstrap from './components/layouts/AuthBootstrap';
 
 const App = () => {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <Router>
+      <AuthBootstrap>
+        <Router>
         <ToastContainer
           position='top-center'
           autoClose={4000}
@@ -257,7 +259,8 @@ const App = () => {
 
           <Route path='*' element={<NotFound />} />
         </Routes>
-      </Router>
+        </Router>
+      </AuthBootstrap>
     </ThemeProvider>
   );
 };
